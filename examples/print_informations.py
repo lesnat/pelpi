@@ -26,7 +26,6 @@ laser=pp.Laser(
 )
 
 print(laser.getInfo())
-laser.plot()
 
 mat=pp.Material(
     name="Al"

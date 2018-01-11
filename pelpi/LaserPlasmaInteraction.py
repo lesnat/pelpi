@@ -1,9 +1,9 @@
 #coding:utf8
 
 import numpy as _np
-from __init__ import unit as _u
-from __init__ import prefered_unit as _pu
-import Model as _m
+from . import unit as _u
+from . import prefered_unit as _pu
+from . import Model as _m
 
 ################################################################################
 class LaserPlasmaInteraction(object):
@@ -163,7 +163,7 @@ class LaserPlasmaInteraction(object):
         """
         """
         if model=="Obvious":
-            Model=_m.Obvious(self)
+            Model=_m.Model.Obvious(self)
             out  = Model.getLaserAbsorptionEfficiency()
         else:
             raise NameError("getLaserAbsorptionEfficiency : Unknown model name.")
@@ -178,7 +178,7 @@ class LaserPlasmaInteraction(object):
         if model=="Obvious":
             Tec     = 1e-3
             logCoulomb = 5.
-            Model=_m.Obvious(self)
+            Model=_m.Model.Obvious(self)
             self.Sigma  = Model.getTargetConductivity(Tec=Tec,logCoulomb=logCoulomb)
         else:
             raise NameError("getTargetConductivity : Unknown model name.")
@@ -233,12 +233,12 @@ class LaserPlasmaInteraction(object):
             Teh     = self.getHotElectronTemperature(kwargs.get('Teh_model','Haines2009'))
             Sigma   = self.getTargetConductivity(kwargs.get('Sigma_model','Obvious'))
             nu_laser = self.getLaserAbsorptionEfficiency(kwargs.get('nu_laser_model','Obvious'))
-            Model   = _m.Bell1997(self)
+            Model   = _m.Model.Bell1997(self)
             Model.checkHypotheses()
             nehTot = Model.getHotElectronTotalNumber(Teh,Sigma,nu_laser) # self. ou pas ? savoir si sauvegardé ds objet
         elif model=="Obvious":
             Teh     = self.getHotElectronTemperature(kwargs.get('Teh_model','Haines2009'))
-            Model=_m.Obvious(self)
+            Model=_m.Model.Obvious(self)
             nehTot = Model.getHotElectronTotalNumber(Teh)
         else:
             raise NameError("Unknown model name.")
@@ -252,7 +252,7 @@ class LaserPlasmaInteraction(object):
             Teh     = self.getHotElectronTemperature(kwargs.get('Teh_model','Haines2009'))
             Sigma   = self.getTargetConductivity(kwargs.get('Sigma_model','Obvious'))
             nu_laser = self.getLaserAbsorptionEfficiency(kwargs.get('nu_laser_model','Obvious'))
-            Model   = _m.Bell1997(self)
+            Model   = _m.Model.Bell1997(self)
             Model.checkHypotheses()
             zeh = Model.getHotElectronPenetrationDepth(Teh,Sigma,nu_laser) # self. ou pas ? savoir si sauvegardé ds objet
 
@@ -280,14 +280,14 @@ class LaserPlasmaInteraction(object):
         """
 
         if model=="Beg1997":
-            Model=_m.Beg1997(self)
+            Model=_m.Model.Beg1997(self)
             # Model.checkHypotheses()
             out = Model.getHotElectronTemperature()
         elif model=="Haines2009":
-            Model=_m.Haines2009(self)
+            Model=_m.Model.Haines2009(self)
             out = Model.getHotElectronTemperature()
         elif model=="Wilks1992":
-            Model=_m.Wilks1992(self)
+            Model=_m.Model.Wilks1992(self)
             out = Model.getHotElectronTemperature()
         else:
             raise NameError("Unknown model name. Please refer to the documentation.")

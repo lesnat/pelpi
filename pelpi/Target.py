@@ -1,7 +1,7 @@
 #coding:utf8
 import numpy as _np
-from __init__ import unit
-from __init__ import prefered_unit as _pu
+from . import unit
+from . import prefered_unit as _pu
 
 
 class Material(object):

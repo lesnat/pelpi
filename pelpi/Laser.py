@@ -1,7 +1,7 @@
 #coding:utf8
 import numpy as _np
-from __init__ import unit as _u
-from __init__ import prefered_unit as _pu
+from . import unit
+from . import prefered_unit as _pu
 
 
 
@@ -68,7 +68,7 @@ class Laser(object):
     """
     def __init__(self,name,wavelength,energy,contrast,\
         tprofile,sprofile,\
-        polar=[0,1,0],direction=[0,0,1],angle=0.*_u.deg,**kwargs):
+        polar=[0,1,0],direction=[0,0,1],angle=0.*unit.deg,**kwargs):
 
         self.name       = name
         self.wavelength = wavelength
@@ -86,18 +86,18 @@ class Laser(object):
         self.updateParameters()
 
 
-    def updateParameters(self): # voire pour calcul energie via intensité ou a0
+    def updateParameters(self):
         self.P0             = self.energy/self.getTimeIntegral()
         self.I0             = self.P0/self.getSurfaceIntegral()
-        self.a0             = 0.85*_np.sqrt((1e-4*self.I0*self.wavelength**2)/(1.e18 * _u.W*_u.m**-2 *1.e-12*_u.m**2))
+        self.a0             = 0.85*_np.sqrt((1e-4*self.I0*self.wavelength**2)/(1.e18 * unit.W*unit.m**-2 *1.e-12*unit.m**2))
 
-        self.wl             = 2*_np.pi*_u.c/self.wavelength
-        self.nc             = _u.m_e*_u.epsilon_0*(self.wl/_u.e)**2 # m^-3
+        self.wl             = 2*_np.pi*unit.c/self.wavelength
+        self.nc             = unit.m_e*unit.epsilon_0*(self.wl/unit.e)**2 # m^-3
 
         # self.Emax           = []
         # self.Bmax           = []
 
-        self.pulseEnv       = lambda r,t: self.I0 *  self.spulseEnv(r) * self.tpulseEnv(t)
+        self.pulseEnv       = lambda r,t: self.I0.to('W/cm**2')/unit('W/cm**2') *  self.spulseEnv(r) * self.tpulseEnv(t) # TODO: a modif?
         self.pulseChirp     = lambda t: _np.sin(self.wl*t)
 
     def tpulseEnv(self,t):
@@ -152,31 +152,30 @@ class Laser(object):
         txt += " a0                 :      "+str(self.a0.to_base_units())+"\n"
         txt += " wl                 :      "+str(self.wl.to(_pu['pulsation']))+" \n"
         txt += " nc                 :      "+str(self.nc.to(_pu['density']))+" \n"
-
-        # txt += " Emax               :      "+str(self.Emax)+"\n" # modif unités
-        # txt += " Bmax               :      "+str(self.Bmax)+"\n" # modif unités
         txt += " ########################################## \n"
         return txt
 
 
     def plot(self):
         import matplotlib.pyplot as plt
-        t=_np.arange(-self.getTimeIntegral(),self.getTimeIntegral(),(2*_np.pi/10)*(1/self.wl))
-        r=_np.arange(-2*self.sfwhm,2*self.sfwhm,(2*_np.pi/10)*(_u.c/self.wl))
-        # for field in # boucler sur tous les champs et plot uniquement si polar !=0 ? ou carte ?
-        plt.subplot(221)
-        plt.plot(self.pulseEnv(r,0),r)
-        plt.ylim(ymin=min(r),ymax=max(r))
-        plt.ylabel('r (m)')
+        t=_np.arange(-self.getTimeIntegral().to('s')/unit.s,self.getTimeIntegral().to('s')/unit.s,(2*_np.pi/10)*(1/self.wl).to('s')/unit.s) *unit.s
+        r=_np.arange(-2*self.sfwhm.to('m')/unit.m,2*self.sfwhm.to('m')/unit.m,(2*_np.pi/10)*(unit.c/self.wl).to('m')/unit.m) * unit.m
+        self.t = t
+        self.r = r # TODO: a supprimer quand méthode OK
 
-        plt.subplot(222)
-        gpulseEnv=_np.array([self.pulseEnv(e,t)*self.pulseChirp(t) for e in r])
-        gt,gr=_np.meshgrid(t,r)
-        plt.pcolor(gt,gr,gpulseEnv)
+        plt.subplot(221)
+        plt.plot(self.pulseEnv(r,0*unit('s')),r)
+        plt.ylim(ymin=min(r.magnitude),ymax=max(r.magnitude))
+        plt.ylabel('r (m)') # TODO: voire pour automatiser unités
+
+        # plt.subplot(222)
+        # gpulseEnv=_np.array([self.pulseEnv(e.magnitude,t.magnitude)*self.pulseChirp(t.magnitude) for e in r]) # TODO: broken
+        # gt,gr=_np.meshgrid(t.magnitude,r.magnitude)
+        # plt.pcolor(gt,gr,gpulseEnv)
 
         plt.subplot(224)
-        plt.plot(t,self.pulseEnv(0,t)*self.pulseChirp(t))
-        plt.xlim(xmin=min(t),xmax=max(t))
+        plt.plot(t,self.pulseEnv(0*unit('m'),t)*self.pulseChirp(t))
+        plt.xlim(xmin=min(t.magnitude),xmax=max(t.magnitude))
         plt.xlabel('t (s)')
 
         plt.legend()

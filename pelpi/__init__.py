@@ -13,10 +13,10 @@ prefered_unit={'intensity':unit.W/unit.cm**2,'energy':unit.J,'length':unit.um,'t
     'mass':unit.kg,'conductivity':unit.ohm**-1 * unit.m**-1}
 
 
-from Laser import *
-from Target import *
-from LaserPlasmaInteraction import *
+from .Laser import *
+from .Target import *
+from .LaserPlasmaInteraction import *
 
-import Model
+from .Model import * 
 
 # from ParticleInCell import *

@@ -124,8 +124,7 @@ class Laser(object):
             S0r=_np.pi * r0**2
             return S0r
         elif self.sprofile=="top-hat":
-            try:
-                return
+            return _np.pi*self.radius**2
         else:
             raise NameError("Unknown laser spatial profile name.")
 

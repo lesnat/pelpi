@@ -7,7 +7,7 @@ from . import prefered_unit as _pu
 class Material(object):
     """
     """
-    def __init__(self,name="",density=0.,atomic_mass=0.,Z=0.,A=0.):
+    def __init__(self,name="",density=None,atomic_mass=None,Z=None,A=None):
         if name=="":
             print("Define")
         elif name=="Al":
@@ -22,6 +22,12 @@ class Material(object):
             self.atomic_mass = 183.85 * unit.u
             self.Z          = 74
             self.A          = 184
+        # elif name=="CH":
+        #     self.name       = name
+        #     self.density    =
+        #     self.atomic_mass= 13.018 * unit.g/unit.mol
+        #     self.Z          = 0
+        #     self.A          = 0
         else:
             self.name       = name
             self.density    = density * unit.kg/unit.m**3

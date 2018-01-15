@@ -4,17 +4,6 @@ from . import unit
 from . import prefered_unit as _pu
 
 
-
-"""
-List of lasers with their characteristics
-
-Name      lambda_l      contrast_l      fwhm_l      I_l
-(m)                           (s)         (W/cm^2)
-ECLIPSE   8.000E-7      1.000E8         3.000E-14   1.000E18
-VEGA      8.000E-7      1.000E8         3.000E-14   1.000E19
-INRS      8.000E-7      1.000E12        2.000E-14   1.000E21
-APPOLON   8.000E-7      1.000E12        1.500E-14   1.000E22
-"""
 class Laser(object):
     """
     Class for defining laser characteristics. It needs to take as arguments
@@ -79,6 +68,8 @@ class Laser(object):
         self.tfwhm      = kwargs.get('tfwhm',None)
         self.sprofile   = sprofile
         self.sfwhm      = kwargs.get('sfwhm',None)
+        self.radius     = kwargs.get('radius',None)
+        # self.diameter   = kwargs.get('diameter',None)
 
         self.direction      = direction
         self.angle          = angle
@@ -94,9 +85,6 @@ class Laser(object):
         self.wl             = 2*_np.pi*unit.c/self.wavelength
         self.nc             = unit.m_e*unit.epsilon_0*(self.wl/unit.e)**2 # m^-3
 
-        # self.Emax           = []
-        # self.Bmax           = []
-
         self.pulseEnv       = lambda r,t: self.I0.to('W/cm**2')/unit('W/cm**2') *  self.spulseEnv(r) * self.tpulseEnv(t) # TODO: a modif?
         self.pulseChirp     = lambda t: _np.sin(self.wl*t)
 
@@ -110,11 +98,16 @@ class Laser(object):
         elif self.sprofile=="supergaussian":
             n=10
             return _np.exp(-(2*_np.sqrt(_np.log(2))*r/self.sfwhm)**(2*n))
+        elif self.sprofile=="top-hat":
+            if abs(r)<self.radius:
+                return 1.0
+            else:
+                return 0.0
 
     def getTimeIntegral(self,r=0.0):
         """
-        Return total time ? 1/e time ? 1/2 time ?
         """
+        # TODO: Return total time ? 1/e time ? 1/2 time ?
         if self.tprofile=="gaussian":
             t0=self.tfwhm/(2 * _np.sqrt(_np.log(2)))
             S0t=t0 * _np.sqrt(_np.pi)
@@ -124,12 +117,15 @@ class Laser(object):
 
     def getSurfaceIntegral(self,t=0.0):
         """
-        se démerder pour appeller cette méthode dans conversion en intensité ?
         """
+        # TODO: se démerder pour appeller cette méthode dans conversion en intensité ?
         if self.sprofile=="gaussian":
             r0=self.sfwhm/(2 * _np.sqrt(_np.log(2)))
             S0r=_np.pi * r0**2
             return S0r
+        elif self.sprofile=="top-hat":
+            try:
+                return
         else:
             raise NameError("Unknown laser spatial profile name.")
 

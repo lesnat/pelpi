@@ -3,6 +3,9 @@ import numpy as _np
 from . import unit
 
 ################################################################################
+"""
+Malka 2001 -> Scaling Energie max electrons
+"""
 class Model(object): # TODO: Voire pour enlever classe Model mais avoir un sous-module Model
     class Beg1997(object):
         """

@@ -106,6 +106,7 @@ class Model(object): # TODO: Voire pour enlever classe Model mais avoir un sous-
             return n0
 
         def getHotElectronTotalNumber(self,Teh,Sigma,nu_laser): # a déplacer dans lpi ? car pas forcemment z0 en longi
+        # TODO: plutôt passer par l'integrale
             return self.getHotElectronDensity(Teh,Sigma,nu_laser,t=0.0*unit.s,z=0.0*unit.m)*\
                 self.getHotElectronPenetrationDepth(Teh,Sigma,nu_laser,t=0.0*unit.s)*\
                 self._lpi.laser.getSurfaceIntegral()

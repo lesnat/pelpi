@@ -40,7 +40,7 @@ class Material(object):
         self.N              = self.A - self.Z
         self.ni             = self.density/self.atomic_mass
         self.ne             = self.Z*self.density/self.atomic_mass
-        def ElectronDensity(self):
+        def electronDensity(self):
             return self.ne
 
 class Geometry(object): # Ajouter pp

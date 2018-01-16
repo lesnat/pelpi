@@ -131,6 +131,7 @@ class LaserPlasmaInteraction(object):
     def updateParameters(self):
         self.plasma     = PlasmaParameters(self)
         self.absorption = []
+        self.model      = _m.Model
         self.ne_over_nc = self.target.mat.ne/self.laser.nc
         self.ni_over_nc = self.target.mat.ni/self.laser.nc
 
@@ -332,6 +333,7 @@ class PlasmaParameters(object):
     """
     Comment faire pour utiliser une température autre que Te_pond ?
     via meilleure estimation de la température si abso != JxB ou donner le choix ?
+    Passer tout ca en méthodes ?
     """
     def __init__(self,LaserPlasmaInteraction):
         self._lpi             = LaserPlasmaInteraction

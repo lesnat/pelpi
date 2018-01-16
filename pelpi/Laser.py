@@ -137,14 +137,17 @@ class Laser(object):
         txt += " tprofile           :      "+self.tprofile+" \n"
         txt += " tfwhm              :      "+str(self.tfwhm.to(_pu['time']))+" \n"
         txt += " sprofile           :      "+self.sprofile+" \n"
-        txt += " sfwhm              :      "+str(self.sfwhm.to(_pu['length']))+" \n"
+        try:
+            txt += " sfwhm              :      "+str(self.sfwhm.to(_pu['length']))+" \n"
+        except:
+            pass
         txt += " contrast           :      "+str(self.contrast)+"\n"
         txt += " energy             :      "+str(self.energy.to(_pu['energy']))+" \n"
         txt += " direction (x,y,z)  :      "+str(self.direction)+"\n"
         txt += " angle              :      "+str(self.angle.to(_pu['angle']))+" \n"
         txt += " I0                 :      "+str(self.I0.to(_pu['intensity']))+" \n"
         txt += " P0                 :      "+str(self.P0.to(_pu['power']))+" \n"
-        txt += " a0                 :      "+str(self.a0.to_base_units())+"\n"
+        txt += " a0                 :      "+str(self.a0.to('dimensionless'))+"\n"
         txt += " wl                 :      "+str(self.wl.to(_pu['pulsation']))+" \n"
         txt += " nc                 :      "+str(self.nc.to(_pu['density']))+" \n"
         txt += " ########################################## \n"

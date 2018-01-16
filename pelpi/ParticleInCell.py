@@ -1,5 +1,6 @@
 #coding:utf8
-from __init__ import np,u
+from . import unit as _u
+import numpy as _np
 
 class ParticleInCell(object):
     # Estimations
@@ -8,33 +9,33 @@ class ParticleInCell(object):
         lpi             = LaserPlasmaInteraction
 
         self.Wr         = lpi.laser.wl
-        self.Lr         = u.c/self.Wr
+        self.Lr         = _u.c/self.Wr
         self.Tr         = 1/self.Wr
-        self.Er         = u.m_e * u.c * self.Wr/u.e
-        self.Br         = u.m_e * self.Wr/u.e
+        self.Er         = _u.m_e * _u.c * self.Wr/_u.e
+        self.Br         = _u.m_e * self.Wr/_u.e
         self.Nr         = lpi.laser.nc
-        self.Jr         = u.c * u.e * self.Nr
-        self.Kr         = u.m_e * u.c**2
-        self.Pr         = u.m_e * u.c
+        self.Jr         = _u.c * _u.e * self.Nr
+        self.Kr         = _u.m_e * _u.c**2
+        self.Pr         = _u.m_e * _u.c
 
         self.dx_laser   = lpi.laser.wavelength/10 # voire pour les 2 pi
-        self.dx_target  = (0.1 * (lpi.laser.wavelength/2*np.pi) * \
-            np.sqrt(lpi.Teh*511/lpi.ne_over_nc))
+        self.dx_target  = (0.1 * (lpi.laser.wavelength/2*_np.pi) * \
+            _np.sqrt(lpi.Teh*511/lpi.ne_over_nc))
         self.dx         = max(self.dx_laser,self.dx_target)
-        self.dt         = self.dx/np.sqrt(2)
+        self.dt         = self.dx/_np.sqrt(2)
         self.CFL        = self.dt/self.dx
         if self.CFL>1.0:
             print("Warning ! CFL condition not respected")
 
-        self.LppTot     = -np.log(0.01/lpi.ne_over_nc)*lpi.target.geom.Lpp
+        self.LppTot     = -_np.log(0.01/lpi.ne_over_nc)*lpi.target.geom.Lpp
 
         self.resx       = 1/self.dx
         self.rest       = 1/self.dt
-        self.Lsim_laser = u.c * 2 * lpi.laser.tfwhm + lpi.target.geom.width + self.LppTot
+        self.Lsim_laser = _u.c * 2 * lpi.laser.tfwhm + lpi.target.geom.width + self.LppTot
         self.Lsim_lpi   = lpi.getInteractionLengthMax() + lpi.target.geom.width + self.LppTot
         self.Lsim       = max(self.Lsim_laser,self.Lsim_lpi)
-        self.Tsim_laser = 2 * (self.Lsim - lpi.target.geom.width)/u.c # ! Fonctionne si le laser ne pénètre pas dans la cible !
-        self.Tsim_lpi   = lpi.getInteractionTimeMax() + (self.Lsim - lpi.target.geom.width)/u.c
+        self.Tsim_laser = 2 * (self.Lsim - lpi.target.geom.width)/_u.c # ! Fonctionne si le laser ne pénètre pas dans la cible !
+        self.Tsim_lpi   = lpi.getInteractionTimeMax() + (self.Lsim - lpi.target.geom.width)/_u.c
         self.Tsim       = max(self.Tsim_laser,self.Tsim_lpi)
 
         self.Nynquist = 0. # facteur de nynquist pour echantillonage des diags
@@ -45,8 +46,8 @@ class ParticleInCell(object):
         txt += " ########################################## \n"
         # txt += " dx                 :      "+un.sciFormat(self.dx)+" m\n"
         # txt += " dx                 :      "+un.sciFormat(self.dx/self.Lr)+" Lr\n"
-        # txt += " 2pi/dx             :      "+un.sciFormat(2*np.pi/self.dx)+" m^-1\n"
-        # txt += " 2pi/dx             :      "+un.sciFormat(self.Lr*2*np.pi/self.dx)+" Lr^-1\n"
+        # txt += " 2pi/dx             :      "+un.sciFormat(2*_np.pi/self.dx)+" m^-1\n"
+        # txt += " 2pi/dx             :      "+un.sciFormat(self.Lr*2*_np.pi/self.dx)+" Lr^-1\n"
         # txt += " dt                 :      "+un.sciFormat(self.dt)+" s\n"
         # txt += " dt                 :      "+un.sciFormat(self.dt/self.Tr)+" Tr\n"
         # txt += " resx               :      "+un.sciFormat(self.resx)+" m^-1\n"
@@ -77,3 +78,15 @@ class ParticleInCell(object):
             return var / (epsilon_0*m_e*(w_l/e)**2)
         else:
             print("Unknown unit : "+unit)
+
+    class codeUnit(object):
+        """
+        Sub-class for
+
+        """ # TODO: add pint unit for CU conversion ?
+        def __init__(self,LaserPlasmaInteraction,referenceAngularFrequency):
+            self._lpi   = LaserPlasmaInteraction
+            self.referenceAngularFrequency = referenceAngularFrequency
+
+        def length(self):
+            return _u.c/self.referenceAngularFrequency.to('1/s')

@@ -1,8 +1,13 @@
 #Package for Estimate Laser-Plasma Interaction (pelpi)
+
+
 pelpi core functionality -> lpi ; + calculus for pic or laser
 tatata, designed for ...
 
+
+
 ## TODO
+
 global variables (in a separate file ?)
 checkHypotheses method
 remove "get" in method name ?
@@ -18,6 +23,9 @@ Model accesibility via pelpi.Model wo having a Model mother class
 split models into different files ?
 density + number density in prefered_unit
 function for displaying quantities
+replace .to_base_units() by .to('dimensionless') for dimensionless units (more explicit)
+
+
 
 ## Code structure
 

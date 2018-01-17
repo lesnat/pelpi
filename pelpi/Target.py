@@ -11,34 +11,17 @@ class Material(object):
     """
     def __init__(self,name,density,atomic_mass,Z,A): # TODO: which initialisation ?
         self.name       = name
-        self.density    = density * unit.kg/unit.m**3
-        self.atomic_mass = atomic_mass * unit.u
+        self.density    = density
+        self.atomic_mass = atomic_mass
         self.Z          = Z
         self.A          = A
+        self.N          = A-Z
 
-        def name(self):
-            return self.name
+    def electronNumberDensity(self): # TODO: class electron method density ?
+        return self.Z*self.density/self.atomic_mass
 
-        def density(self):
-            return self.density
-
-        def atomic_mass(self):
-            return self.atomic_mass
-
-        def Z(self):
-            return self.Z
-
-        def A(self):
-            return self.A
-
-        def N(self):
-            return self.Z-self.A
-
-        def electronDensity(self): # TODO: class electron method density ?
-            return self.Z*self.density/self.atomic_mass
-
-        def ionDensity(self):
-            return self.density/self.atomic_mass
+    def ionNumberDensity(self):
+        return self.density/self.atomic_mass
 
 class Geometry(object): # Ajouter pp
     """
@@ -49,9 +32,6 @@ class Geometry(object): # Ajouter pp
 
 class Target(object):
     """
-
-
-
     """
     def __init__(self,Material,Geometry):
         self.mat=Material

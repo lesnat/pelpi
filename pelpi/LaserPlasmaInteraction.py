@@ -132,7 +132,7 @@ class LaserPlasmaInteraction(object):
         self.plasma     = PlasmaParameters(self)
         self.absorption = []
         self.model      = _m.Model
-        self.electron   = Electron(self)
+        self.electron   = self.Electron(self)
         # self.ion        = Ion(self)
         self.default_model={'':''}
         self.ne_over_nc = self.target.mat.ne/self.laser.nc

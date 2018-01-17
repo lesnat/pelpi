@@ -137,9 +137,9 @@ class test_Laser(unittest.TestCase):
             self.lasGG.pulsation().to('s**-1'),
             u.Quantity(2354564459136066.5, '1 / second'))
 
-    def test_densityCritical(self):
+    def test_numberDensityCritical(self):
         self.assertAlmostEqual(
-            self.lasGG.densityCritical().to_base_units(),
+            self.lasGG.numberDensityCritical().to_base_units(),
             u.Quantity(1.7419598820107494e+27, '1 / meter ** 3'))
 
     def test_power(self):

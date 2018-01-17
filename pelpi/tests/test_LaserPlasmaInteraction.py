@@ -1,29 +1,101 @@
 # coding:utf8
 import sys
-Modules_path="../"
+Modules_path="../../"
 if sys.path[0]!=Modules_path:sys.path.insert(0, Modules_path)
 
 import pelpi as pp
 u=pp.unit
 
-class LaserPlasmaInteractionTest(object):
-    def instanciateTest(self):
-        self.laser      = Laser
-        self.target     = Target
+import unittest
 
-        self.updateParameters()
+class LaserPlasmaInteractionTest(unittest.TestCase):
+    def setUp(self):
+        profGG = pp.Profile(
+            time_profile    = "gaussian",
+            time_fwhm       = 30*u.fs,
+            space_profile   = "gaussian",
+            space_fwhm      = 10*u.um
+        )
+        lasGG=pp.Laser(
+            name       = "test",
 
-    def updateParameters(self):
-        self.plasma     = PlasmaParameters(self)
-        self.absorption = []
-        self.model      = _m.Model
-        self.electron   = Electron(self)
-        # self.ion        = Ion(self)
-        self.default_model={'':''}
-        self.ne_over_nc = self.target.mat.ne/self.laser.nc
-        self.ni_over_nc = self.target.mat.ni/self.laser.nc
+            wavelength = 0.8 * u.um,
+            energy     = 2.0 * u.J,
 
-    def getLaserAbsorptionEfficiency(self,model="Obvious",**kwargs):
+            Profile    = profGG,
+
+            contrast_1ps = 1e8,
+
+            polarization = [0,1,0],
+
+            direction  = [0,0,1],
+            angle      = 0. * u.deg,
+        )
+        matAl  = pp.Material(
+            name        = "Al",
+            density     = 2.69890e3 * u.kg/u.m**3,
+            atomic_mass = 26.98154 * u.u,
+            Z           = 13,
+            A           = 27,
+        )
+        geomBas = pp.Geometry(
+            width=20 * u.um,
+            Lpp=8 * u.um
+        )
+        targAlBas = pp.Target(matAl,geomBas)
+
+        self.lpiGGAlBas = pp.LaserPlasmaInteraction(lasGG,targAlBas)
+
+    def tearDown(self):
+        del self.lpiGGAlBas
+
+    def test_instanciateTest(self):
+        profGG = pp.Profile(
+            time_profile    = "gaussian",
+            time_fwhm       = 30*u.fs,
+            space_profile   = "gaussian",
+            space_fwhm      = 10*u.um
+        )
+        lasGG=pp.Laser(
+            name       = "test",
+
+            wavelength = 0.8 * u.um,
+            energy     = 2.0 * u.J,
+
+            Profile    = profGG,
+
+            contrast_1ps = 1e8,
+
+            polarization = [0,1,0],
+
+            direction  = [0,0,1],
+            angle      = 0. * u.deg,
+        )
+        matAl  = pp.Material(
+            name        = "Al",
+            density     = 2.69890e3 * u.kg/u.m**3,
+            atomic_mass = 26.98154 * u.u,
+            Z           = 13,
+            A           = 27,
+        )
+        geomBas = pp.Geometry(
+            width=20 * u.um,
+            Lpp=8 * u.um
+        )
+        targAlBas = pp.Target(matAl,geomBas)
+        lpiGGAlBas = pp.LaserPlasmaInteraction(lasGG,targAlBas)
+
+    # def test_updateParameters(self):
+    #     self.plasma     = PlasmaParameters(self)
+    #     self.absorption = []
+    #     self.model      = _m.Model
+    #     self.electron   = Electron(self)
+    #     # self.ion        = Ion(self)
+    #     self.default_model={'':''}
+    #     self.ne_over_nc = self.target.mat.ne/self.laser.nc
+    #     self.ni_over_nc = self.target.mat.ni/self.laser.nc
+
+    def test_getLaserAbsorptionEfficiency(self,model="Obvious",**kwargs):
         """
         """
         if model=="Obvious":
@@ -36,7 +108,7 @@ class LaserPlasmaInteractionTest(object):
         return out
 
 
-    def getTargetConductivity(self,model="Obvious",**kwargs):
+    def test_getTargetConductivity(self,model="Obvious",**kwargs):
         """
         """
         if model=="Obvious":
@@ -50,26 +122,26 @@ class LaserPlasmaInteractionTest(object):
         return self.Sigma
 
 
-    class Electron(object):
+    class Electron(unittest.TestCase):
         """
 
         """
-        def __init__(self,LaserPlasmaInteraction):
+        def test___init__(self,LaserPlasmaInteraction):
             self._lpi   = LaserPlasmaInteraction
             self.hot    = self.Hot(self._lpi)
             # self.cold   = self.Cold(self._lpi)
 
         # TODO: here general stuff about all the electrons
 
-        class Hot(object):
+        class Hot(unittest.TestCase):
             """
             In UHI, super thermal electrons
             """
-            def __init__(self,LaserPlasmaInteraction):
+            def test___init__(self,LaserPlasmaInteraction):
                 self._lpi = LaserPlasmaInteraction
                 self.default_model={'numberTotal':'Bell1997','temperature':'Haines2009'}
 
-            def numberTotal(self,model=None,**kwargs):
+            def test_numberTotal(self,model=None,**kwargs):
                 """
                 Return the total number of accelerated hot electrons [dimensionless].
 
@@ -85,7 +157,7 @@ class LaserPlasmaInteractionTest(object):
                 **kwargs, string(s)
                 See "Parameter models" in section Models.
                 For more informations about keyword arguments please refer to
-                the documentation of the LaserPlasmaInteraction object.
+                the documentation of the LaserPlasmaInteraction unittest.TestCase.
 
                 Models
                 -----
@@ -142,7 +214,7 @@ class LaserPlasmaInteractionTest(object):
 
                 return nehTot
 
-            def lengthCaracDepth(self,model="Bell1997",**kwargs):
+            def test_lengthCaracDepth(self,model="Bell1997",**kwargs):
                 """
                 """
                 if model=="Bell1997":
@@ -155,7 +227,7 @@ class LaserPlasmaInteractionTest(object):
 
                 return zeh
 
-            def temperature(self,model="Haines2009"):
+            def test_temperature(self,model="Haines2009"):
                 """
                 Return the hot electron temperature.
 
@@ -202,10 +274,14 @@ class LaserPlasmaInteractionTest(object):
                 #
                 # return out.to(_pu['temperature'])
 
-            def timeInteractionMax(self,verbose=True):
+            def test_timeInteractionMax(self,verbose=True):
                 """
                 """
                 return 0.
 
-            def lengthInteractionMax(self,verbose=True):
+            def test_lengthInteractionMax(self,verbose=True):
                 return 0.
+
+
+if __name__== '__main__':
+    unittest.main()

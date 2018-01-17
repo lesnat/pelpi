@@ -3,6 +3,9 @@ import numpy as _np
 from . import unit
 from . import prefered_unit as _pu
 
+
+__all__ = ["Profile","Laser"]
+
 class Profile(object):
     """
     class for defining pulse profile envelope
@@ -126,7 +129,7 @@ class Laser(object):
     def pulsation(self):
         return 2*_np.pi*unit.c/self.wavelength
 
-    def densityCritical(self):
+    def numberDensityCritical(self):
         return unit.m_e*unit.epsilon_0*(self.pulsation()/unit.e)**2
 
     def power(self,r=0*unit('m'),t=0*unit('s')):

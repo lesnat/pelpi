@@ -3,6 +3,58 @@ import numpy as _np
 from . import unit
 from . import prefered_unit as _pu
 
+class Profile(object):
+    """
+    class for defining pulse profile envelope
+    """
+    def __init__(self,time_profile,space_profile,**kwargs):
+        self.time_profile   = time_profile
+        self.time_fwhm      = kwargs.get('time_fwhm',None)
+        self.space_profile  = space_profile
+        self.space_fwhm     = kwargs.get('space_fwhm',None)
+        self.space_radius   = kwargs.get('space_radius',None)
+
+    def timeEnvelope(self,t):
+        if self.time_profile=="gaussian":
+            t0=self.time_fwhm/(2 * _np.sqrt(_np.log(2)))
+            return _np.exp(-(t/t0)**2)
+
+    def spaceEnvelope(self,r):
+        if self.space_profile=="gaussian":
+            r0=self.space_fwhm/(2 * _np.sqrt(_np.log(2)))
+            return _np.exp(-(r/r0)**2)
+        elif self.space_profile=="supergaussian":
+            n=10
+            return _np.exp(-(2*_np.sqrt(_np.log(2))*r/self.space_fwhm)**(2*n))
+        elif self.space_profile=="top-hat":
+            if abs(r)<self.space_radius:
+                return 1.0
+            else:
+                return 0.0
+
+    def timeIntegral(self):
+        """
+        """
+        if self.time_profile=="gaussian":
+            t0=self.time_fwhm/(2 * _np.sqrt(_np.log(2)))
+            S0t=t0 * _np.sqrt(_np.pi)
+            return S0t
+        else:
+            raise NameError("Unknown laser time profile name.")
+
+    def spaceIntegralDouble(self):
+        """
+        """
+        if self.space_profile=="gaussian":
+            r0=self.space_fwhm/(2 * _np.sqrt(_np.log(2)))
+            S0r=_np.pi * r0**2
+            return S0r
+        elif self.space_profile=="top-hat":
+            return _np.pi*self.space_radius**2
+        else:
+            raise NameError("Unknown laser space profile name.")
+
+
 
 class Laser(object):
     """
@@ -18,26 +70,26 @@ class Laser(object):
     energy, float
     Total energy of the laser pulse
 
-    tprofile, string
+    time_profile, string
     Temporal profile of the pulse
     Available profiles :
         "gaussian", for a gaussian pule.
-        You must define the tfwhm variable for setting the temporal full width half maximum
+        You must define the time_fwhm variable for setting the time full width half maximum
 
         "supergaussian" ?
 
-    sprofile, string
+    space_profile, string
     Spatial profile of the pulse (waist).
     Available profiles :
         "gaussian", for a gaussian pule.
-        You must define the sfwhm variable for setting the spatial full width half maximum (waist)
+        You must define the space_fwhm variable for setting the spatial full width half maximum (waist)
 
         "supergaussian" ?
 
-    contrast, float
+    contrast_1ps, float
     Contrast of the pulse (à quel temps ?)
 
-    polar=[0,1,0],
+    polarization=[0,1,0],
 
     direction=[0,0,1],
 
@@ -55,47 +107,33 @@ class Laser(object):
     Notes
     -----
     """
-    def __init__(self,name,wavelength,energy,contrast,\
-        tprofile,sprofile,\
-        polar=[0,1,0],direction=[0,0,1],angle=0.*unit.deg,**kwargs):
+    def __init__(self,name,wavelength,energy,contrast_1ps,\
+        Profile,\
+        polarization,direction,angle,**kwargs):
 
         self.name       = name
         self.wavelength = wavelength
         self.energy     = energy
-        self.contrast   = contrast
-        self.polar      = polar         # TODO: voire pour mettre dimensionless
-        self.tprofile   = tprofile
-        self.tfwhm      = kwargs.get('tfwhm',None)
-        self.sprofile   = sprofile
-        self.sfwhm      = kwargs.get('sfwhm',None)
-        self.radius     = kwargs.get('radius',None)
-        # self.diameter   = kwargs.get('diameter',None)
+        self.contrast_1ps   = contrast_1ps       # TODO: see if not 1ps
+        self.polarization = polarization         # TODO: see for dimensionless
+
+        self.profile    = Profile
 
         self.direction      = direction
         self.angle          = angle
 
-        self.updateParameters()
-
-
-    def updateParameters(self):
-
-        self.pulseEnv       = lambda r,t: self.I0.to('W/cm**2')/unit('W/cm**2') *  self.profileEnvelopeSpatial(r) * self.profileEnvelopeTemporal(t) # TODO: a modif?
-        self.pulseChirp     = lambda t: _np.sin(self.wl*t)
-
-    def wavelength(self):
-        return self.wavelength
 
     def pulsation(self):
-        return 2*_np.pi*unit.c/self.wavelength()
+        return 2*_np.pi*unit.c/self.wavelength
 
     def densityCritical(self):
         return unit.m_e*unit.epsilon_0*(self.pulsation()/unit.e)**2
 
     def power(self,r=0*unit('m'),t=0*unit('s')):
-        return self.energy()/self.integralTemporal() * self.profileEnvelopeTemporal(t) * self.profileEnvelopeSpatial(r)
+        return self.energy/self.profile.timeIntegral() * self.profile.timeEnvelope(t) * self.profile.spaceEnvelope(r)
 
     def intensity(self,r=0*unit('m'),t=0*unit('s')):
-        return self.power(r,t)/self.integralSpatialSurface()
+        return self.power(r,t)/self.profile.spaceIntegralDouble()
 
     def intensityNormalized(self):
         """
@@ -108,54 +146,21 @@ class Laser(object):
             and $\lambda_{\mu}$ the laser wavelength in $10^{-6} m$.
         """
         return 0.85*_np.sqrt(\
-                (self.intensity(r=0*unit('m'),t=0*unit('s')).to('W/cm**2')*(self.wavelength().to('um'))**2)\
-                /(1.e18 * unit('W/cm**2')))
+                (self.intensity(r=0*unit('m'),t=0*unit('s')).to('W/cm**2')*(self.wavelength.to('um'))**2)\
+                /(1.e18 * unit('W*um**2/cm**2')))
 
-    def profileEnvelopeTemporal(self,t):
-        if self.tprofile=="gaussian":
-            return _np.exp(-(2*_np.sqrt(_np.log(2))*t/self.tfwhm)**2)
 
-    def profileEnvelopeSpatial(self,r):
-        if self.sprofile=="gaussian":
-            return _np.exp(-(2*_np.sqrt(_np.log(2))*r/self.sfwhm)**2)
-        elif self.sprofile=="supergaussian":
-            n=10
-            return _np.exp(-(2*_np.sqrt(_np.log(2))*r/self.sfwhm)**(2*n))
-        elif self.sprofile=="top-hat":
-            if abs(r)<self.radius:
-                return 1.0
-            else:
-                return 0.0
+    def envelope(self,r,t):
+        return self.intensity(t=0*unit('s'),r=0*unit('m'))*self.profile.spaceEnvelope(r) * self.profile.timeEnvelope(t)
 
-    def integralTemporal(self,r=0.0):
-        """
-        """
-        # TODO: Return total time ? 1/e time ? 1/2 time ?
-        if self.tprofile=="gaussian":
-            t0=self.tfwhm/(2 * _np.sqrt(_np.log(2)))
-            S0t=t0 * _np.sqrt(_np.pi)
-            return S0t
-        else:
-            raise NameError("Unknown laser temporal profile name.")
-
-    def integralSpatialSurface(self,t=0.0):
-        """
-        """
-        # TODO: se démerder pour appeller cette méthode dans conversion en intensité ?
-        if self.sprofile=="gaussian":
-            r0=self.sfwhm/(2 * _np.sqrt(_np.log(2)))
-            S0r=_np.pi * r0**2
-            return S0r
-        elif self.sprofile=="top-hat":
-            return _np.pi*self.radius**2
-        else:
-            raise NameError("Unknown laser spatial profile name.")
+    def timeChirp(self,t,phase=0.0 *unit('deg')):
+        return _np.sin(self.pulsation().to(t.units**-1) * t - phase)
 
     #
     # def plot(self):
     #     import matplotlib.pyplot as plt
-    #     t=_np.arange(-self.integralTemporal().to('s')/unit.s,self.integralTemporal().to('s')/unit.s,(2*_np.pi/10)*(1/self.wl).to('s')/unit.s) *unit.s
-    #     r=_np.arange(-2*self.sfwhm.to('m')/unit.m,2*self.sfwhm.to('m')/unit.m,(2*_np.pi/10)*(unit.c/self.wl).to('m')/unit.m) * unit.m
+    #     t=_np.arange(-self.profile.timeIntegral().to('s')/unit.s,self.profile.timeIntegral().to('s')/unit.s,(2*_np.pi/10)*(1/self.wl).to('s')/unit.s) *unit.s
+    #     r=_np.arange(-2*self.space_fwhm.to('m')/unit.m,2*self.space_fwhm.to('m')/unit.m,(2*_np.pi/10)*(unit.c/self.wl).to('m')/unit.m) * unit.m
     #     self.t = t
     #     self.r = r # TODO: a supprimer quand méthode OK
     #

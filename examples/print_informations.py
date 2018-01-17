@@ -6,20 +6,24 @@ if sys.path[0]!=Modules_path:sys.path.insert(0, Modules_path)
 import pelpi as pp
 u=pp.unit
 
+prof=pp.Profile(
+    time_profile    = "gaussian",
+    time_fwhm       = 30 * u.fs,
+    space_profile   = "gaussian",
+    space_fwhm      = 10 * u.um,
+)
+
 laser=pp.Laser(
     name       = "eclipse4",
 
     wavelength = 0.8 * u.um,
     energy     = 2.0 * u.J,
 
-    tprofile   = "gaussian",
-    tfwhm      = 30 * u.fs,
-    sprofile   = "gaussian",
-    sfwhm      = 10 * u.um,
+    Profile    = prof,
 
-    contrast   = 1e8,
+    contrast_1ps = 1e8,
 
-    polar      = [0,1,0],
+    polarization = [0,1,0],
 
     direction  = [0,0,1],
     angle      = 0. * u.deg,

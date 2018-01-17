@@ -1,0 +1,14 @@
+echo "Running test_Target.py ..."
+python3 test_Target.py
+echo ""
+echo ""
+echo "Running test_Laser.py ..."
+python3 test_Laser.py
+echo ""
+echo ""
+echo "Running test_LaserPlasmaInteraction.py ..."
+python3 test_LaserPlasmaInteraction.py
+echo ""
+echo ""
+echo "Running test_ParticleInCell.py ..."
+python3 test_ParticleInCell.py

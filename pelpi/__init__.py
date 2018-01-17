@@ -26,11 +26,6 @@ verbosities=0
 from .Laser import Laser,Profile
 from .Target import Material,Geometry,Target
 from .LaserPlasmaInteraction import LaserPlasmaInteraction
+from .ParticleInCell import ParticleInCell
 
-from .Model import *
-
-from .ParticleInCell import *
-
-
-def _instanciateClassFromString():
-    pass
+from . import Model

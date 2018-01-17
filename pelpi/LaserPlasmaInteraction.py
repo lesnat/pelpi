@@ -5,6 +5,8 @@ from . import unit as _u
 from . import prefered_unit as _pu
 from . import Model as _m
 
+__all__ = ["LaserPlasmaInteraction"]
+
 ################################################################################
 class LaserPlasmaInteraction(object):
     """
@@ -131,8 +133,8 @@ class LaserPlasmaInteraction(object):
     def updateParameters(self):
         self.plasma     = PlasmaParameters(self)
         self.absorption = []
-        self.model      = _m.Model
-        self.electron   = self.Electron(self)
+        self.model      = _m
+        self.electron   = self._Electron(self)
         # self.ion        = Ion(self)
 
 
@@ -140,7 +142,7 @@ class LaserPlasmaInteraction(object):
         """
         """
         if model=="Obvious":
-            Model=_m.Model.Obvious(self)
+            Model=_m.Obvious(self)
             out  = Model.getLaserAbsorptionEfficiency()
         else:
             raise NameError("getLaserAbsorptionEfficiency : Unknown model name.")
@@ -155,7 +157,7 @@ class LaserPlasmaInteraction(object):
         if model=="Obvious":
             Tec     = 1e-3
             logCoulomb = 5.
-            Model=_m.Model.Obvious(self)
+            Model=_m.Obvious(self)
             self.Sigma  = Model.getTargetConductivity(Tec=Tec,logCoulomb=logCoulomb)
         else:
             raise NameError("getTargetConductivity : Unknown model name.")
@@ -163,18 +165,18 @@ class LaserPlasmaInteraction(object):
         return self.Sigma
 
 
-    class Electron(object):
+    class _Electron(object):
         """
 
         """
         def __init__(self,LaserPlasmaInteraction):
             self._lpi   = LaserPlasmaInteraction
-            self.hot    = self.Hot(self._lpi)
+            self.hot    = self._Hot(self._lpi)
             # self.cold   = self.Cold(self._lpi)
 
         # TODO: here general stuff about all the electrons
 
-        class Hot(object):
+        class _Hot(object):
             """
             In UHI, super thermal electrons
             """
@@ -243,12 +245,12 @@ class LaserPlasmaInteraction(object):
                     Teh     = self.temperature(kwargs.get('Teh_model','Haines2009'))
                     Sigma   = self.getTargetConductivity(kwargs.get('Sigma_model','Obvious'))
                     nu_laser = self.getLaserAbsorptionEfficiency(kwargs.get('nu_laser_model','Obvious'))
-                    Model   = _m.Model.Bell1997(self)
+                    Model   = _m.Bell1997(self)
                     Model.checkHypotheses()
                     nehTot = Model.numberTotal(Teh,Sigma,nu_laser) # self. ou pas ? savoir si sauvegardé ds objet
                 elif model=="Obvious":
                     Teh     = self.temperature(kwargs.get('Teh_model','Haines2009'))
-                    Model=_m.Model.Obvious(self)
+                    Model=_m.Obvious(self)
                     nehTot = Model.numberTotal(Teh)
                 else:
                     raise NameError("Unknown model name.")
@@ -262,7 +264,7 @@ class LaserPlasmaInteraction(object):
                     Teh     = self.temperature(kwargs.get('Teh_model','Haines2009'))
                     Sigma   = self.getTargetConductivity(kwargs.get('Sigma_model','Obvious'))
                     nu_laser = self.getLaserAbsorptionEfficiency(kwargs.get('nu_laser_model','Obvious'))
-                    Model   = _m.Model.Bell1997(self)
+                    Model   = _m.Bell1997(self)
                     Model.checkHypotheses()
                     zeh = Model.lengthCaracDepth(Teh,Sigma,nu_laser) # self. ou pas ? savoir si sauvegardé ds objet
 
@@ -292,7 +294,7 @@ class LaserPlasmaInteraction(object):
                 available_models=["Beg1997","Haines2009","Wilks1992"]
 
                 if model in available_models:
-                    Model=_m.Model.__dict__.get(model)(self._lpi)
+                    Model=_m.__dict__.get(model)(self._lpi)
 
                     Model.checkHypotheses()
                     return Model.getHotElectronTemperature(**kwargs).to(_pu[dim])

@@ -1,6 +1,6 @@
 #coding:utf8
 import numpy as _np
-from . import unit
+from . import unit as _u
 from . import prefered_unit as _pu
 
 
@@ -127,15 +127,15 @@ class Laser(object):
 
 
     def pulsation(self):
-        return 2*_np.pi*unit.c/self.wavelength
+        return 2*_np.pi*_u.c/self.wavelength
 
     def numberDensityCritical(self):
-        return unit.m_e*unit.epsilon_0*(self.pulsation()/unit.e)**2
+        return _u.m_e*_u.epsilon_0*(self.pulsation()/_u.e)**2
 
-    def power(self,r=0*unit('m'),t=0*unit('s')):
+    def power(self,r=0*_u('m'),t=0*_u('s')):
         return self.energy/self.profile.timeIntegral() * self.profile.timeEnvelope(t) * self.profile.spaceEnvelope(r)
 
-    def intensity(self,r=0*unit('m'),t=0*unit('s')):
+    def intensity(self,r=0*_u('m'),t=0*_u('s')):
         return self.power(r,t)/self.profile.spaceIntegralDouble()
 
     def intensityNormalized(self):
@@ -149,26 +149,26 @@ class Laser(object):
             and $\lambda_{\mu}$ the laser wavelength in $10^{-6} m$.
         """
         return 0.85*_np.sqrt(\
-                (self.intensity(r=0*unit('m'),t=0*unit('s')).to('W/cm**2')*(self.wavelength.to('um'))**2)\
-                /(1.e18 * unit('W*um**2/cm**2')))
+                (self.intensity(r=0*_u('m'),t=0*_u('s')).to('W/cm**2')*(self.wavelength.to('um'))**2)\
+                /(1.e18 * _u('W*um**2/cm**2')))
 
 
     def envelope(self,r,t):
-        return self.intensity(t=0*unit('s'),r=0*unit('m'))*self.profile.spaceEnvelope(r) * self.profile.timeEnvelope(t)
+        return self.intensity(t=0*_u('s'),r=0*_u('m'))*self.profile.spaceEnvelope(r) * self.profile.timeEnvelope(t)
 
-    def timeChirp(self,t,phase=0.0 *unit('deg')):
+    def timeChirp(self,t,phase=0.0 *_u('deg')):
         return _np.sin(self.pulsation().to(t.units**-1) * t - phase)
 
     #
     # def plot(self):
     #     import matplotlib.pyplot as plt
-    #     t=_np.arange(-self.profile.timeIntegral().to('s')/unit.s,self.profile.timeIntegral().to('s')/unit.s,(2*_np.pi/10)*(1/self.wl).to('s')/unit.s) *unit.s
-    #     r=_np.arange(-2*self.space_fwhm.to('m')/unit.m,2*self.space_fwhm.to('m')/unit.m,(2*_np.pi/10)*(unit.c/self.wl).to('m')/unit.m) * unit.m
+    #     t=_np.arange(-self.profile.timeIntegral().to('s')/_u.s,self.profile.timeIntegral().to('s')/_u.s,(2*_np.pi/10)*(1/self.wl).to('s')/_u.s) *_u.s
+    #     r=_np.arange(-2*self.space_fwhm.to('m')/_u.m,2*self.space_fwhm.to('m')/_u.m,(2*_np.pi/10)*(_u.c/self.wl).to('m')/_u.m) * _u.m
     #     self.t = t
     #     self.r = r # TODO: a supprimer quand méthode OK
     #
     #     plt.subplot(221)
-    #     plt.plot(self.pulseEnv(r,0*unit('s')),r)
+    #     plt.plot(self.pulseEnv(r,0*_u('s')),r)
     #     plt.ylim(ymin=min(r.magnitude),ymax=max(r.magnitude))
     #     plt.ylabel('r (m)') # TODO: voire pour automatiser unités
     #
@@ -178,7 +178,7 @@ class Laser(object):
     #     # plt.pcolor(gt,gr,gpulseEnv)
     #
     #     plt.subplot(224)
-    #     plt.plot(t,self.pulseEnv(0*unit('m'),t)*self.pulseChirp(t))
+    #     plt.plot(t,self.pulseEnv(0*_u('m'),t)*self.pulseChirp(t))
     #     plt.xlim(xmin=min(t.magnitude),xmax=max(t.magnitude))
     #     plt.xlabel('t (s)')
     #

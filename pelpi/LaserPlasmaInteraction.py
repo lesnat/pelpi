@@ -134,9 +134,7 @@ class LaserPlasmaInteraction(object):
         self.model      = _m.Model
         self.electron   = self.Electron(self)
         # self.ion        = Ion(self)
-        self.default_model={'':''}
-        self.ne_over_nc = self.target.mat.ne/self.laser.nc
-        self.ni_over_nc = self.target.mat.ni/self.laser.nc
+
 
     def getLaserAbsorptionEfficiency(self,model="Obvious",**kwargs):
         """
@@ -270,13 +268,13 @@ class LaserPlasmaInteraction(object):
 
                 return zeh
 
-            def temperature(self,model="Haines2009"):
+            def temperature(self,model,**kwargs):
                 """
                 Return the hot electron temperature.
 
                 Arguments
                 --------
-                model, string (optional, default : "Haines2009")
+                model, string
                 Name of the model.
 
                 Models
@@ -291,31 +289,16 @@ class LaserPlasmaInteraction(object):
                 Based on the reference
                 """
                 dim='temperature'
-                if model is None:
-                    model=self._lpi.default_model[dim]
+                available_models=["Beg1997","Haines2009","Wilks1992"]
 
                 if model in available_models:
-                    Model=_m.model # TODO: how to do this ?
+                    Model=_m.Model.__dict__.get(model)(self._lpi)
 
                     Model.checkHypotheses()
-                    return Model.numberTotal(**kwargs).to(dim)
+                    return Model.getHotElectronTemperature(**kwargs).to(_pu[dim])
                 else:
                     raise NameError("Unknown model name.")
 
-                # if model=="Beg1997":
-                #     Model=_m.Model.Beg1997(self)
-                #     # Model.checkHypotheses()
-                #     out = Model.temperature()
-                # elif model=="Haines2009":
-                #     Model=_m.Model.Haines2009(self)
-                #     out = Model.temperature()
-                # elif model=="Wilks1992":
-                #     Model=_m.Model.Wilks1992(self)
-                #     out = Model.temperature()
-                # else:
-                #     raise NameError("Unknown model name. Please refer to the documentation.")
-                #
-                # return out.to(_pu['temperature'])
 
             def timeInteractionMax(self,verbose=True):
                 """

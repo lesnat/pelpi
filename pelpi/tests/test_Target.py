@@ -31,17 +31,19 @@ class test_Material(unittest.TestCase):
         )
 
     def test_electronNumberDensity(self):
+        func = self.matAl.electronNumberDensity
         self.assertAlmostEqual(
-            self.matAl.electronNumberDensity().to('m**-3'),
+            func().to('m**-3'),
             u.Quantity(7.830948876504127e+29, '1 / meter ** 3'))
         self.assertAlmostEqual(
-            self.matAl.electronNumberDensity(),
+            func(),
             self.matAl.ionNumberDensity() * self.matAl.Z,
             delta=u.Quantity(1e-7, 'kilogram / atomic_mass_unit / meter ** 3'))
 
     def test_ionNumberDensity(self):
+        func = self.matAl.ionNumberDensity
         self.assertAlmostEqual(
-            self.matAl.ionNumberDensity().to('m**-3'),
+            func().to('m**-3'),
             u.Quantity(6.023806828080096e+28, '1 / meter ** 3'))
 
 class test_Geometry(unittest.TestCase):

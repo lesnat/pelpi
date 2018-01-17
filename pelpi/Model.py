@@ -30,7 +30,11 @@ class Model(object): # TODO: Voire pour enlever classe Model mais avoir un sous-
             in keV
             """
             # return (100.*unit.keV/(511*unit.keV)) * (self._lpi.laser.I0.to(unit.W*unit.cm**-2)/(1e17*unit.W*unit.cm**-2) * (self._lpi.laser.wavelength.to(unit.um))**2 )**(1/3.)
-            return (100.*unit.keV) * (self._lpi.laser.I0.to(unit.W*unit.cm**-2)/(1e17*unit.W*unit.cm**-2) * (self._lpi.laser.wavelength.to(unit.um)/(1*unit.um))**2 )**(1/3.)
+            I0              = self._lpi.laser.intensity()
+            lambda_laser    = self._lpi.laser.wavelength
+            return 100.*unit('keV') *\
+                (I0.to(unit('W/cm**2'))/(1e17*unit('W/cm**2')) *\
+                (lambda_laser.to(unit.um)/(1*unit.um))**2 )**(1/3.)
 
         def getIonEnergyCutoff(self):
             """
@@ -187,7 +191,8 @@ class Model(object): # TODO: Voire pour enlever classe Model mais avoir un sous-
             Hot electron temperature in me c**2
 
             """
-            return ((1.0 + 2.0**(1/2.) * self._lpi.laser.a0)**(1/2.) - 1.0) * 511 * unit.keV
+            a0 = self._lpi.laser.intensityNormalized()
+            return ((1.0 + 2.0**(1/2.) * a0)**(1/2.) - 1.0) * 511 * unit('keV')
 
     class Mora2003(object):
         """
@@ -238,7 +243,10 @@ class Model(object): # TODO: Voire pour enlever classe Model mais avoir un sous-
             pass
 
         def getHotElectronTemperature(self):
-            return ((1.0 + self._lpi.laser.a0**2)**(1/2.) - 1.0 )*511 * unit.keV
+            """
+            """
+            a0 = self._lpi.laser.intensityNormalized()
+            return ((1.0 + a0**2)**(1/2.) - 1.0 )*511 * unit('keV')
 
 
     ################################################################################

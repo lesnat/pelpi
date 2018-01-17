@@ -44,29 +44,33 @@ class test_Profile(unittest.TestCase):
         # test with uncomplete informations on kwargs
 
     def test_timeEnvelope(self):
+        func = self.profGG.timeEnvelope
         self.assertAlmostEqual(
-            self.profGG.timeEnvelope(t=0*u.fs),
+            func(t=0*u.fs),
             1)
         self.assertAlmostEqual(
-            self.profGG.timeEnvelope(self.profGG.time_fwhm/2),
+            func(self.profGG.time_fwhm/2),
             1/2.)
 
     def test_spaceEnvelope(self):
+        func = self.profGG.spaceEnvelope
         self.assertAlmostEqual(
-            self.profGG.spaceEnvelope(0*u.um),
+            func(0*u.um),
             1)
         self.assertAlmostEqual(
-            self.profGG.spaceEnvelope(self.profGG.space_fwhm/2),
+            func(self.profGG.space_fwhm/2),
             1/2.)
 
     def test_timeIntegral(self):
+        func = self.profGG.timeIntegral
         self.assertAlmostEqual(
-            self.profGG.timeIntegral().to('fs'),
+            func().to('fs'),
             u.Quantity(31.934010582936782, 'femtosecond'))
 
     def test_spaceIntegralDouble(self):
+        func = self.profGG.spaceIntegralDouble
         self.assertAlmostEqual(
-            self.profGG.spaceIntegralDouble().to('um**2'),
+            func().to('um**2'),
             u.Quantity(113.30900354567986, 'micrometer ** 2'))
 
 
@@ -133,60 +137,67 @@ class test_Laser(unittest.TestCase):
 
 
     def test_pulsation(self):
+        func = self.lasGG.pulsation
         self.assertAlmostEqual(
-            self.lasGG.pulsation().to('s**-1'),
+            func().to('s**-1'),
             u.Quantity(2354564459136066.5, '1 / second'))
 
     def test_numberDensityCritical(self):
+        func = self.lasGG.numberDensityCritical
         self.assertAlmostEqual(
-            self.lasGG.numberDensityCritical().to_base_units(),
+            func().to_base_units(),
             u.Quantity(1.7419598820107494e+27, '1 / meter ** 3'))
 
     def test_power(self):
+        func = self.lasGG.power
         self.assertAlmostEqual(
-            self.lasGG.power(),
-            self.lasGG.power(r=0*u.m,t=0*u.fs))
+            func(),
+            func(r=0*u.m,t=0*u.fs))
         self.assertAlmostEqual(
-            self.lasGG.power(t = self.lasGG.profile.time_fwhm/2,r = self.lasGG.profile.space_fwhm/2),
-            self.lasGG.power()/4,
+            func(t = self.lasGG.profile.time_fwhm/2,r = self.lasGG.profile.space_fwhm/2),
+            func()/4,
             delta=u.Quantity(1e-7, 'joule / femtosecond'))
         self.assertAlmostEqual(
-            self.lasGG.power().to('TW'),
+            func().to('TW'),
             u.Quantity(62.629151913310096, 'terawatt'))
 
     def test_intensity(self,r=0*u('m'),t=0*u('s')):
+        func = self.lasGG.intensity
         self.assertAlmostEqual(
-            self.lasGG.intensity(),
-            self.lasGG.intensity(r=0*u.m,t=0*u.fs))
+            func(),
+            func(r=0*u.m,t=0*u.fs))
         self.assertAlmostEqual(
-            self.lasGG.intensity(t = self.lasGG.profile.time_fwhm/2,r = self.lasGG.profile.space_fwhm/2),
-            self.lasGG.intensity()/4,
+            func(t = self.lasGG.profile.time_fwhm/2,r = self.lasGG.profile.space_fwhm/2),
+            func()/4,
             delta=u.Quantity(1e-7, 'joule / femtosecond / micrometer ** 2'))
         self.assertAlmostEqual(
-            self.lasGG.intensity().to('W/cm**2'),
+            func().to('W/cm**2'),
             u.Quantity(5.527288207777904e+19, 'watt / centimeter ** 2'))
 
     def test_intensityNormalized(self):
+        func = self.lasGG.intensityNormalized
         self.assertAlmostEqual(
-            self.lasGG.intensityNormalized(),
+            func(),
             u.Quantity(5.055509932021204, 'dimensionless'))
 
 
     def test_envelope(self):
+        func = self.lasGG.envelope
         self.assertAlmostEqual(
-            self.lasGG.envelope(r=0*u.m,t=0*u.fs),
+            func(r=0*u.m,t=0*u.fs),
             self.lasGG.intensity())
         self.assertAlmostEqual(
-            self.lasGG.envelope(t = self.lasGG.profile.time_fwhm/2,r = self.lasGG.profile.space_fwhm/2),
-            self.lasGG.envelope(r=0*u.m,t=0*u.fs)/4,
+            func(t = self.lasGG.profile.time_fwhm/2,r = self.lasGG.profile.space_fwhm/2),
+            func(r=0*u.m,t=0*u.fs)/4,
             delta=u.Quantity(1e-7, 'joule / femtosecond / micrometer ** 2'))
 
     def test_timeChirp(self):
+        func = self.lasGG.timeChirp
         self.assertAlmostEqual(
-            self.lasGG.timeChirp(t=0*u.fs),
-            self.lasGG.timeChirp(t=0*u.fs,phase=u.Quantity(2*np.pi)))
+            func(t=0*u.fs),
+            func(t=0*u.fs,phase=u.Quantity(2*np.pi)))
         self.assertAlmostEqual(
-            self.lasGG.timeChirp(t=0*u.fs),
+            func(t=0*u.fs),
             0)
 
 

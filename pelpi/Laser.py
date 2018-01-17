@@ -78,21 +78,44 @@ class Laser(object):
 
 
     def updateParameters(self):
-        self.P0             = self.energy/self.getTimeIntegral()
-        self.I0             = self.P0/self.getSurfaceIntegral()
-        self.a0             = 0.85*_np.sqrt((1e-4*self.I0*self.wavelength**2)/(1.e18 * unit.W*unit.m**-2 *1.e-12*unit.m**2))
 
-        self.wl             = 2*_np.pi*unit.c/self.wavelength
-        self.nc             = unit.m_e*unit.epsilon_0*(self.wl/unit.e)**2 # m^-3
-
-        self.pulseEnv       = lambda r,t: self.I0.to('W/cm**2')/unit('W/cm**2') *  self.spulseEnv(r) * self.tpulseEnv(t) # TODO: a modif?
+        self.pulseEnv       = lambda r,t: self.I0.to('W/cm**2')/unit('W/cm**2') *  self.profileEnvelopeSpatial(r) * self.profileEnvelopeTemporal(t) # TODO: a modif?
         self.pulseChirp     = lambda t: _np.sin(self.wl*t)
 
-    def tpulseEnv(self,t):
+    def wavelength(self):
+        return self.wavelength
+
+    def pulsation(self):
+        return 2*_np.pi*unit.c/self.wavelength()
+
+    def densityCritical(self):
+        return unit.m_e*unit.epsilon_0*(self.pulsation()/unit.e)**2
+
+    def power(self,r=0*unit('m'),t=0*unit('s')):
+        return self.energy()/self.integralTemporal() * self.profileEnvelopeTemporal(t) * self.profileEnvelopeSpatial(r)
+
+    def intensity(self,r=0*unit('m'),t=0*unit('s')):
+        return self.power(r,t)/self.integralSpatialSurface()
+
+    def intensityNormalized(self):
+        """
+        Return the normalized laser intensity.
+
+        .. math:
+            $a_0 = 0.85 \times \sqrt{I_{18} \lambda_{\mu}^2}$
+            with $a_0$ the normalized laser intensity,
+            $I_{18}$ the laser peak intensity in $10^{18} W.cm^{-2}$
+            and $\lambda_{\mu}$ the laser wavelength in $10^{-6} m$.
+        """
+        return 0.85*_np.sqrt(\
+                (self.intensity(r=0*unit('m'),t=0*unit('s')).to('W/cm**2')*(self.wavelength().to('um'))**2)\
+                /(1.e18 * unit('W/cm**2')))
+
+    def profileEnvelopeTemporal(self,t):
         if self.tprofile=="gaussian":
             return _np.exp(-(2*_np.sqrt(_np.log(2))*t/self.tfwhm)**2)
 
-    def spulseEnv(self,r):
+    def profileEnvelopeSpatial(self,r):
         if self.sprofile=="gaussian":
             return _np.exp(-(2*_np.sqrt(_np.log(2))*r/self.sfwhm)**2)
         elif self.sprofile=="supergaussian":
@@ -104,7 +127,7 @@ class Laser(object):
             else:
                 return 0.0
 
-    def getTimeIntegral(self,r=0.0):
+    def integralTemporal(self,r=0.0):
         """
         """
         # TODO: Return total time ? 1/e time ? 1/2 time ?
@@ -115,7 +138,7 @@ class Laser(object):
         else:
             raise NameError("Unknown laser temporal profile name.")
 
-    def getSurfaceIntegral(self,t=0.0):
+    def integralSpatialSurface(self,t=0.0):
         """
         """
         # TODO: se démerder pour appeller cette méthode dans conversion en intensité ?
@@ -128,53 +151,28 @@ class Laser(object):
         else:
             raise NameError("Unknown laser spatial profile name.")
 
-    def getInfo(self):
-        txt  = " \n"
-        txt += " Laser parameters :\n"
-        txt += " ########################################## \n"
-        txt += " name               :      "+self.name+"\n"
-        txt += " wavelength         :      "+str(self.wavelength.to(_pu['length']))+" \n"
-        txt += " tprofile           :      "+self.tprofile+" \n"
-        txt += " tfwhm              :      "+str(self.tfwhm.to(_pu['time']))+" \n"
-        txt += " sprofile           :      "+self.sprofile+" \n"
-        try:
-            txt += " sfwhm              :      "+str(self.sfwhm.to(_pu['length']))+" \n"
-        except:
-            pass
-        txt += " contrast           :      "+str(self.contrast)+"\n"
-        txt += " energy             :      "+str(self.energy.to(_pu['energy']))+" \n"
-        txt += " direction (x,y,z)  :      "+str(self.direction)+"\n"
-        txt += " angle              :      "+str(self.angle.to(_pu['angle']))+" \n"
-        txt += " I0                 :      "+str(self.I0.to(_pu['intensity']))+" \n"
-        txt += " P0                 :      "+str(self.P0.to(_pu['power']))+" \n"
-        txt += " a0                 :      "+str(self.a0.to('dimensionless'))+"\n"
-        txt += " wl                 :      "+str(self.wl.to(_pu['pulsation']))+" \n"
-        txt += " nc                 :      "+str(self.nc.to(_pu['density']))+" \n"
-        txt += " ########################################## \n"
-        return txt
-
-
-    def plot(self):
-        import matplotlib.pyplot as plt
-        t=_np.arange(-self.getTimeIntegral().to('s')/unit.s,self.getTimeIntegral().to('s')/unit.s,(2*_np.pi/10)*(1/self.wl).to('s')/unit.s) *unit.s
-        r=_np.arange(-2*self.sfwhm.to('m')/unit.m,2*self.sfwhm.to('m')/unit.m,(2*_np.pi/10)*(unit.c/self.wl).to('m')/unit.m) * unit.m
-        self.t = t
-        self.r = r # TODO: a supprimer quand méthode OK
-
-        plt.subplot(221)
-        plt.plot(self.pulseEnv(r,0*unit('s')),r)
-        plt.ylim(ymin=min(r.magnitude),ymax=max(r.magnitude))
-        plt.ylabel('r (m)') # TODO: voire pour automatiser unités
-
-        # plt.subplot(222)
-        # gpulseEnv=_np.array([self.pulseEnv(e.magnitude,t.magnitude)*self.pulseChirp(t.magnitude) for e in r]) # TODO: broken
-        # gt,gr=_np.meshgrid(t.magnitude,r.magnitude)
-        # plt.pcolor(gt,gr,gpulseEnv)
-
-        plt.subplot(224)
-        plt.plot(t,self.pulseEnv(0*unit('m'),t)*self.pulseChirp(t))
-        plt.xlim(xmin=min(t.magnitude),xmax=max(t.magnitude))
-        plt.xlabel('t (s)')
-
-        plt.legend()
-        plt.show()
+    #
+    # def plot(self):
+    #     import matplotlib.pyplot as plt
+    #     t=_np.arange(-self.integralTemporal().to('s')/unit.s,self.integralTemporal().to('s')/unit.s,(2*_np.pi/10)*(1/self.wl).to('s')/unit.s) *unit.s
+    #     r=_np.arange(-2*self.sfwhm.to('m')/unit.m,2*self.sfwhm.to('m')/unit.m,(2*_np.pi/10)*(unit.c/self.wl).to('m')/unit.m) * unit.m
+    #     self.t = t
+    #     self.r = r # TODO: a supprimer quand méthode OK
+    #
+    #     plt.subplot(221)
+    #     plt.plot(self.pulseEnv(r,0*unit('s')),r)
+    #     plt.ylim(ymin=min(r.magnitude),ymax=max(r.magnitude))
+    #     plt.ylabel('r (m)') # TODO: voire pour automatiser unités
+    #
+    #     # plt.subplot(222)
+    #     # gpulseEnv=_np.array([self.pulseEnv(e.magnitude,t.magnitude)*self.pulseChirp(t.magnitude) for e in r]) # TODO: broken
+    #     # gt,gr=_np.meshgrid(t.magnitude,r.magnitude)
+    #     # plt.pcolor(gt,gr,gpulseEnv)
+    #
+    #     plt.subplot(224)
+    #     plt.plot(t,self.pulseEnv(0*unit('m'),t)*self.pulseChirp(t))
+    #     plt.xlim(xmin=min(t.magnitude),xmax=max(t.magnitude))
+    #     plt.xlabel('t (s)')
+    #
+    #     plt.legend()
+    #     plt.show()

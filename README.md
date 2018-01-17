@@ -42,6 +42,8 @@ replace .to_base_units() by .to('dimensionless') for dimensionless units (more e
 
 hotElectronTotalNumber or totalNumberHotElectron or numberTotalHotElectron ? hotElectronTemperature or temperatureHotElectron ? hotElectronPenetrationDepth or hotElectronStoppingLength or lengthStoppingHotElectron ? (dimension + dimension adjective + particle adjective + particle **OR** particle adjective + particle (or Laser/Target ...) + dimension + dimension adjective)
 
+Possible optimisation of memory usage with modifying self._lpi in lpi subclasses ? (global variable "lpi")
+
 ## Code structure
 
 

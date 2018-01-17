@@ -44,6 +44,8 @@ hotElectronTotalNumber or totalNumberHotElectron or numberTotalHotElectron ? hot
 
 Possible optimisation of memory usage with modifying self._lpi in lpi subclasses ? (global variable "lpi")
 
+Give default behaviour to models or not ? default behaviour do not force the user to understand the models
+
 ## Code structure
 
 

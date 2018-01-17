@@ -25,11 +25,20 @@ laser=pp.Laser(
     angle      = 0. * u.deg,
 )
 
-print(laser.getInfo())
-
 mat=pp.Material(
-    name="Al"
+    name        = "Al",
+    density     = 2.69890e3 * u.kg/u.m**3,
+    atomic_mass = 26.98154 * u.u,
+    Z           = 13,
+    A           = 27,
 )
+# mat=pp.Material(
+#     name        = "W",
+#     density     = 1.93000e4 * u.kg/u.m**3,
+#     atomic_mass = 183.85 * u.u,
+#     Z           = 74,
+#     A           = 184,
+# )
 
 geom=pp.Geometry(
     width=20 * u.um,
@@ -37,11 +46,8 @@ geom=pp.Geometry(
 )
 
 target=pp.Target(mat,geom)
-print(target.getInfo())
-
 
 lpi=pp.LaserPlasmaInteraction(laser,target)
-print(lpi.getInfo())
 
 
 print("sigma : " + str((lpi.getTargetConductivity()).to(u.ohm**-1 * u.m**-1)))

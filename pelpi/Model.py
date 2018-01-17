@@ -6,6 +6,8 @@ from . import unit
 """
 Malka 2001 -> Scaling Energie max electrons
 """
+
+# TODO: base class for papers with checkHypotheses method
 class Model(object): # TODO: Voire pour enlever classe Model mais avoir un sous-module Model
     class Beg1997(object):
         """
@@ -34,7 +36,7 @@ class Model(object): # TODO: Voire pour enlever classe Model mais avoir un sous-
             """
             Return the maximum ion energy in me c**2,
             """
-            return (1.2e-2/511) * (1e-4*self._lpi.laser.I0)**(0.313)
+            return (1.2e-2*unit('keV')) * (self._lpi.laser.I0.to('W/cm**2'))**(0.313)
 
     class Bell1997(object):
         """

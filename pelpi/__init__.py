@@ -30,3 +30,7 @@ from .LaserPlasmaInteraction import LaserPlasmaInteraction
 from .Model import *
 
 from .ParticleInCell import *
+
+
+def _instanciateClassFromString():
+    pass

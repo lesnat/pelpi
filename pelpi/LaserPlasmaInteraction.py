@@ -182,11 +182,15 @@ class LaserPlasmaInteraction(object):
             """
             def __init__(self,LaserPlasmaInteraction):
                 self._lpi = LaserPlasmaInteraction
-                self.default_model={'':''}
+                self.default_model={'numberTotal':'Bell1997','temperature':'Haines2009'}
 
             def numberTotal(self,model=None,**kwargs):
                 """
-                Return the total number of accelerated hot electrons.
+                Return the total number of accelerated hot electrons [dimensionless].
+
+                # Dimension
+                # --------
+                # dimensionless
 
                 Arguments
                 --------
@@ -224,10 +228,12 @@ class LaserPlasmaInteraction(object):
                 #     model=self._lpi.default_model[model]
                 #
                 # if model in available_models:
-                #     Model=_m.model # TODO: how to do this ?
+                #    Model=_m.model # TODO: how to do this ?
+                #
+                #    Model.needed_models # TODO: do something like this for giving default behaviour
                 #
                 #     Model.checkHypotheses()
-                #     return Model.numberTotal(**kwargs) # TODO: with this, need to put default behaviour into Model.py
+                #     return Model.numberTotal(**kwargs).to('dimensionless') # TODO: with this, need to put default behaviour into Model.py
                 # else:
                 #     raise NameError("Unknown model name.")
 
@@ -284,21 +290,32 @@ class LaserPlasmaInteraction(object):
                 Wilks1992 is an empirical model
                 Based on the reference
                 """
+                dim='temperature'
+                if model is None:
+                    model=self._lpi.default_model[dim]
 
-                if model=="Beg1997":
-                    Model=_m.Model.Beg1997(self)
-                    # Model.checkHypotheses()
-                    out = Model.temperature()
-                elif model=="Haines2009":
-                    Model=_m.Model.Haines2009(self)
-                    out = Model.temperature()
-                elif model=="Wilks1992":
-                    Model=_m.Model.Wilks1992(self)
-                    out = Model.temperature()
+                if model in available_models:
+                    Model=_m.model # TODO: how to do this ?
+
+                    Model.checkHypotheses()
+                    return Model.numberTotal(**kwargs).to(dim)
                 else:
-                    raise NameError("Unknown model name. Please refer to the documentation.")
+                    raise NameError("Unknown model name.")
 
-                return out.to(_pu['temperature'])
+                # if model=="Beg1997":
+                #     Model=_m.Model.Beg1997(self)
+                #     # Model.checkHypotheses()
+                #     out = Model.temperature()
+                # elif model=="Haines2009":
+                #     Model=_m.Model.Haines2009(self)
+                #     out = Model.temperature()
+                # elif model=="Wilks1992":
+                #     Model=_m.Model.Wilks1992(self)
+                #     out = Model.temperature()
+                # else:
+                #     raise NameError("Unknown model name. Please refer to the documentation.")
+                #
+                # return out.to(_pu['temperature'])
 
             def timeInteractionMax(self,verbose=True):
                 """

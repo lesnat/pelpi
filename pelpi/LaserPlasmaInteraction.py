@@ -1,9 +1,11 @@
 #coding:utf8
 
-import numpy as _np
-from . import unit as _u
-from . import prefered_unit as _pu
-from . import Model as _m
+# import numpy as _np
+# from . import unit as _u
+# from . import prefered_unit as _pu
+from ._global import *
+from ._tools import _Estimate
+from .Model import LaserPlasmaInteraction as _m
 
 __all__ = ["LaserPlasmaInteraction"]
 
@@ -290,16 +292,20 @@ class LaserPlasmaInteraction(object):
                 Wilks1992 is an empirical model
                 Based on the reference
                 """
-                dim='temperature'
-                available_models=["Beg1997","Haines2009","Wilks1992"]
+                # dim='temperature'
+                # available_models=["Beg1997","Haines2009","Wilks1992"]
+                #
+                # if model in available_models:
+                #     Model=_m.__dict__.get(model)(self._lpi)
+                #
+                #     Model.checkHypotheses()
+                #     return Model.electron_hot_temperature(**kwargs).to(_pu[dim])
+                # else:
+                #     raise NameError("Unknown model name.")
 
-                if model in available_models:
-                    Model=_m.__dict__.get(model)(self._lpi)
-
-                    Model.checkHypotheses()
-                    return Model.getHotElectronTemperature(**kwargs).to(_pu[dim])
-                else:
-                    raise NameError("Unknown model name.")
+                # estimate=_Estimate(self._lpi,module=_m,model=model,available_models=available_models)
+                estimate=_Estimate(self._lpi,module=_m,model=model)
+                estimate.use(method='electron_hot_temperature',dim='temperature',**kwargs)
 
 
             def timeInteractionMax(self,verbose=True):
@@ -355,7 +361,7 @@ class PlasmaParameters(object):
         self.updateParameters()
 
 
-    def updateParameters(self):
+    def updateParameters(self): # TODO; convert to methods
         self.wpe        = 0.0 # Electron plasma frequency
         self.wpi        = 0.0 # Ion plasma frequency
         self.lambda_De  = 0.0 # Debye length

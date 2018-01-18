@@ -21,11 +21,9 @@ prefered_unit={'intensity':unit.W/unit.cm**2,'energy':unit.J,'length':unit.um,'t
 
 # TODO: voire pour verbosities dans checkHypotheses
 # global verbosities
-verbosities=0
+verbose=True
 
 from .Laser import Laser,Profile
 from .Target import Material,Geometry,Target
 from .LaserPlasmaInteraction import LaserPlasmaInteraction
 from .ParticleInCell import ParticleInCell
-
-from . import Model

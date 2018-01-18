@@ -1,7 +1,6 @@
 #coding:utf8
 import numpy as _np
-from . import unit as _u
-
+from .. import unit as _u
 
 
 ################################################################################
@@ -25,7 +24,7 @@ class Beg1997(object):
     def checkHypotheses(self):
         pass
 
-    def getHotElectronTemperature(self):
+    def electron_hot_temperature(self):
         """
         voire cold/hot temperature (ici hot)
         Tan et al. T_hot= 30 * I_17**(1/3) keV (ici 100)
@@ -38,7 +37,7 @@ class Beg1997(object):
             (I0.to(_u('W/cm**2'))/(1e17*_u('W/cm**2')) *\
             (lambda_laser.to(_u.um)/(1*_u.um))**2 )**(1/3.)
 
-    def getIonEnergyCutoff(self):
+    def ion_energyCutoff(self):
         """
         Return the maximum ion energy in me c**2,
         """
@@ -60,8 +59,8 @@ class Bell1997(object):
     Methods
     ------
     checkHypotheses()
-    getHotElectronTotalNumber()
-    getHotElectronPenetrationDepth(model)
+    electron_hot_numberTotal()
+    electron_hot_lengthCaracDepth(model)
 
     Hypotheses
     ---------
@@ -107,19 +106,19 @@ class Bell1997(object):
         #     print "Nothing."
         pass
 
-    def getHotElectronDensity(self,Teh,Sigma,nu_laser,t=0.0,z=0.0):
+    def electron_hot_numberDensity(self,Teh,Sigma,nu_laser,t=0.0,z=0.0):
         n0 = (2 * (nu_laser*self._lpi.laser.I0)**2 * self._lpi.laser.getTimeIntegral())/(9 * _u.e * (Teh / _u.e)**3 * Sigma)
-        z0 = self.getHotElectronPenetrationDepth(Teh,Sigma,nu_laser) # ,t ?
+        z0 = self.electron_hot_lengthCaracDepth(Teh,Sigma,nu_laser) # ,t ?
         # return n0 * (t/self._lpi.laser.getTimeIntegral()) * (z0/(z+z0))**2
         return n0
 
-    def getHotElectronTotalNumber(self,Teh,Sigma,nu_laser): # a déplacer dans lpi ? car pas forcemment z0 en longi
+    def electron_hot_numberTotal(self,Teh,Sigma,nu_laser): # a déplacer dans lpi ? car pas forcemment z0 en longi
     # TODO: plutôt passer par l'integrale
-        return self.getHotElectronDensity(Teh,Sigma,nu_laser,t=0.0*_u.s,z=0.0*_u.m)*\
-            self.getHotElectronPenetrationDepth(Teh,Sigma,nu_laser,t=0.0*_u.s)*\
+        return self.electron_hot_numberDensity(Teh,Sigma,nu_laser,t=0.0*_u.s,z=0.0*_u.m)*\
+            self.electron_hot_lengthCaracDepth(Teh,Sigma,nu_laser,t=0.0*_u.s)*\
             self._lpi.laser.getSurfaceIntegral()
 
-    def getHotElectronPenetrationDepth(self,Teh,Sigma,nu_laser,t=0.0 * _u.s):
+    def electron_hot_lengthCaracDepth(self,Teh,Sigma,nu_laser,t=0.0 * _u.s):
         """
         Return the estimate electron penetration depth
             - In the interaction time
@@ -134,9 +133,9 @@ class Bell1997(object):
         if t < self._lpi.laser.getTimeIntegral():
             return (3 * (Teh / _u.e)**2 * Sigma)/(nu_laser*self._lpi.laser.I0)
         else:
-            return 1.78 * self.getHotElectronPenetrationDepth(t=0.0 *_u.s) * (t/self._lpi.laser.getTimeIntegral() - 0.618)**(3/5.)
+            return 1.78 * self.electron_hot_lengthCaracDepth(t=0.0 *_u.s) * (t/self._lpi.laser.getTimeIntegral() - 0.618)**(3/5.)
 
-    def plotElectronDensity(self):
+    def electron_density(self):
         pass
 
 class Braginskii1965(object):
@@ -145,19 +144,19 @@ class Braginskii1965(object):
     def __init__(self):
         pass
 
-    def getHotElectronPenetrationDepth(self):
+    def electron_hot_lengthCaracDepth(self):
         pass
 
-    def getHotElectronEnergyLossTime(self):
+    def electron_hot_timeEnergyLoss(self):
         pass
 
-    def getHotElectronAngularScatteringTime(self):
+    def electron_hot_timeAngularScattering(self):
         pass
 
-    def getHotElectronRMS(self):
+    def electron_hot_RMS(self):
         pass
 
-    def getTargetConductivity(self):
+    def target_conductivity(self):
         pass
 
 class Davies2003(object):
@@ -188,7 +187,7 @@ class Haines2009(object):
     def checkHypotheses(self):
         pass
 
-    def getHotElectronTemperature(self):
+    def electron_hot_temperature(self):
         """
         Hot electron temperature in me c**2
 
@@ -215,7 +214,7 @@ class Mora2003(object):
         """
         return _np.sqrt(2/_np.exp(1)) * (lpi.target.mat.ne * Te/_u.epsilon_0)**(1/2.)
 
-    def getIonEnergyCutoff(self):
+    def ion_energyCutoff(self):
         pass
 
 class Wilks1992(object):
@@ -244,7 +243,7 @@ class Wilks1992(object):
     def checkHypotheses(self):
         pass
 
-    def getHotElectronTemperature(self):
+    def electron_hot_temperature(self):
         """
         """
         a0 = self._lpi.laser.intensityNormalized()
@@ -277,7 +276,7 @@ class Obvious(object):
     def __init__(self,LaserPlasmaInteraction):
         self._lpi        = LaserPlasmaInteraction
 
-    def getHotElectronTotalNumber(self,Teh):
+    def electron_hot_numberTotal(self,Teh):
         """
 
         .. math:
@@ -285,7 +284,7 @@ class Obvious(object):
         """
         return self._lpi.laser.energy/(3/2. * Teh) # voire si changement d'unité de Teh
 
-    def getTargetConductivity(self,Tec,logCoulomb): # getSpitzer ? getTargetConductivity ?
+    def target_conductivity(self,Tec,logCoulomb): # getSpitzer ? target_conductivity ?
         """
         Spitzer conductivity.
 
@@ -294,5 +293,5 @@ class Obvious(object):
         """
         return (4*_np.pi*_u.epsilon_0)**2 * (Tec*_u.m_e*_u.c**2)**(3/2.) / (_np.pi*self._lpi.target.mat.Z * _u.e**2 * _u.m_e**(1/2.) * logCoulomb)
 
-    def getLaserAbsorptionEfficiency(self):
+    def laser_efficiencyAbsorption(self):
         return _u.Quantity(0.5)

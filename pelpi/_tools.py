@@ -72,8 +72,8 @@ class _Estimate(object):
         # Get the method from the model
         Method = getattr(self.model,method_name)
         # Use it with kwargs and convert it
-        return Method(*args).to(_pu[dim]) # TODO: check if OK with kwargs
-    
+        return Method(*args).to(_pu[dim]) # TODO: check if OK with args
+
 
 # def _addMethod(InObject,OutObject,method):
 #     OutObject.__dict__.get(method) = InObject.__dict__.get(method)

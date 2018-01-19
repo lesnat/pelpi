@@ -14,14 +14,10 @@ class LaserPlasmaInteraction(object):
     """
     Class for estimations in laser-plasma interaction.
 
-    Pour le moment short pulse UHI et cible solide.
-
-    No interaction/no propagation / propagation ?
-
     Arguments
     ========
     This class needs to be implemented with a laser object and a target object
-    as arguments. Those classes could then be find as a class sub-object.
+    as arguments. Those classes could then be find as a sub-module.
 
     Class Attributes
     ===============
@@ -43,36 +39,50 @@ class LaserPlasmaInteraction(object):
     --------------
 
 
-    Use of keyword arguments (kwargs) in methods
+    Use of arguments (*args) in methods
     ===========================================
     Some models may need optional parameters, such as electron hot temperature
     or laser absorption efficiency for complete the calculus.
-    These parameters can be calculated by other models, whose can be choosen
-    by setting the parameter model as a keyword argument.
-    If you want to use a model with your own parameters,
-    please do this by using directly the desired object.
+    These parameters can be choosen by the user (for order of magnitude) or
+    calculated by other models and passed as argument.
+    Please refer to the method documentation for more informations.
 
-    Example
-    -------
+
+    Examples
+    =======
     ``
-    lpi.electron.hot.numberTotal(model="Bell1997", Teh_model="Wilks1992")
-    ``
-    is equivalent to
-    ``
-    T   = lpi.temperature(model="Wilks1992")
-    S   = lpi.getTargetConductivity()
-    nu  = lpi.getLaserAbsorptionEfficiency()
-    Bell1997(lpi).numberTotal(Teh=T,Sigma=S,nu_laser=nu)
+    ( simple example )
     ``
 
-    Here the numberTotal method is call,
-    specifying the desired model for the calculus as "Bell1997".
-    Because this model needs a temperature (and other parameters)
-    for complete the calculus, it is possible to change the parameter model used
-    for hot electron temperature by setting the keyword argument
-    Teh_model to "Wilks1992" for example.
-    Available parameter models can be found in the documentation
-    of desired parameter (here in the temperature method documentation).
+    For complex models, see the documentation of modules,
+    in pelpi.Model.LaserPlasmaInteraction
+
+    ``
+    (complex example)
+    # assuming lpi is an instanciated LaserPlasmaInteraction object :
+
+    eh  = lpi.electron.hot
+    Teh = eh.temperature(model="Wilks1992")
+    S   = lpi.target.conductivity(model=)
+    nu  = lpi.laser.efficiencyAbsorption(model=)
+
+    neh_Bell = eh.numberDensity(\
+            model="Bell1997",\
+            temperature=Teh,\
+            conductivity=S,\
+            absorption_efficiency=nu)
+
+    neh_Obvious = eh.numberDensity(\
+            model="Common",\
+            absorption_efficiency=nu)
+
+
+    print("Estimated hot electron density with different models :")
+    print("-----------------------------------------")
+    print("Bell1997     : neh = "+str(neh_Bell))
+    print("Obvious      : neh = "+str(neh_Obvious))
+    print("-----------------------------------------")
+    ``
     """
     def __init__(self,Laser,Target):
         self.laser      = Laser
@@ -96,17 +106,14 @@ class _Laser(object):
 
         self._lpi.laser.efficiencyAbsorption = self.efficiencyAbsorption
 
-    def efficiencyAbsorption(self,model="Obvious",**kwargs):
+    def efficiencyAbsorption(self,model,*args):
         """
         """
-        if model=="Obvious":
-            Model=_m.Obvious(self)
-            out  = Model.getLaserAbsorptionEfficiency()
-        else:
-            raise NameError("getLaserAbsorptionEfficiency : Unknown model name.")
+        available_models=["Obvious"]
+        dim='number'
 
-        out.to_base_units()
-        return out
+        estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
+        return estimate.use(method_name='laser_efficiencyAbsorption',dim=dim,*args)
 
 
 class _Target(object):
@@ -122,25 +129,14 @@ class _Target(object):
         self._lpi.target.conductivity = self.conductivity
 
 
-    def conductivity(self,model="Obvious",**kwargs):
+    def conductivity(self,model,args):
         """
         """
-
         available_models=["Obvious"]
+        dim='conductivity'
 
-        if type(model)!=str:
-            raise TypeError("'model' type must be 'string', but it is "+ type(model))
-
-        if model=="Obvious":
-            Tec     = 1e-3
-            logCoulomb = 5.
-            Model=_m.Obvious(self)
-            self.Sigma  = Model.getTargetConductivity(Tec=Tec,logCoulomb=logCoulomb)
-        else:
-            raise NameError("Model name given : "+model+", available are "+available_models)
-
-        return self.Sigma
-
+        estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
+        return estimate.use(method_name='target_conductivity',dim=dim,*args)
 
 class _Electron(object):
     """
@@ -159,24 +155,19 @@ class _Electron(object):
         """
         def __init__(self,LaserPlasmaInteraction):
             self._lpi = LaserPlasmaInteraction
-            self.default_model={'numberTotal':'Bell1997','temperature':'Haines2009'}
 
-        def numberTotal(self,model=None,**kwargs):
+        def numberTotal(self,model,*args):
             # TODO: delete Bell1997 because it is ne * surface_l * z0
             # TODO: -> too many models & hypotheses. let the user choose.
             """
             Return the total number of accelerated hot electrons [dimensionless].
 
-            # Dimension
-            # --------
-            # dimensionless
-
             Arguments
             --------
-            model, string (optional, default : "Bell1997")
+            model, string
             Name of the model.
 
-            **kwargs, string(s)
+            *args, string(s)
             See "Parameter models" in section Models.
             For more informations about keyword arguments please refer to
             the documentation of the LaserPlasmaInteraction object.
@@ -207,23 +198,19 @@ class _Electron(object):
             dim='number'
 
             estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-            return estimate.use(method_name='electron_hot_numberTotal',dim=dim,**kwargs)
+            return estimate.use(method_name='electron_hot_numberTotal',dim=dim,*args)
 
 
-        def lengthCaracDepth(self,model="Bell1997",**kwargs):
+        def lengthCaracDepth(self,model,*args):
             """
             """
-            if model=="Bell1997":
-                Teh     = self.temperature(kwargs.get('Teh_model','Haines2009'))
-                Sigma   = self.getTargetConductivity(kwargs.get('Sigma_model','Obvious'))
-                nu_laser = self.getLaserAbsorptionEfficiency(kwargs.get('nu_laser_model','Obvious'))
-                Model   = _m.Bell1997(self)
-                Model.checkHypotheses()
-                zeh = Model.lengthCaracDepth(Teh,Sigma,nu_laser) # self. ou pas ? savoir si sauvegardé ds objet
+            available_models=["Bell1997"]
+            dim='length'
 
-            return zeh
+            estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
+            return estimate.use(method_name='electron_hot_lengthCaracDepth',dim=dim,*args)
 
-        def temperature(self,model,**kwargs):
+        def temperature(self,model,*args):
             """
             Return the hot electron temperature.
 
@@ -247,7 +234,7 @@ class _Electron(object):
             available_models=["Beg1997","Haines2009","Wilks1992"]
 
             estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-            return estimate.use(method_name='electron_hot_temperature',dim='temperature',**kwargs)
+            return estimate.use(method_name='electron_hot_temperature',dim='temperature',*args)
 
 
         def timeInteractionMax(self,verbose=True):
@@ -258,39 +245,6 @@ class _Electron(object):
         def lengthInteractionMax(self,verbose=True):
             return 0.
 
-
-################################################################################
-# class Absorption(object):
-#     def __init__(self,name):
-#         self.name=name
-#
-#     def getInteractionTime(self,verbose):
-#         self.InteractionTime = 1.
-#         if verbose:
-#             print(self.name+" interaction time : "+str(self.InteractionTime)+" s")
-#         return self.InteractionTime
-#
-#     def getInteractionLength(self,verbose):
-#         self.InteractionLength = self.getInteractionTime/unit.c
-#         if verbose:
-#             print(self.name+" interaction length : "+str(self.InteractionLength)+" s")
-#         return self.InteractionLength
-#
-# class Emmission(object):
-#     def __init__(self,name):
-#         self.name=name
-#
-# class JxB(Absorption):
-#     def __init__(self):
-#         pass
-#
-# class VacuumHeating(Absorption):
-#     def __init__(self):
-#         pass
-#
-# class Wakefield(Absorption):
-#     def __init__(self):
-#         pass
 
 class PlasmaParameters(object):
     """

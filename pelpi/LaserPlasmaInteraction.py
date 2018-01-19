@@ -106,8 +106,26 @@ class _Laser(object):
 
         self._lpi.laser.efficiencyAbsorption = self.efficiencyAbsorption
 
-    def efficiencyAbsorption(self,model,*args):
+    def efficiencyAbsorption(self,model,*args): # TODO: what this model is about ? hot electrons ? ions ? ...
         """
+        Return an estimate of the laser absorption efficiency into hot electrons ??.
+
+        Arguments
+        --------
+        model, string
+            Model name
+        *args,
+            Model input parameters
+
+        Models
+        -----
+        Obvious, a theoretical model for a rough estimate.
+            Input parameters : None
+
+        Notes
+        ----
+        See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
+        if you need more informations about the [Model] model.
         """
         available_models=["Obvious"]
         dim='number'
@@ -131,6 +149,24 @@ class _Target(object):
 
     def conductivity(self,model,args):
         """
+        Return an estimate of the target electric conductivity.
+
+        Arguments
+        --------
+        model, string
+            Model name
+        *args,
+            Model input parameters
+
+        Models
+        -----
+        Obvious, a theoretical model for a rough estimate.
+            Input parameters : None
+
+        Notes
+        ----
+        See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
+        if you need more informations about the [Model] model.
         """
         available_models=["Obvious"]
         dim='conductivity'
@@ -160,41 +196,26 @@ class _Electron(object):
             # TODO: delete Bell1997 because it is ne * surface_l * z0
             # TODO: -> too many models & hypotheses. let the user choose.
             """
-            Return the total number of accelerated hot electrons [dimensionless].
+            Return an estimate of the total hot electron number.
 
             Arguments
             --------
             model, string
-            Name of the model.
-
-            *args, string(s)
-            See "Parameter models" in section Models.
-            For more informations about keyword arguments please refer to
-            the documentation of the LaserPlasmaInteraction object.
+                Model name
+            *args,
+                Model input parameters
 
             Models
             -----
-            Bell1997 is a model created for ...
-            Need a (hot electron?) temperature, electrical conductivity and laser absorption
-            efficiency to work properly.
-            Parameter models :
-                for the hot electron temperature : Teh_model (default : "Haines2009")
-                for conductivity : Sigma_model (default : "Obvious", i.e. Spitzer)
-                for absorption efficiency nu_laser_model (default : "...")
+            Obvious, a theoretical model for a rough estimate.
+                Input parameters : None
 
-            Obvious is a simple estimation, for order of magnitude.
-            It returns the total laser energy over the energy in hot electrons,
-            estimate by 3/2 Teh.
-            It needs a hot electron temperature to work properly.
-            Parameter models :
-                for the hot electron temperature : Teh_model (default : "Haines2009")
-
-            Examples
-            -------
-            n0 = lpi.electron.hot.numberTotal(model="Obvious")
-            n0 = lpi.electron.hot.numberTotal(model="Bell1997", Teh_model="Wilks1992")
+            Notes
+            ----
+            See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
+            if you need more informations about the [Model] model.
             """
-            available_models=["Bell1997","Obvious"]
+            available_models=["Obvious"]
             dim='number'
 
             estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
@@ -203,6 +224,26 @@ class _Electron(object):
 
         def lengthCaracDepth(self,model,*args):
             """
+            Return an estimate of the characteristic penetration depth of
+            hot electrons in the target.
+
+            Arguments
+            --------
+            model, string
+                Model name
+            *args,
+                Model input parameters
+
+            Models
+            -----
+            Bell1997, a theoretical model taking into account the effects of
+            the hot electron return current.
+                Input parameters : temperature, conductivity, absorption_efficiency
+
+            Notes
+            ----
+            See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
+            if you need more informations about the [Model] model.
             """
             available_models=["Bell1997"]
             dim='length'
@@ -212,23 +253,30 @@ class _Electron(object):
 
         def temperature(self,model,*args):
             """
-            Return the hot electron temperature.
+            Return an estimate of the hot electron temperature.
 
             Arguments
             --------
             model, string
-            Name of the model.
+                Model name
+            *args,
+                Model input parameters
 
             Models
             -----
-            Beg1997 is an empirical model ...
-            Based on the reference
+            Beg1997, an empirical model ...
+            Input parameters : None
 
-            Haines2009 is a theoretical model ...
-            Based on the reference
+            Haines2009, a theoretical model ...
+            Input parameters : None
 
-            Wilks1992 is an empirical model
-            Based on the reference
+            Wilks1992, a theoretical model
+            Input parameters : None
+
+            Notes
+            ----
+            See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
+            if you need more informations about the [Model] model.
             """
             dim='temperature'
             available_models=["Beg1997","Haines2009","Wilks1992"]

@@ -9,6 +9,24 @@ __all__ = ["Profile","Laser"]
 class Profile(object):
     """
     class for defining pulse profile envelope
+
+    Parameters
+    ---------
+    time_profile, string
+        Temporal profile of the pulse
+        Available profiles :
+            "gaussian",
+            You must define the time_fwhm variable for setting the time full width half maximum
+
+    space_profile, string
+        Spatial profile of the pulse (waist).
+        Available profiles :
+            "gaussian",
+            You must define the space_fwhm variable for setting the spatial full width half maximum (waist)
+
+            "top-hat",
+            You must define the space_radius variable for setting the spatial radius (waist)
+
     """
     def __init__(self,time_profile,space_profile,**kwargs):
         self.time_profile   = time_profile
@@ -63,7 +81,7 @@ class Laser(object):
     """
     Class for defining laser characteristics. It needs to take as arguments
 
-    Arguments
+    Parameters
     ---------
     name, string
     Laser name
@@ -73,30 +91,8 @@ class Laser(object):
     energy, float
     Total energy of the laser pulse
 
-    time_profile, string
-    Temporal profile of the pulse
-    Available profiles :
-        "gaussian", for a gaussian pule.
-        You must define the time_fwhm variable for setting the time full width half maximum
+    profile, object
 
-        "supergaussian" ?
-
-    space_profile, string
-    Spatial profile of the pulse (waist).
-    Available profiles :
-        "gaussian", for a gaussian pule.
-        You must define the space_fwhm variable for setting the spatial full width half maximum (waist)
-
-        "supergaussian" ?
-
-    contrast_1ps, float
-    Contrast of the pulse (à quel temps ?)
-
-    polarization=[0,1,0],
-
-    direction=[0,0,1],
-
-    angle=0.
 
     Attributes
     ----------
@@ -104,27 +100,13 @@ class Laser(object):
     Methods
     -------
 
-
-
-
-    Notes
-    -----
     """
-    def __init__(self,name,wavelength,energy,contrast_1ps,\
-        Profile,\
-        polarization,direction,angle,**kwargs):
-
+    def __init__(self,name,wavelength,energy,Profile,**kwargs):
         self.name       = name
         self.wavelength = wavelength
         self.energy     = energy
-        self.contrast_1ps   = contrast_1ps       # TODO: look if not 1ps
-        self.polarization = polarization         # TODO: look for dimensionless
 
         self.profile    = Profile
-
-        self.direction      = direction
-        self.angle          = angle
-
 
     def pulsation(self):
         return 2*_np.pi*_u.c/self.wavelength
@@ -152,35 +134,8 @@ class Laser(object):
                 (self.intensity(r=0*_u('m'),t=0*_u('s')).to('W/cm**2')*(self.wavelength.to('um'))**2)\
                 /(1.e18 * _u('W*um**2/cm**2')))
 
-
     def envelope(self,r,t):
         return self.intensity(t=0*_u('s'),r=0*_u('m'))*self.profile.spaceEnvelope(r) * self.profile.timeEnvelope(t)
 
     def timeChirp(self,t,phase=0.0 *_u('deg')):
         return _np.sin(self.pulsation().to(t.units**-1) * t - phase)
-
-    #
-    # def plot(self):
-    #     import matplotlib.pyplot as plt
-    #     t=_np.arange(-self.profile.timeIntegral().to('s')/_u.s,self.profile.timeIntegral().to('s')/_u.s,(2*_np.pi/10)*(1/self.wl).to('s')/_u.s) *_u.s
-    #     r=_np.arange(-2*self.space_fwhm.to('m')/_u.m,2*self.space_fwhm.to('m')/_u.m,(2*_np.pi/10)*(_u.c/self.wl).to('m')/_u.m) * _u.m
-    #     self.t = t
-    #     self.r = r # TODO: a supprimer quand méthode OK
-    #
-    #     plt.subplot(221)
-    #     plt.plot(self.pulseEnv(r,0*_u('s')),r)
-    #     plt.ylim(ymin=min(r.magnitude),ymax=max(r.magnitude))
-    #     plt.ylabel('r (m)') # TODO: voire pour automatiser unités
-    #
-    #     # plt.subplot(222)
-    #     # gpulseEnv=_np.array([self.pulseEnv(e.magnitude,t.magnitude)*self.pulseChirp(t.magnitude) for e in r]) # TODO: broken
-    #     # gt,gr=_np.meshgrid(t.magnitude,r.magnitude)
-    #     # plt.pcolor(gt,gr,gpulseEnv)
-    #
-    #     plt.subplot(224)
-    #     plt.plot(t,self.pulseEnv(0*_u('m'),t)*self.pulseChirp(t))
-    #     plt.xlim(xmin=min(t.magnitude),xmax=max(t.magnitude))
-    #     plt.xlabel('t (s)')
-    #
-    #     plt.legend()
-    #     plt.show()

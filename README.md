@@ -46,6 +46,10 @@ Possible optimisation of memory usage with modifying self._lpi in lpi subclasses
 
 Give default behaviour to models or not ? default behaviour do not force the user to understand the models
 
+a0 or a0/2 in Wilks1992 model ?
+
+argument loop=True -> loop over all the models with a checkHypotheses and try, except for getting the max value for ex. (func=max in arguments and return func(list))
+
 ## Code structure
 
 ```mermaid

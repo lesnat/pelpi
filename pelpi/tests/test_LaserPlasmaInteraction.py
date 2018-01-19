@@ -160,7 +160,7 @@ class test_Electron_Hot(unittest.TestCase):
         # Beg1997 model
         self.assertAlmostEqual(
             func(model="Beg1997").to('MeV'),
-            u.Quantity(0.7072354609042559, 'megaelectron_volt'))
+            u.Quantity(0.7072354609042557, 'megaelectron_volt'))
         # Haines2009 model
         self.assertAlmostEqual(
             func(model="Haines2009").to('MeV'),
@@ -169,6 +169,20 @@ class test_Electron_Hot(unittest.TestCase):
         self.assertAlmostEqual(
             func(model="Wilks1992").to('MeV'),
             u.Quantity(2.122419582112406, 'megaelectron_volt'))
+
+        with self.assertRaises(TypeError):
+            func(model=47)
+            
+        with self.assertRaises(NameError):
+            func(model='47')
+
+        # for model_name in ['47',47]:
+        #     self.assertRaises(
+        #         NameError,
+        #         func,
+        #         model_name)
+
+
 
     def test_timeInteractionMax(self,verbose=True):
         pass

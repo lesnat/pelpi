@@ -1,125 +1,79 @@
 
-from . import verbose as _vb
 from . import prefered_unit as _pu
 
 
 __all__ = ["_Estimate"]
 
-# class _Estimate(object):
-#     """
-#     Base class for estimations
-#
-#     Methods
-#     ------
-#     checkHypotheses
-#         print informations about model hypotheses,
-#         if verbose=True
-#         if verbose=False
-#     """
-#     def __init__(self):
-#         pass
-#
-#     def checkHypotheses(self):
-#         pass
-#
-#     def useModel(self,package,model,method,available_models,dim,**kwargs):
-#         # if type(package)!=module:
-#         #     raise TypeError("package needs to be a pelpi module, but it is a"+str(type(package)))
-#         # if type(model)!=str:
-#         #     raise TypeError("model needs to be a string, but it is a"+str(type(model))) # TODO: why it is a type ?
-#         # if type(method)!=function: # ??
-#         #     raise TypeError("method needs to be a function, but it is a"+str(type(method)))
-#         # if type(available_models)!=dict:
-#         #     raise TypeError("available_models needs to be a dictionnary, but it is a"+str(type(available_models)))
-#         # if type(dim)!=str:
-#         #     raise TypeError("dim needs to be a string, but it is a"+str(type(dim)))
-#
-#         if model in available_models:
-#             Model=_m.__dict__.get(model)(self._lpi)
-#
-#             Model.checkHypotheses()
-#             return Model.method(**kwargs).to(_pu[dim])
-#         else:
-#             raise NameError("Model name "+model+" not found. Please refer to the documentation.")
-
-
 class _Estimate(object):
     """
-    Base class for estimations
+    Class for using estimations models.
+
+    It takes strings as arguments (model_name, method_name) and return the result
+    of the given method.
+    It is recommended to use this class in all estimations methods of
+    LaserPlasmaInteraction.
+
+    Parameters
+    ---------
+    LaserPlasmaInteraction, object
+        Instanciated class of LaserPlasmaInteraction
+    model_name, string
+        Needed model name
+    available_models, list of strings
+        List of all models that can be used with the lpi method
 
     Methods
     ------
-    checkHypotheses
-        print informations about model hypotheses,
-        if verbose=True
-        if verbose=False
+    use
+        Return the result of the model choosen method
     """
-    def __init__(self,LaserPlasmaInteraction,module,model):
-        # if type(package)!=module:
-        #     raise TypeError("package needs to be a pelpi module, but it is a"+str(type(package)))
-        # if type(method)!=function: # ??
-        #     raise TypeError("method needs to be a function, but it is a"+str(type(method)))
-        # if type(available_models)!=dict:
-        #     raise TypeError("available_models needs to be a dictionnary, but it is a"+str(type(available_models)))
-        # self.verbose    = verbose # TODO: needed ?
+    def __init__(self,LaserPlasmaInteraction,model_name,available_models):
+        if str(type(LaserPlasmaInteraction))!="<class 'pelpi.LaserPlasmaInteraction.LaserPlasmaInteraction'>":
+            raise TypeError("'LaserPlasmaInteraction' type must be a pelpi module, but it is "+str(type(LaserPlasmaInteraction)))
+        if type(model_name)!=str:
+            raise TypeError("'model_name' type must be 'string', but it is "+str(type(model_name)))
+        if type(available_models)!=list:
+            raise TypeError("'available_models' type must be 'list', but it is "+str(type(available_models)))
+
         self._lpi       = LaserPlasmaInteraction
-        # if model in available_models: # TODO: if the test is done, only available_models can be used (safer) but arg more
-        self.model=module.__dict__.get(model)(self._lpi)
-        # else:
-        #     raise NameError("Model name "+model+" not found. Please refer to the documentation.")
+        if model_name in available_models:
+            # Get the 'model_name' class from the 'model' attribute of _lpi
+            Model=getattr(self._lpi.model,model_name)
+            # and instanciate it with _lpi
+            self.model=Model(self._lpi)
+        else:
+            raise NameError("Model name "+model_name+" not found. Available models are "+str(available_models))
 
-    def checkHypotheses(self):
+    def use(self,method_name,dim,*args):
+        """
+        Return the result of the model choosen method.
+
+        Result is automatically converted into the pelpi.prefered_unit unit.
+
+        Parameters
+        ---------
+        method_name, string
+            Needed method name of the model
+        dim, string
+            Dimension of the result (i.e. 'temperature', 'conductivity', ...)
+        args
+            Arguments to use in the method
+        """
+        if type(method_name)!=str:
+            raise TypeError("'method_name' type must be 'string', but it is "+str(type(method_name)))
+        if type(dim)!=str:
+            raise TypeError("'dim' type must be 'string', but it is "+str(type(dim)))
+
+        if dim not in _pu.keys():
+            raise NameError("'dim' name "+dim+" not found. Available dimensions are "+str(_pu.keys()))
+
+        # Check the model hypotheses
         self.model.checkHypotheses()
+        # Get the method from the model
+        Method = getattr(self.model,method_name)
+        # Use it with kwargs and convert it
+        return Method(*args).to(_pu[dim]) # TODO: check if OK with kwargs
+    
 
-    def use(self,method,dim,**kwargs):
-        # if type(model)!=str:
-        #     raise TypeError("model needs to be a string, but it is a"+str(type(model))) # TODO: why it is a type ?
-        # if type(dim)!=str:
-        #     raise TypeError("dim needs to be a string, but it is a"+str(type(dim)))
-
-        # self.model.checkHypotheses(_vb)
-        self.model.checkHypotheses()
-        self.model.__dict__.get(method)(**kwargs).to(_pu[dim])
-
-
-# class _Estimate(object):
-#     """
-#     Base class for estimations
-#
-#     Methods
-#     ------
-#     checkHypotheses
-#         print informations about model hypotheses,
-#         if verbose=True
-#         if verbose=False
-#     """
-#     def __init__(self,objet,model,available_models):
-#         # if type(package)!=module:
-#         #     raise TypeError("package needs to be a pelpi module, but it is a"+str(type(package)))
-#         # if type(method)!=function: # ??
-#         #     raise TypeError("method needs to be a function, but it is a"+str(type(method)))
-#         # if type(available_models)!=dict:
-#         #     raise TypeError("available_models needs to be a dictionnary, but it is a"+str(type(available_models)))
-#         self.verbose    = verbose # TODO: needed ?
-#         self._lpi       = LaserPlasmaInteraction
-#         if model in available_models:
-#             self.model=module.__dict__.get(model)(self._lpi)
-#         else:
-#             raise NameError("Model name "+model+" not found. Please refer to the documentation.")
-#
-#     def checkHypotheses(self):
-#         pass
-#
-#     def use(self,method,dim,**kwargs):
-#         # if type(model)!=str:
-#         #     raise TypeError("model needs to be a string, but it is a"+str(type(model))) # TODO: why it is a type ?
-#         # if type(dim)!=str:
-#         #     raise TypeError("dim needs to be a string, but it is a"+str(type(dim)))
-#
-#         if model in available_models:
-#             Model=_m.__dict__.get(model)(self._lpi)
-#
-#             Model.checkHypotheses(self.verbose)
-#             return Model.method(**kwargs).to(_pu[dim])
-#         else:
-#             raise NameError("Model name "+model+" not found. Please refer to the documentation.")
+# def _addMethod(InObject,OutObject,method):
+#     OutObject.__dict__.get(method) = InObject.__dict__.get(method)

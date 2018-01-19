@@ -1,47 +1,58 @@
 #coding:utf8
-import numpy as _np
-from .. import unit as _u
-
-
+# import numpy as _np
+# from .. import unit as _u
+from .._global import *
 ################################################################################
 """
 Malka 2001 -> Scaling Energie max electrons
 """
 
-# TODO: base class for papers with checkHypotheses method
-# class Model(object): # TODO: Voire pour enlever classe Model mais avoir un sous-module Model
 class Beg1997(object):
     """
     Class for estimating ...
     Experimental fit
 
+    hypotheses
+
+    reference
     ...
     Experimental laser intensity etc ...
     """
     def __init__(self,LaserPlasmaInteraction):
-        self._lpi         = LaserPlasmaInteraction # obligé de passer par self._lpi dans ce cas car appel de lpi hors de __init__, sinon variable privée _lpi par convention
+        self._lpi         = LaserPlasmaInteraction
 
     def checkHypotheses(self):
-        pass
+        """
+        Check the hypotheses of the model.
 
-    def electron_hot_temperature(self):
+        Warnings can be configured in pelpi.warnings.filterwarnings method.
         """
-        voire cold/hot temperature (ici hot)
-        Tan et al. T_hot= 30 * I_17**(1/3) keV (ici 100)
-        in keV
+        if self._lpi.laser.intensity()>1*_u('W/cm**2'):
+            _w.warn('Test warning because tatata')
+
+    def electron_hot_temperature(self): # TODO: change by sub-class Electron sub-class Hot method temperature ?
         """
-        # return (100.*_u.keV/(511*_u.keV)) * (self._lpi.laser.I0.to(_u.W*_u.cm**-2)/(1e17*_u.W*_u.cm**-2) * (self._lpi.laser.wavelength.to(_u.um))**2 )**(1/3.)
+        Return an estimate of the hot electron temperature from the Beg1997 model.
+
+        .. math:
+            T_e^h = 100 * (\\frac{I_{17} \lambda_{\mu}^2})^(1/3)
+            with $T_e^h$ the hot electron temperature in keV
+            $I_{17}$ the laser peak intensity in $10^{17} W.cm^{-2}$
+            $\lambda_{\mu}$ the laser wavelength in $10^{-6}$ m
+        """
         I0              = self._lpi.laser.intensity()
         lambda_laser    = self._lpi.laser.wavelength
-        return 100.*_u('keV') *\
-            (I0.to(_u('W/cm**2'))/(1e17*_u('W/cm**2')) *\
-            (lambda_laser.to(_u.um)/(1*_u.um))**2 )**(1/3.)
+
+        Te = 100.*_u('keV') * ((I0 * lambda_laser**2) / (1e17*_u('W/cm**2')*_u('um**2')) )**(1/3.)
+
+        return Te.to(_pu['temperature'])
 
     def ion_energyCutoff(self):
         """
         Return the maximum ion energy in me c**2,
         """
         return (1.2e-2*_u('keV')) * (self._lpi.laser.I0.to('W/cm**2'))**(0.313)
+
 
 class Bell1997(object):
     """
@@ -87,24 +98,14 @@ class Bell1997(object):
     def __init__(self,LaserPlasmaInteraction): # A définir ici ou dans les méthodes ??? car certaines méthodes n'ont pas besoin de tous les param
         self._lpi        = LaserPlasmaInteraction
 
-    def checkHypotheses(self,verbose=0):
+    def checkHypotheses(self):
         """
-        Method for verifying hypotheses of the model.
+        Check the hypotheses of the model.
 
-        Arguments
-        --------
-        verbose, int (optional, default : 0)
-
+        Warnings can be configured in pelpi.warnings.filterwarnings method.
         """
-        # if verbose==0:
-        #     print "Detailled informations"
-        # if verbose==1:
-        #     print "Warnings about models"
-        # if verbose==2:
-        #     print "Only warnings about parameters"
-        # if verbose==3:
-        #     print "Nothing."
-        pass
+        if self._lpi.laser.intensity()>1*_u('W/cm**2'):
+            _w.warn('Test warning because tatata',UserWarning)
 
     def electron_hot_numberDensity(self,Teh,Sigma,nu_laser,t=0.0,z=0.0):
         n0 = (2 * (nu_laser*self._lpi.laser.I0)**2 * self._lpi.laser.getTimeIntegral())/(9 * _u.e * (Teh / _u.e)**3 * Sigma)
@@ -185,12 +186,23 @@ class Haines2009(object):
         self._lpi         = LaserPlasmaInteraction
 
     def checkHypotheses(self):
-        pass
+        """
+        Check the hypotheses of the model.
+
+        Warnings can be configured in pelpi.warnings.filterwarnings method.
+        """
+        if self._lpi.laser.intensity()>1*_u('W/cm**2'):
+            _w.warn('Test warning because tatata',UserWarning)
 
     def electron_hot_temperature(self):
         """
-        Hot electron temperature in me c**2
+        Return an estimate of the hot electron temperature from the Haines2009 model.
 
+        .. math:
+            T_e^h = (\sqrt{1 + \sqrt{2} \ a_0} - 1 ) m_e c^2
+            with $T_e^h$ the hot electron temperature
+            $a_0$ the normalized laser intensity
+            $m_e c^2$ the electron mass energy
         """
         a0 = self._lpi.laser.intensityNormalized()
         return ((1.0 + 2.0**(1/2.) * a0)**(1/2.) - 1.0) * 511 * _u('keV')
@@ -206,7 +218,13 @@ class Mora2003(object):
         lpi         = LaserPlasmaInteraction
 
     def checkHypotheses(self):
-        pass
+        """
+        Check the hypotheses of the model.
+
+        Warnings can be configured in pelpi.warnings.filterwarnings method.
+        """
+        if self._lpi.laser.intensity()>1*_u('W/cm**2'):
+            _w.warn('Test warning because tatata',UserWarning)
 
     def getInitialFrontElectricField(self,Te):
         """
@@ -241,17 +259,30 @@ class Wilks1992(object):
         self._lpi        = LaserPlasmaInteraction
 
     def checkHypotheses(self):
-        pass
+        """
+        Check the hypotheses of the model.
+
+        Warnings can be configured in pelpi.warnings.filterwarnings method.
+        """
+        if self._lpi.laser.intensity()>1*_u('W/cm**2'):
+            _w.warn('Test warning because tatata',UserWarning)
 
     def electron_hot_temperature(self):
         """
+        Return an estimate of the hot electron temperature from the Wilks1992 model.
+
+        .. math:
+            T_e^h = (\sqrt{1 + a_0^2} - 1 ) m_e c^2
+            with $T_e^h$ the hot electron temperature
+            $a_0$ the normalized laser intensity
+            $m_e c^2$ the electron mass energy
         """
         a0 = self._lpi.laser.intensityNormalized()
-        return ((1.0 + a0**2)**(1/2.) - 1.0 )*511 * _u('keV')
+        return ((1.0 + (a0)**2)**(1/2.) - 1.0 ) * 511 * _u('keV') # TODO: a0 or a0/2 ?
 
 
 ################################################################################
-class Obvious(object):
+class Obvious(object): # TODO: rename Obvious to Common ?
     """
     Class containing obvious theoretical estimations, for order of magnitudes.
     It also contains commonly used functions, such as Maxwell-Boltzmann distribution,

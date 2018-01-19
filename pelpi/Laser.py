@@ -117,8 +117,8 @@ class Laser(object):
         self.name       = name
         self.wavelength = wavelength
         self.energy     = energy
-        self.contrast_1ps   = contrast_1ps       # TODO: see if not 1ps
-        self.polarization = polarization         # TODO: see for dimensionless
+        self.contrast_1ps   = contrast_1ps       # TODO: look if not 1ps
+        self.polarization = polarization         # TODO: look for dimensionless
 
         self.profile    = Profile
 

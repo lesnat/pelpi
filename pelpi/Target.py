@@ -4,7 +4,7 @@ from . import unit as _u
 from . import prefered_unit as _pu
 
 
-__all__ = ["Material","Geometry","Target"]
+__all__ = ["Material","Target"]
 
 class Material(object):
     """
@@ -23,16 +23,8 @@ class Material(object):
     def ionNumberDensity(self):
         return self.density/self.atomic_mass
 
-class Geometry(object): # Ajouter pp
-    """
-    """
-    def __init__(self,width=0,Lpp=0):
-        self.width      = width
-        self.Lpp        = Lpp
-
 class Target(object):
     """
     """
-    def __init__(self,Material,Geometry):
-        self.mat=Material
-        self.geom=Geometry
+    def __init__(self,Material):
+        self.material=Material

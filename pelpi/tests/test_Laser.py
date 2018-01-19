@@ -90,12 +90,13 @@ class test_Laser(unittest.TestCase):
 
             Profile    = profGG,
 
-            contrast_1ps = 1e8,
-
-            polarization = [0,1,0],
-
-            direction  = [0,0,1],
-            angle      = 0. * u.deg,)
+            # contrast_1ps = 1e8,
+            #
+            # polarization = [0,1,0],
+            #
+            # direction  = [0,0,1],
+            # angle      = 0. * u.deg,
+            )
 
     def tearDown(self):
         del self.lasGG
@@ -116,21 +117,22 @@ class test_Laser(unittest.TestCase):
 
             Profile    = profGG,
 
-            contrast_1ps = 1e8,
-
-            polarization = [0,1,0],
-
-            direction  = [0,0,1],
-            angle      = 0. * u.deg,)
+            # contrast_1ps = 1e8,
+            #
+            # polarization = [0,1,0],
+            #
+            # direction  = [0,0,1],
+            # angle      = 0. * u.deg,
+            )
 
         self.assertEqual(self.lasGG.name        , "test")
         self.assertEqual(self.lasGG.wavelength  , 0.8 * u.um)
         self.assertEqual(self.lasGG.energy      , 2.0 * u.J)
         self.assertEqual(self.lasGG.profile     , profGG)
-        self.assertEqual(self.lasGG.contrast_1ps, 1e8)
-        self.assertEqual(self.lasGG.polarization, [0,1,0])
-        self.assertEqual(self.lasGG.direction   , [0,0,1])
-        self.assertEqual(self.lasGG.angle       , 0. * u.deg)
+        # self.assertEqual(self.lasGG.contrast_1ps, 1e8)
+        # self.assertEqual(self.lasGG.polarization, [0,1,0])
+        # self.assertEqual(self.lasGG.direction   , [0,0,1])
+        # self.assertEqual(self.lasGG.angle       , 0. * u.deg)
 
         # tatata + Super-gaussian profile
         # ...

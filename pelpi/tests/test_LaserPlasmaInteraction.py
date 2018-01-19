@@ -29,12 +29,12 @@ class ExampleLPI(object):
 
             Profile    = profGG,
 
-            contrast_1ps = 1e8,
-
-            polarization = [0,1,0],
-
-            direction  = [0,0,1],
-            angle      = 0. * u.deg,
+            # contrast_1ps = 1e8,
+            #
+            # polarization = [0,1,0],
+            #
+            # direction  = [0,0,1],
+            # angle      = 0. * u.deg,
         )
         matAl  = pp.Material(
             name        = "Al",
@@ -43,22 +43,23 @@ class ExampleLPI(object):
             Z           = 13,
             A           = 27,
         )
-        geomBas = pp.Geometry(
-            width=20 * u.um,
-            Lpp=8 * u.um
-        )
-        targAlBas = pp.Target(matAl,geomBas)
+        # geomBas = pp.Geometry(
+        #     width=20 * u.um,
+        #     Lpp=8 * u.um
+        # )
+        # targAlBas = pp.Target(matAl,geomBas)
+        targAlBas = pp.Target(matAl)
 
-        self.lpiGGAlBas = pp.LaserPlasmaInteraction(lasGG,targAlBas)
+        self.lpiGGAl = pp.LaserPlasmaInteraction(lasGG,targAlBas)
 
 
 
 class test_LaserPlasmaInteraction(unittest.TestCase):
     def setUp(self):
-        self.lpiGGAlBas = ExampleLPI().lpiGGAlBas
+        self.lpiGGAl = ExampleLPI().lpiGGAl
 
     def tearDown(self):
-        del self.lpiGGAlBas
+        del self.lpiGGAl
 
     def test_instanciateTest(self):
         profGG = pp.Profile(
@@ -75,12 +76,12 @@ class test_LaserPlasmaInteraction(unittest.TestCase):
 
             Profile    = profGG,
 
-            contrast_1ps = 1e8,
-
-            polarization = [0,1,0],
-
-            direction  = [0,0,1],
-            angle      = 0. * u.deg,
+            # contrast_1ps = 1e8,
+            #
+            # polarization = [0,1,0],
+            #
+            # direction  = [0,0,1],
+            # angle      = 0. * u.deg,
         )
         matAl  = pp.Material(
             name        = "Al",
@@ -89,46 +90,47 @@ class test_LaserPlasmaInteraction(unittest.TestCase):
             Z           = 13,
             A           = 27,
         )
-        geomBas = pp.Geometry(
-            width=20 * u.um,
-            Lpp=8 * u.um
-        )
-        targAlBas = pp.Target(matAl,geomBas)
-        lpiGGAlBas = pp.LaserPlasmaInteraction(lasGG,targAlBas)
+        # geomBas = pp.Geometry(
+        #     width=20 * u.um,
+        #     Lpp=8 * u.um
+        # )
+        # targAlBas = pp.Target(matAl,geomBas)
+        targAlBas = pp.Target(matAl)
+        lpiGGAl = pp.LaserPlasmaInteraction(lasGG,targAlBas)
 
 
 class test_Electron(unittest.TestCase):
     def setUp(self):
-        self.lpiGGAlBas = ExampleLPI().lpiGGAlBas
+        self.lpiGGAl = ExampleLPI().lpiGGAl
 
     def tearDown(self):
-        del self.lpiGGAlBas
+        del self.lpiGGAl
 
 class test_Electron_Cold(unittest.TestCase):
     def setUp(self):
-        self.lpiGGAlBas = ExampleLPI().lpiGGAlBas
+        self.lpiGGAl = ExampleLPI().lpiGGAl
 
     def tearDown(self):
-        del self.lpiGGAlBas
+        del self.lpiGGAl
 
 
 class test_Electron_Hot(unittest.TestCase):
     def setUp(self):
-        self.lpiGGAlBas = ExampleLPI().lpiGGAlBas
+        self.lpiGGAl = ExampleLPI().lpiGGAl
 
     def tearDown(self):
-        del self.lpiGGAlBas
+        del self.lpiGGAl
 
     def test_numberTotal(self):
         pass
-        # func=self.lpiGGAlBas.electron.hot.numberTotal
-        # # Bell1997 model with lpiGGAlBas interaction
-        # Teh = self.lpiGGAlBas.electron.hot.temperature(model="Haines2009")
-        # Zeff = self.lpiGGAlBas.ion.ionisationRange(model=,temperature=Te)
-        # log_coulomb = self.lpiGGAlBas.target.logCoulomb(model=,ionisation_range=Zeff)
-        # Tec = self.lpiGGAlBas.electron.cold.temperature(model=)
-        # Sigma = self.lpiGGAlBas.target.conductivity(model="Hubbard1966",temperature=Tec,log_coulomb=log_coulomb)
-        # nu_laser = self.lpiGGAlBas.laser.absorptionEfficiency(model=)
+        # func=self.lpiGGAl.electron.hot.numberTotal
+        # # Bell1997 model with lpiGGAl interaction
+        # Teh = self.lpiGGAl.electron.hot.temperature(model="Haines2009")
+        # Zeff = self.lpiGGAl.ion.ionisationRange(model=,temperature=Te)
+        # log_coulomb = self.lpiGGAl.target.logCoulomb(model=,ionisation_range=Zeff)
+        # Tec = self.lpiGGAl.electron.cold.temperature(model=)
+        # Sigma = self.lpiGGAl.target.conductivity(model="Hubbard1966",temperature=Tec,log_coulomb=log_coulomb)
+        # nu_laser = self.lpiGGAl.laser.absorptionEfficiency(model=)
         # self.assertAlmostEqual(
         #     func(model="Bell1997",temperature=Te,conductivity=Sigma,absorption_efficiency=nu_laser),
         #     0)
@@ -155,8 +157,8 @@ class test_Electron_Hot(unittest.TestCase):
         pass
 
     def test_temperature(self):
-        #lpiGGAlBas case
-        func = self.lpiGGAlBas.electron.hot.temperature
+        #lpiGGAl case
+        func = self.lpiGGAl.electron.hot.temperature
         # Beg1997 model
         self.assertAlmostEqual(
             func(model="Beg1997").to('MeV'),
@@ -172,7 +174,7 @@ class test_Electron_Hot(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             func(model=47)
-            
+
         with self.assertRaises(NameError):
             func(model='47')
 

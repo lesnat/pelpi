@@ -46,8 +46,8 @@ class test_Material(unittest.TestCase):
             func().to('m**-3'),
             u.Quantity(6.023806828080096e+28, '1 / meter ** 3'))
 
-class test_Geometry(unittest.TestCase):
-    pass
+# class test_Geometry(unittest.TestCase):
+#     pass
 
 class test_Target(unittest.TestCase):
     def setUp(self):
@@ -58,11 +58,12 @@ class test_Target(unittest.TestCase):
             Z           = 13,
             A           = 27,
         )
-        geom = pp.Geometry(
-            width=20 * u.um,
-            Lpp=8 * u.um
-        )
-        self.targAl = pp.Target(matAl,geom)
+        # geom = pp.Geometry(
+        #     width=20 * u.um,
+        #     Lpp=8 * u.um
+        # )
+        # self.targAl = pp.Target(matAl,geom)
+        self.targAl = pp.Target(matAl)
 
     def tearDown(self):
         del self.targAl
@@ -75,11 +76,12 @@ class test_Target(unittest.TestCase):
             Z           = 13,
             A           = 27,
         )
-        geom = pp.Geometry(
-            width=20 * u.um,
-            Lpp=8 * u.um
-        )
-        targAl = pp.Target(matAl,geom)
+        # geom = pp.Geometry(
+        #     width=20 * u.um,
+        #     Lpp=8 * u.um
+        # )
+        # targAl = pp.Target(matAl,geom)
+        targAl = pp.Target(matAl)
         # assert targAl.mat. ...
 
 

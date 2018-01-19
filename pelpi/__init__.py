@@ -22,6 +22,6 @@ warnings.simplefilter('always',UserWarning)
 
 
 from .Laser import Laser,Profile
-from .Target import Material,Geometry,Target
+from .Target import Material,Target
 from .LaserPlasmaInteraction import LaserPlasmaInteraction
 from .ParticleInCell import ParticleInCell

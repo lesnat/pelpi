@@ -14,13 +14,13 @@ class LaserPlasmaInteraction(object):
     """
     Class for estimations in laser-plasma interaction.
 
-    Arguments
-    ========
+    Parameters
+    ==========
     This class needs to be implemented with a laser object and a target object
     as arguments. Those classes could then be find as a sub-module.
 
     Class Attributes
-    ===============
+    ================
     laser, object
     The Laser object given as argument when the class was declared.
 
@@ -32,7 +32,7 @@ class LaserPlasmaInteraction(object):
 
 
     Available Methods
-    ================
+    =================
     For extended documentation, refer to the desired method.
 
     General Methods
@@ -40,7 +40,7 @@ class LaserPlasmaInteraction(object):
 
 
     Use of arguments (*args) in methods
-    ===========================================
+    ===================================
     Some models may need optional parameters, such as electron hot temperature
     or laser absorption efficiency for complete the calculus.
     These parameters can be choosen by the user (for order of magnitude) or
@@ -49,40 +49,38 @@ class LaserPlasmaInteraction(object):
 
 
     Examples
-    =======
-    ``
-    ( simple example )
-    ``
+    ========
+    >>> ...
 
     For complex models, see the documentation of modules,
     in pelpi.Model.LaserPlasmaInteraction
 
-    ``
-    (complex example)
-    # assuming lpi is an instanciated LaserPlasmaInteraction object :
+    Assuming lpi is an instanciated LaserPlasmaInteraction object :
 
-    eh  = lpi.electron.hot
-    Teh = eh.temperature(model="Wilks1992")
-    S   = lpi.target.conductivity(model=)
-    nu  = lpi.laser.efficiencyAbsorption(model=)
+    >>> eh  = lpi.electron.hot
+    >>> Teh = eh.temperature(model="Wilks1992")
+    >>> S   = lpi.target.conductivity(model=)
+    >>> nu  = lpi.laser.efficiencyAbsorption(model=)
 
-    neh_Bell = eh.numberDensity(\
-            model="Bell1997",\
-            temperature=Teh,\
-            conductivity=S,\
+    Use models
+
+    >>> neh_Bell = eh.numberDensity(
+            model="Bell1997",
+            temperature=Teh,
+            conductivity=S,
+            absorption_efficiency=nu)
+    >>> neh_Common = eh.numberDensity(
+            model="Common",
             absorption_efficiency=nu)
 
-    neh_Obvious = eh.numberDensity(\
-            model="Common",\
-            absorption_efficiency=nu)
+    Then print results
 
+    >>> print("Estimated hot electron density :")
+    >>> print("-----------------------------------------")
+    >>> print("Bell1997     : neh = "+str(neh_Bell))
+    >>> print("Common      : neh = "+str(neh_Obvious))
+    >>> print("-----------------------------------------")
 
-    print("Estimated hot electron density with different models :")
-    print("-----------------------------------------")
-    print("Bell1997     : neh = "+str(neh_Bell))
-    print("Obvious      : neh = "+str(neh_Obvious))
-    print("-----------------------------------------")
-    ``
     """
     def __init__(self,Laser,Target):
         self.laser      = Laser
@@ -119,15 +117,15 @@ class _Laser(object):
 
         Models
         -----
-        Obvious, a theoretical model for a rough estimate.
-            Input parameters : None
+        Common, a theoretical model for a rough estimate.
+            Input parameters : ...
 
         Notes
         ----
         See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
         if you need more informations about the [Model] model.
         """
-        available_models=["Obvious"]
+        available_models=["Common"]
         dim='number'
 
         estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
@@ -146,6 +144,8 @@ class _Target(object):
 
         self._lpi.target.conductivity = self.conductivity
 
+        # add targetdensitynormalized
+
 
     def conductivity(self,model,args):
         """
@@ -160,15 +160,15 @@ class _Target(object):
 
         Models
         -----
-        Obvious, a theoretical model for a rough estimate.
-            Input parameters : None
+        Common, a theoretical model for a rough estimate.
+            Input parameters : ...
 
         Notes
         ----
         See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
         if you need more informations about the [Model] model.
         """
-        available_models=["Obvious"]
+        available_models=["Common"]
         dim='conductivity'
 
         estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
@@ -193,8 +193,6 @@ class _Electron(object):
             self._lpi = LaserPlasmaInteraction
 
         def numberTotal(self,model,*args):
-            # TODO: delete Bell1997 because it is ne * surface_l * z0
-            # TODO: -> too many models & hypotheses. let the user choose.
             """
             Return an estimate of the total hot electron number.
 
@@ -207,15 +205,15 @@ class _Electron(object):
 
             Models
             -----
-            Obvious, a theoretical model for a rough estimate.
-                Input parameters : None
+            Common, a theoretical model for a rough estimate.
+                Input parameters : ...
 
             Notes
             ----
             See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
             if you need more informations about the [Model] model.
             """
-            available_models=["Obvious"]
+            available_models=["Common"]
             dim='number'
 
             estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
@@ -265,13 +263,13 @@ class _Electron(object):
             Models
             -----
             Beg1997, an empirical model ...
-            Input parameters : None
+                Input parameters : None
 
             Haines2009, a theoretical model ...
-            Input parameters : None
+                Input parameters : None
 
             Wilks1992, a theoretical model
-            Input parameters : None
+                Input parameters : None
 
             Notes
             ----

@@ -82,7 +82,7 @@ class Laser(object):
     Class for defining laser characteristics. It needs to take as arguments
 
     Parameters
-    ---------
+    ----------
     name, string
     Laser name
 
@@ -96,6 +96,7 @@ class Laser(object):
 
     Attributes
     ----------
+    Same as parameters
 
     Methods
     -------
@@ -107,6 +108,9 @@ class Laser(object):
         self.energy     = energy
 
         self.profile    = Profile
+
+    def _checkInput(self):
+        pass
 
     def pulsation(self):
         return 2*_np.pi*_u.c/self.wavelength

@@ -1,0 +1,232 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pelpi.Laser &#8212; pelpi 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pelpi 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pelpi.Laser</h1><div class="highlight"><pre>
+<span></span><span class="c1">#coding:utf8</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">unit</span> <span class="k">as</span> <span class="n">_u</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">prefered_unit</span> <span class="k">as</span> <span class="n">_pu</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Profile&quot;</span><span class="p">,</span><span class="s2">&quot;Laser&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Profile"><a class="viewcode-back" href="../../Laser.html#pelpi.Profile">[docs]</a><span class="k">class</span> <span class="nc">Profile</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    class for defining pulse profile envelope</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ---------</span>
+<span class="sd">    time_profile, string</span>
+<span class="sd">        Temporal profile of the pulse</span>
+<span class="sd">        Available profiles :</span>
+<span class="sd">            &quot;gaussian&quot;,</span>
+<span class="sd">            You must define the time_fwhm variable for setting the time full width half maximum</span>
+
+<span class="sd">    space_profile, string</span>
+<span class="sd">        Spatial profile of the pulse (waist).</span>
+<span class="sd">        Available profiles :</span>
+<span class="sd">            &quot;gaussian&quot;,</span>
+<span class="sd">            You must define the space_fwhm variable for setting the spatial full width half maximum (waist)</span>
+
+<span class="sd">            &quot;top-hat&quot;,</span>
+<span class="sd">            You must define the space_radius variable for setting the spatial radius (waist)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">time_profile</span><span class="p">,</span><span class="n">space_profile</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_profile</span>   <span class="o">=</span> <span class="n">time_profile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_fwhm</span>      <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;time_fwhm&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space_profile</span>  <span class="o">=</span> <span class="n">space_profile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space_fwhm</span>     <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;space_fwhm&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space_radius</span>   <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;space_radius&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">timeEnvelope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_profile</span><span class="o">==</span><span class="s2">&quot;gaussian&quot;</span><span class="p">:</span>
+            <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_fwhm</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">t</span><span class="o">/</span><span class="n">t0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">spaceEnvelope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">r</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_profile</span><span class="o">==</span><span class="s2">&quot;gaussian&quot;</span><span class="p">:</span>
+            <span class="n">r0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">space_fwhm</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">r</span><span class="o">/</span><span class="n">r0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_profile</span><span class="o">==</span><span class="s2">&quot;supergaussian&quot;</span><span class="p">:</span>
+            <span class="n">n</span><span class="o">=</span><span class="mi">10</span>
+            <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="n">r</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">space_fwhm</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_profile</span><span class="o">==</span><span class="s2">&quot;top-hat&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">space_radius</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">1.0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">0.0</span>
+
+    <span class="k">def</span> <span class="nf">timeIntegral</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_profile</span><span class="o">==</span><span class="s2">&quot;gaussian&quot;</span><span class="p">:</span>
+            <span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_fwhm</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+            <span class="n">S0t</span><span class="o">=</span><span class="n">t0</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">S0t</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s2">&quot;Unknown laser time profile name.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">spaceIntegralDouble</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_profile</span><span class="o">==</span><span class="s2">&quot;gaussian&quot;</span><span class="p">:</span>
+            <span class="n">r0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">space_fwhm</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+            <span class="n">S0r</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">r0</span><span class="o">**</span><span class="mi">2</span>
+            <span class="k">return</span> <span class="n">S0r</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">space_profile</span><span class="o">==</span><span class="s2">&quot;top-hat&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">space_radius</span><span class="o">**</span><span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s2">&quot;Unknown laser space profile name.&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Laser"><a class="viewcode-back" href="../../Laser.html#pelpi.Laser">[docs]</a><span class="k">class</span> <span class="nc">Laser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for defining laser characteristics. It needs to take as arguments</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name, string</span>
+<span class="sd">    Laser name</span>
+
+<span class="sd">    wavelength, float</span>
+
+<span class="sd">    energy, float</span>
+<span class="sd">    Total energy of the laser pulse</span>
+
+<span class="sd">    profile, object</span>
+
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Same as parameters</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">wavelength</span><span class="p">,</span><span class="n">energy</span><span class="p">,</span><span class="n">Profile</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span>       <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">wavelength</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy</span>     <span class="o">=</span> <span class="n">energy</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">profile</span>    <span class="o">=</span> <span class="n">Profile</span>
+
+    <span class="k">def</span> <span class="nf">_checkInput</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">pulsation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">_u</span><span class="o">.</span><span class="n">c</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span>
+
+    <span class="k">def</span> <span class="nf">numberDensityCritical</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_u</span><span class="o">.</span><span class="n">m_e</span><span class="o">*</span><span class="n">_u</span><span class="o">.</span><span class="n">epsilon_0</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pulsation</span><span class="p">()</span><span class="o">/</span><span class="n">_u</span><span class="o">.</span><span class="n">e</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="k">def</span> <span class="nf">power</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">),</span><span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">timeIntegral</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">timeEnvelope</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">spaceEnvelope</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">intensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">),</span><span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">t</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">spaceIntegralDouble</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">intensityNormalized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the normalized laser intensity.</span>
+
+<span class="sd">        .. math:</span>
+<span class="sd">            $a_0 = 0.85 \times \sqrt{I_{18} \lambda_{\mu}^2}$</span>
+<span class="sd">            with $a_0$ the normalized laser intensity,</span>
+<span class="sd">            $I_{18}$ the laser peak intensity in $10^{18} W.cm^{-2}$</span>
+<span class="sd">            and $\lambda_{\mu}$ the laser wavelength in $10^{-6} m$.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mf">0.85</span><span class="o">*</span><span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>\
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intensity</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">),</span><span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;W/cm**2&#39;</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;um&#39;</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>\
+                <span class="o">/</span><span class="p">(</span><span class="mf">1.e18</span> <span class="o">*</span> <span class="n">_u</span><span class="p">(</span><span class="s1">&#39;W*um**2/cm**2&#39;</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">envelope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">intensity</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">),</span><span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">))</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">spaceEnvelope</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">timeEnvelope</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">timeChirp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">phase</span><span class="o">=</span><span class="mf">0.0</span> <span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;deg&#39;</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pulsation</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">units</span><span class="o">**-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span> <span class="o">-</span> <span class="n">phase</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pelpi 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, lesnat.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>

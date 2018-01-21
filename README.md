@@ -50,6 +50,8 @@ a0 or a0/2 in Wilks1992 model ?
 
 argument loop=True -> loop over all the models with a checkHypotheses and try, except for getting the max value for ex. (func=max in arguments and return func(list))
 
+make a difference between warnings with and wo a test  in checkHypotheses?
+
 ## Code structure
 
 ```mermaid

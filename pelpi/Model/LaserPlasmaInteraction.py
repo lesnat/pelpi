@@ -62,26 +62,24 @@ class Bell1997(object):
     Attributes
     ---------
     n0, float
-    Estimate of the number of accelerated electrons.
-
+        Estimate of the number of accelerated electrons.
     z0, float
-    Estimate of the penetration depth of fast electrons (distance from the surface).
+        Estimate of the penetration depth of fast electrons (distance from the surface).
 
     Methods
     ------
     checkHypotheses()
     electron_hot_numberTotal()
-    electron_hot_lengthCaracDepth(model)
+    electron_hot_lengthCaracDepth()
 
     Hypotheses
     ---------
     Short pulse (< 1 ps)
     High intensity (>10^18 W.cm^-2)
     Colisionless plasma
-    Maxwellian electron distribution (ref ?)
-
-    Constant conductivity in the plasma (laisser cette hyp ?)
-    T0 constant during the laser pulse (colision time larger than interaction time)
+    Maxwellian hot electron distribution
+    Constant conductivity in the plasma
+    T0 constant during the laser pulse (collision time larger than interaction time)
 
     Reference
     --------
@@ -104,22 +102,29 @@ class Bell1997(object):
 
         Warnings can be configured in pelpi.warnings.filterwarnings method.
         """
-        if self._lpi.laser.intensity()>1*_u('W/cm**2'):
-            _w.warn('Test warning because tatata',UserWarning)
+        if self._lpi.laser.profile.timeIntegral()>1*_u('ps'): # TODO: maybe change by timeCarac()
+            _w.warn('Pulse duration > 1 ps')
+        if self._lpi.laser.intensity()<10**18 *_u('W/cm**2'):
+            _w.warn('Laser peak intensity < 10**18 W/cm**2')
+        # if self._lpi.plasma.collisionRate()>1e-3 * _u(''):
+        #     _w.warn('Plasma collision rate > 1e-3')
+        # if not self._lpi.electron.hot.isMaxwellian():
+        #     _w.warn('Electron not follow Maxwell-Boltzmann distribution')
 
-    def electron_hot_numberDensity(self,Teh,Sigma,nu_laser,t=0.0,z=0.0):
-        n0 = (2 * (nu_laser*self._lpi.laser.I0)**2 * self._lpi.laser.getTimeIntegral())/(9 * _u.e * (Teh / _u.e)**3 * Sigma)
-        z0 = self.electron_hot_lengthCaracDepth(Teh,Sigma,nu_laser) # ,t ?
+        # _w.warn('Conductivity is assumed to be constant in the plasma')
+        # _w.warn('Electron hot temperature is assumed to be constant during the laser pulse')
+
+    def electron_hot_numberDensity(self,temperature_hot,conductivity,absorption_efficiency,t=0.0,z=0.0):
+        Teh = temperature_hot
+        Sigma = conductivity
+        eta_l = absorption_efficiency
+
+        n0 = (2 * (eta_l*self._lpi.laser.I0)**2 * self._lpi.laser.getTimeIntegral())/(9 * _u.e * (Teh / _u.e)**3 * Sigma)
+        z0 = self.electron_hot_lengthCaracDepth(Teh,Sigma,eta_l) # ,t ?
         # return n0 * (t/self._lpi.laser.getTimeIntegral()) * (z0/(z+z0))**2
         return n0
 
-    def electron_hot_numberTotal(self,Teh,Sigma,nu_laser): # a déplacer dans lpi ? car pas forcemment z0 en longi
-    # TODO: plutôt passer par l'integrale
-        return self.electron_hot_numberDensity(Teh,Sigma,nu_laser,t=0.0*_u.s,z=0.0*_u.m)*\
-            self.electron_hot_lengthCaracDepth(Teh,Sigma,nu_laser,t=0.0*_u.s)*\
-            self._lpi.laser.getSurfaceIntegral()
-
-    def electron_hot_lengthCaracDepth(self,Teh,Sigma,nu_laser,t=0.0 * _u.s):
+    def electron_hot_lengthCaracDepth(self,temperature_hot,conductivity,absorption_efficiency,t=0.0 * _u.s):
         """
         Return the estimate electron penetration depth
             - In the interaction time
@@ -128,9 +133,13 @@ class Bell1997(object):
         Attributes
         ---------
         t, float (optional, default : 0.0)
-        Time.
+            Time.
         """
         # if _u.Quantity.__lt__(t,self._lpi.laser.getTimeIntegral()):
+        Teh = temperature_hot
+        Sigma = conductivity
+        eta_l = absorption_efficiency
+
         if t < self._lpi.laser.getTimeIntegral():
             return (3 * (Teh / _u.e)**2 * Sigma)/(nu_laser*self._lpi.laser.I0)
         else:
@@ -226,7 +235,7 @@ class Mora2003(object):
         if self._lpi.laser.intensity()>1*_u('W/cm**2'):
             _w.warn('Test warning because tatata',UserWarning)
 
-    def getInitialFrontElectricField(self,Te):
+    def getInitialFrontElectricField(self,Te): # TODO: change the name + which temperature ??
         """
         Return the electric field in the front (=edge ?) for initial time.
         """
@@ -282,7 +291,7 @@ class Wilks1992(object):
 
 
 ################################################################################
-class Obvious(object): # TODO: rename Obvious to Common ?
+class Common(object):
     """
     Class containing obvious theoretical estimations, for order of magnitudes.
     It also contains commonly used functions, such as Maxwell-Boltzmann distribution,
@@ -307,22 +316,63 @@ class Obvious(object): # TODO: rename Obvious to Common ?
     def __init__(self,LaserPlasmaInteraction):
         self._lpi        = LaserPlasmaInteraction
 
-    def electron_hot_numberTotal(self,Teh):
+    def checkHypotheses(self):
         """
+        Because this class is used for various features,
+        the checkHypotheses method do nothing here.
+        Hypotheses are checked in methods.
+        """
+        pass
+
+    def electron_hot_numberTotal(self,temperature_hot,absorption_efficiency):
+        """
+        Return an estimate of the hot electron total number,
+        based on the assumption that hot electron distribution is a Maxwellian.
+
+        Parameters
+        ---------
+        temperature_hot, float
+            Hot electron temperature
+        absorption_efficiency, float
+            Laser absorption efficiency into hot electrons
 
         .. math:
-            \frac{E_{laser}}{3/2 k_b T_e^{hot}}
+            n_0 = \\frac{\eta_{l} E_{l}}{3/2 T_e^{hot}}
+            with $n_0$ the hot electron total number,
+            $\eta_l$ the laser absorption efficiency into hot electrons,
+            $E_l$ the laser total energy,
+            $T_e^{hot}$ the thermal energy of hot electrons.
         """
-        return self._lpi.laser.energy/(3/2. * Teh) # voire si changement d'unité de Teh
+        Teh = temperature_hot
 
-    def target_conductivity(self,Tec,logCoulomb): # getSpitzer ? target_conductivity ?
+        return (self._lpi.laser.energy/(3/2. * Teh)).to(_pu['number'])
+
+    def target_conductivity(self,temperature_cold,log_coulomb): # getSpitzer ? target_conductivity ?
         """
         Spitzer conductivity.
 
         .. math :
-            \frac{(4 \pi \epsilon_0)^2 (k_b T_e^{cold})^{3/2}}{\pi Z e^2 \sqrt{m_e} \ln(\Lambda)}
+            \\frac{(4 \pi \epsilon_0)^2 (k_b T_e^{cold})^{3/2}}{\pi Z e^2 \sqrt{m_e} \ln(\Lambda)}
         """
-        return (4*_np.pi*_u.epsilon_0)**2 * (Tec*_u.m_e*_u.c**2)**(3/2.) / (_np.pi*self._lpi.target.mat.Z * _u.e**2 * _u.m_e**(1/2.) * logCoulomb)
+        Tec = temperature_cold
+        lnC = log_coulomb
+        return (4*_np.pi*_u.epsilon_0)**2 * (Tec*_u.m_e*_u.c**2)**(3/2.) / (_np.pi*self._lpi.target.mat.Z * _u.e**2 * _u.m_e**(1/2.) * lnC)
 
     def laser_efficiencyAbsorption(self):
         return _u.Quantity(0.5)
+
+    def electron_distribution(self,distribution,kinetic_energy,temperature):
+        """
+
+        """
+        available=["MB"]
+        Ek = kinetic_energy
+        Te = temperature
+
+        if name=="MB":
+            return _np.sqrt(4/pi) * _np.sqrt(Ek/Te**3) * _np.exp( -Ek/Te )
+        else:
+            if type(distribution)!=str:
+                raise TypeError("'distribution' type must be 'string', but it is "+str(type(distribution)))
+
+            raise NameError("Distribution name "+distribution+" not found. Available are "+str(available))

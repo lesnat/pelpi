@@ -29,12 +29,13 @@ class ParticleInCell(object):
 
         self.Nynquist = 0. # facteur de nynquist pour echantillonage des diags
 
-    def lengthCell(self,temperature):
-        self.dx_laser   = self._lpi.laser.wavelength/10 # voire pour les 2 pi
-        ne = self._lpi.target.mat.electronNumberDensity()/self._lpi.laser.numberDensityCritical()
-        self.dx_target  = (0.1*_u('keV**-(1/2.)') * (self._lpi.laser.wavelength/2*_np.pi) * \
+    def lengthCellMin(self,temperature):
+        self.dx_laser   = self._lpi.laser.wavelength()/10 # voire pour les 2 pi
+        ne = self._lpi.target.material.electronNumberDensity()/self._lpi.laser.numberDensityCritical()
+        self.dx_target  = (0.1*_u('keV**-(1/2.)') * (self._lpi.laser.wavelength()) * \
         _np.sqrt(temperature.to('keV')/ne))
         self.dx         = max(self.dx_laser,self.dx_target)
+        return self.dx
         # if _vb:
         #     print("verbose")
 
@@ -51,7 +52,7 @@ class ParticleInCell(object):
             self._lpi   = LaserPlasmaInteraction
             self.referenceAngularFrequency = referenceAngularFrequency
 
-        def length(self):
+        def lengthCell(self):
             return (_u.c/self.referenceAngularFrequency.to('1/s')).to(_pu['length'])
             #
             # self.Wr         = self._lpi.laser.wl

@@ -121,7 +121,7 @@ class LaserPlasmaInteraction(object):
         self.laser      = Laser
         self.target     = Target
 
-        self.plasma     = PlasmaParameters(self)
+        self.plasma     = _PlasmaParameters(self)
         self.absorption = []
         self.model      = _m
         self.electron   = _Electron(self)
@@ -327,7 +327,7 @@ class _Electron(object):
             return 0.
 
 
-class PlasmaParameters(object):
+class _PlasmaParameters(object):
     """
     Comment faire pour utiliser une température autre que Te_pond ?
     via meilleure estimation de la température si abso != JxB ou donner le choix ?
@@ -335,19 +335,64 @@ class PlasmaParameters(object):
     """
     def __init__(self,LaserPlasmaInteraction):
         self._lpi             = LaserPlasmaInteraction
-        self.updateParameters()
 
 
-    def updateParameters(self): # TODO; convert to methods
-        self.wpe        = 0.0 # Electron plasma frequency
-        self.wpi        = 0.0 # Ion plasma frequency
-        self.lambda_De  = 0.0 # Debye length
-        self.vTe        = 0.0 # Electron thermal velocity
-        self.vTi        = 0.0 # Ion thermal velocity
-        self.vA         = 0.0 # Alfven velocity
-        self.EFermi     = 0.0
+    # def updateParameters(self): # TODO; convert to methods
+    #     self.wpe        = 0.0 # Electron plasma frequency
+    #     self.wpi        = 0.0 # Ion plasma frequency
+    #     self.lambda_De  = 0.0 # Debye length
+    #     self.vTe        = 0.0 # Electron thermal velocity
+    #     self.vTi        = 0.0 # Ion thermal velocity
+    #     self.vA         = 0.0 # Alfven velocity
+    #     self.EFermi     = 0.0
+    #
+    #
+    def electronLengthDebye(self,temperature):
+        """
+        Returns
+        -------
+        Debye length of electrons : length quantity
 
-    def getInfo(self):
-        txt  = ""
+        Notes
+        -----
+        The Debye length is defined as
 
-        return txt
+        .. math:: \lambda_{De} = \sqrt{\\frac{\epsilon_0 T_e}{n_e e^2}}
+        """
+        ne  = self._lpi.target.material.electronNumberDensity()
+        Te  = temperature
+
+        return _np.sqrt((_u.epsilon_0 * Te)/(ne * _u.e**2)).to(_pu['length'])
+
+
+    def electronLengthLandau(self,temperature):
+        """
+        Returns
+        -------
+        Landau length of electrons : length quantity
+
+        Notes
+        -----
+        The Landau length is defined as
+
+        .. math:: r_0 = \\frac{e^2}{4 \pi \epsilon_0 T_e}
+        """
+        Te  = temperature
+
+        return (_u.e**2)/(4*_np.pi * _u.epsilon_0 * Te)
+
+    def electronPulsationPlasma(self,temperature):
+        """
+        Returns
+        -------
+        Plasma pulsation of electrons : 1/time quantity
+
+        Notes
+        -----
+        The Landau length is defined as
+
+        .. math:: \omega_{pe} = \sqrt{\\frac{n_e e^2}{m_e \epsilon_0}}
+        """
+        ne  = self._lpi.target.material.electronNumberDensity()
+
+        return _np.sqrt((ne * _u.e**2)/(_u.me * _u.epsilon_0))

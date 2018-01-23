@@ -2,8 +2,8 @@
 Install
 *******
 
-Get the package
-===============
+Get the source
+==============
 
 
 
@@ -14,7 +14,6 @@ Dependancies
 
 Installation
 ============
-
 
 
 

@@ -1,0 +1,472 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pelpi.Model.LaserPlasmaInteraction &#8212; pelpi 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">pelpi</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../understand.html">Understand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../use.html">Use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pelpi.Model.LaserPlasmaInteraction</h1><div class="highlight"><pre>
+<span></span><span class="c1">#coding:utf8</span>
+<span class="c1"># import numpy as _np</span>
+<span class="c1"># from .. import unit as _u</span>
+<span class="kn">from</span> <span class="nn">.._global</span> <span class="k">import</span> <span class="o">*</span>
+<span class="c1">################################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Malka 2001 -&gt; Scaling Energie max electrons</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Beg1997"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Beg1997">[docs]</a><span class="k">class</span> <span class="nc">Beg1997</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for estimating ...</span>
+<span class="sd">    Experimental fit</span>
+
+<span class="sd">    hypotheses</span>
+
+<span class="sd">    reference</span>
+<span class="sd">    ...</span>
+<span class="sd">    Experimental laser intensity etc ...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">LaserPlasmaInteraction</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span>         <span class="o">=</span> <span class="n">LaserPlasmaInteraction</span>
+
+<div class="viewcode-block" id="Beg1997.checkHypotheses"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Beg1997.checkHypotheses">[docs]</a>    <span class="k">def</span> <span class="nf">checkHypotheses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check the hypotheses of the model.</span>
+
+<span class="sd">        Warnings can be configured in pelpi.warnings.filterwarnings method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">intensity</span><span class="p">()</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;W/cm**2&#39;</span><span class="p">):</span>
+            <span class="n">_w</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Test warning because tatata&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Beg1997.electron_hot_temperature"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Beg1997.electron_hot_temperature">[docs]</a>    <span class="k">def</span> <span class="nf">electron_hot_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># TODO: change by sub-class Electron sub-class Hot method temperature ?</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an estimate of the hot electron temperature from the Beg1997 model.</span>
+
+<span class="sd">        .. math:</span>
+<span class="sd">            T_e^h = 100 * (\\frac{I_{17} \lambda_{\mu}^2})^(1/3)</span>
+<span class="sd">            with $T_e^h$ the hot electron temperature in keV</span>
+<span class="sd">            $I_{17}$ the laser peak intensity in $10^{17} W.cm^{-2}$</span>
+<span class="sd">            $\lambda_{\mu}$ the laser wavelength in $10^{-6}$ m</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">I0</span>              <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">intensity</span><span class="p">()</span>
+        <span class="n">lambda_laser</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">wavelength</span><span class="p">()</span>
+
+        <span class="n">Te</span> <span class="o">=</span> <span class="mf">100.</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;keV&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">I0</span> <span class="o">*</span> <span class="n">lambda_laser</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1e17</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;W/cm**2&#39;</span><span class="p">)</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;um**2&#39;</span><span class="p">))</span> <span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">3.</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Te</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">_pu</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Beg1997.ion_energyCutoff"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Beg1997.ion_energyCutoff">[docs]</a>    <span class="k">def</span> <span class="nf">ion_energyCutoff</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the maximum ion energy in me c**2,</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">1.2e-2</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;keV&#39;</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">I0</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;W/cm**2&#39;</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mf">0.313</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Bell1997"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Bell1997">[docs]</a><span class="k">class</span> <span class="nc">Bell1997</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for estimating ...</span>
+<span class="sd">    Return current</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ---------</span>
+<span class="sd">    n0, float</span>
+<span class="sd">        Estimate of the number of accelerated electrons.</span>
+<span class="sd">    z0, float</span>
+<span class="sd">        Estimate of the penetration depth of fast electrons (distance from the surface).</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    ------</span>
+<span class="sd">    checkHypotheses()</span>
+<span class="sd">    electron_hot_numberTotal()</span>
+<span class="sd">    electron_hot_lengthCaracDepth()</span>
+
+<span class="sd">    Hypotheses</span>
+<span class="sd">    ---------</span>
+<span class="sd">    Short pulse (&lt; 1 ps)</span>
+<span class="sd">    High intensity (&gt;10^18 W.cm^-2)</span>
+<span class="sd">    Colisionless plasma</span>
+<span class="sd">    Maxwellian hot electron distribution</span>
+<span class="sd">    Constant conductivity in the plasma</span>
+<span class="sd">    T0 constant during the laser pulse (collision time larger than interaction time)</span>
+
+<span class="sd">    Reference</span>
+<span class="sd">    --------</span>
+<span class="sd">    A R Bell, J R Davies, S Guerin, H Ruhl,</span>
+<span class="sd">    Fast-electron transport in high-intensity short-pulse laser-solid experiments,</span>
+<span class="sd">    Plasma Phys. Control. Fusion, 1997.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    ----</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">LaserPlasmaInteraction</span><span class="p">):</span> <span class="c1"># A définir ici ou dans les méthodes ??? car certaines méthodes n&#39;ont pas besoin de tous les param</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span>        <span class="o">=</span> <span class="n">LaserPlasmaInteraction</span>
+
+<div class="viewcode-block" id="Bell1997.checkHypotheses"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Bell1997.checkHypotheses">[docs]</a>    <span class="k">def</span> <span class="nf">checkHypotheses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check the hypotheses of the model.</span>
+
+<span class="sd">        Warnings can be configured in pelpi.warnings.filterwarnings method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">timeIntegral</span><span class="p">()</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;ps&#39;</span><span class="p">):</span> <span class="c1"># TODO: maybe change by timeCarac()</span>
+            <span class="n">_w</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Pulse duration &gt; 1 ps&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">intensity</span><span class="p">()</span><span class="o">&lt;</span><span class="mi">10</span><span class="o">**</span><span class="mi">18</span> <span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;W/cm**2&#39;</span><span class="p">):</span>
+            <span class="n">_w</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Laser peak intensity &lt; 10**18 W/cm**2&#39;</span><span class="p">)</span></div>
+        <span class="c1"># if self._lpi.plasma.collisionRate()&gt;1e-3 * _u(&#39;&#39;):</span>
+        <span class="c1">#     _w.warn(&#39;Plasma collision rate &gt; 1e-3&#39;)</span>
+        <span class="c1"># if not self._lpi.electron.hot.isMaxwellian():</span>
+        <span class="c1">#     _w.warn(&#39;Electron not follow Maxwell-Boltzmann distribution&#39;)</span>
+
+        <span class="c1"># _w.warn(&#39;Conductivity is assumed to be constant in the plasma&#39;)</span>
+        <span class="c1"># _w.warn(&#39;Electron hot temperature is assumed to be constant during the laser pulse&#39;)</span>
+
+<div class="viewcode-block" id="Bell1997.electron_hot_numberDensity"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_hot_numberDensity">[docs]</a>    <span class="k">def</span> <span class="nf">electron_hot_numberDensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">temperature_hot</span><span class="p">,</span><span class="n">conductivity</span><span class="p">,</span><span class="n">absorption_efficiency</span><span class="p">,</span><span class="n">t</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">z</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="n">Teh</span> <span class="o">=</span> <span class="n">temperature_hot</span>
+        <span class="n">Sigma</span> <span class="o">=</span> <span class="n">conductivity</span>
+        <span class="n">eta_l</span> <span class="o">=</span> <span class="n">absorption_efficiency</span>
+
+        <span class="n">n0</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">eta_l</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">I0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">getTimeIntegral</span><span class="p">())</span><span class="o">/</span><span class="p">(</span><span class="mi">9</span> <span class="o">*</span> <span class="n">_u</span><span class="o">.</span><span class="n">e</span> <span class="o">*</span> <span class="p">(</span><span class="n">Teh</span> <span class="o">/</span> <span class="n">_u</span><span class="o">.</span><span class="n">e</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span> <span class="o">*</span> <span class="n">Sigma</span><span class="p">)</span>
+        <span class="n">z0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">electron_hot_lengthCaracDepth</span><span class="p">(</span><span class="n">Teh</span><span class="p">,</span><span class="n">Sigma</span><span class="p">,</span><span class="n">eta_l</span><span class="p">)</span> <span class="c1"># ,t ?</span>
+        <span class="c1"># return n0 * (t/self._lpi.laser.getTimeIntegral()) * (z0/(z+z0))**2</span>
+        <span class="k">return</span> <span class="n">n0</span></div>
+
+<div class="viewcode-block" id="Bell1997.electron_hot_lengthCaracDepth"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_hot_lengthCaracDepth">[docs]</a>    <span class="k">def</span> <span class="nf">electron_hot_lengthCaracDepth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">temperature_hot</span><span class="p">,</span><span class="n">conductivity</span><span class="p">,</span><span class="n">absorption_efficiency</span><span class="p">,</span><span class="n">t</span><span class="o">=</span><span class="mf">0.0</span> <span class="o">*</span> <span class="n">_u</span><span class="o">.</span><span class="n">s</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the estimate electron penetration depth</span>
+<span class="sd">            - In the interaction time</span>
+<span class="sd">            - After the interaction time (due to diffusion)</span>
+
+<span class="sd">        Attributes</span>
+<span class="sd">        ---------</span>
+<span class="sd">        t, float (optional, default : 0.0)</span>
+<span class="sd">            Time.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if _u.Quantity.__lt__(t,self._lpi.laser.getTimeIntegral()):</span>
+        <span class="n">Teh</span> <span class="o">=</span> <span class="n">temperature_hot</span>
+        <span class="n">Sigma</span> <span class="o">=</span> <span class="n">conductivity</span>
+        <span class="n">eta_l</span> <span class="o">=</span> <span class="n">absorption_efficiency</span>
+
+        <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">getTimeIntegral</span><span class="p">():</span>
+            <span class="k">return</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="n">Teh</span> <span class="o">/</span> <span class="n">_u</span><span class="o">.</span><span class="n">e</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">Sigma</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">nu_laser</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">I0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">1.78</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">electron_hot_lengthCaracDepth</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mf">0.0</span> <span class="o">*</span><span class="n">_u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">getTimeIntegral</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.618</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mf">5.</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Bell1997.electron_density"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_density">[docs]</a>    <span class="k">def</span> <span class="nf">electron_density</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+<div class="viewcode-block" id="Braginskii1965"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Braginskii1965">[docs]</a><span class="k">class</span> <span class="nc">Braginskii1965</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="Braginskii1965.electron_hot_lengthCaracDepth"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_lengthCaracDepth">[docs]</a>    <span class="k">def</span> <span class="nf">electron_hot_lengthCaracDepth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Braginskii1965.electron_hot_timeEnergyLoss"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_timeEnergyLoss">[docs]</a>    <span class="k">def</span> <span class="nf">electron_hot_timeEnergyLoss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Braginskii1965.electron_hot_timeAngularScattering"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_timeAngularScattering">[docs]</a>    <span class="k">def</span> <span class="nf">electron_hot_timeAngularScattering</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Braginskii1965.electron_hot_RMS"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_RMS">[docs]</a>    <span class="k">def</span> <span class="nf">electron_hot_RMS</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Braginskii1965.target_conductivity"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Braginskii1965.target_conductivity">[docs]</a>    <span class="k">def</span> <span class="nf">target_conductivity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+<div class="viewcode-block" id="Davies2003"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Davies2003">[docs]</a><span class="k">class</span> <span class="nc">Davies2003</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Theoretical paper on Electric and Magnetic field generation and target heating</span>
+<span class="sd">    by laser-generated fast electrons + electrical conductivity.</span>
+<span class="sd">    Change of resistivity due to Ohmic heating.</span>
+
+
+<span class="sd">    Hypotheses</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Material is a conductor</span>
+<span class="sd">    Arbitrary power law of resistivity on temperature</span>
+<span class="sd">    Electron current is fixed (rigid beam approximation)</span>
+<span class="sd">    Charge diffusion is instantaneous</span>
+<span class="sd">    Magnetic diffusion is negligible</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">LaserPlasmaInteraction</span><span class="p">):</span>
+        <span class="n">lpi</span>         <span class="o">=</span> <span class="n">LaserPlasmaInteraction</span></div>
+
+<div class="viewcode-block" id="Haines2009"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Haines2009">[docs]</a><span class="k">class</span> <span class="nc">Haines2009</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">LaserPlasmaInteraction</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span>         <span class="o">=</span> <span class="n">LaserPlasmaInteraction</span>
+
+<div class="viewcode-block" id="Haines2009.checkHypotheses"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Haines2009.checkHypotheses">[docs]</a>    <span class="k">def</span> <span class="nf">checkHypotheses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check the hypotheses of the model.</span>
+
+<span class="sd">        Warnings can be configured in pelpi.warnings.filterwarnings method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">intensity</span><span class="p">()</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;W/cm**2&#39;</span><span class="p">):</span>
+            <span class="n">_w</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Test warning because tatata&#39;</span><span class="p">,</span><span class="ne">UserWarning</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Haines2009.electron_hot_temperature"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Haines2009.electron_hot_temperature">[docs]</a>    <span class="k">def</span> <span class="nf">electron_hot_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an estimate of the hot electron temperature from the Haines2009 model.</span>
+
+<span class="sd">        .. math:</span>
+<span class="sd">            T_e^h = (\sqrt{1 + \sqrt{2} \ a_0} - 1 ) m_e c^2</span>
+<span class="sd">            with $T_e^h$ the hot electron temperature</span>
+<span class="sd">            $a_0$ the normalized laser intensity</span>
+<span class="sd">            $m_e c^2$ the electron mass energy</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">intensityPeakNormalized</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">((</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span> <span class="o">*</span> <span class="n">a0</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">511</span> <span class="o">*</span> <span class="n">_u</span><span class="p">(</span><span class="s1">&#39;keV&#39;</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="Mora2003"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Mora2003">[docs]</a><span class="k">class</span> <span class="nc">Mora2003</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Theoretical paper on plasma expansion into vacuum, focused on ion acceleration</span>
+<span class="sd">    and calculations of electric fields.</span>
+
+<span class="sd">    1d, Maxwellian electron distribution (constant in time), sharp edge ...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">LaserPlasmaInteraction</span><span class="p">):</span>
+        <span class="n">lpi</span>         <span class="o">=</span> <span class="n">LaserPlasmaInteraction</span>
+
+<div class="viewcode-block" id="Mora2003.checkHypotheses"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Mora2003.checkHypotheses">[docs]</a>    <span class="k">def</span> <span class="nf">checkHypotheses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check the hypotheses of the model.</span>
+
+<span class="sd">        Warnings can be configured in pelpi.warnings.filterwarnings method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">intensity</span><span class="p">()</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;W/cm**2&#39;</span><span class="p">):</span>
+            <span class="n">_w</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Test warning because tatata&#39;</span><span class="p">,</span><span class="ne">UserWarning</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Mora2003.getInitialFrontElectricField"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Mora2003.getInitialFrontElectricField">[docs]</a>    <span class="k">def</span> <span class="nf">getInitialFrontElectricField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Te</span><span class="p">):</span> <span class="c1"># TODO: change the name + which temperature ??</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the electric field in the front (=edge ?) for initial time.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="n">_np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">lpi</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">ne</span> <span class="o">*</span> <span class="n">Te</span><span class="o">/</span><span class="n">_u</span><span class="o">.</span><span class="n">epsilon_0</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Mora2003.ion_energyCutoff"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Mora2003.ion_energyCutoff">[docs]</a>    <span class="k">def</span> <span class="nf">ion_energyCutoff</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+<div class="viewcode-block" id="Wilks1992"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Wilks1992">[docs]</a><span class="k">class</span> <span class="nc">Wilks1992</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for estimating ...</span>
+<span class="sd">    Based of the paper of Wilks, ..., 1992.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ---------</span>
+
+
+<span class="sd">    Methods</span>
+<span class="sd">    ------</span>
+
+
+
+<span class="sd">    Notes</span>
+<span class="sd">    ----</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">LaserPlasmaInteraction</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span>        <span class="o">=</span> <span class="n">LaserPlasmaInteraction</span>
+
+<div class="viewcode-block" id="Wilks1992.checkHypotheses"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Wilks1992.checkHypotheses">[docs]</a>    <span class="k">def</span> <span class="nf">checkHypotheses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check the hypotheses of the model.</span>
+
+<span class="sd">        Warnings can be configured in pelpi.warnings.filterwarnings method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">intensity</span><span class="p">()</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">*</span><span class="n">_u</span><span class="p">(</span><span class="s1">&#39;W/cm**2&#39;</span><span class="p">):</span>
+            <span class="n">_w</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Test warning because tatata&#39;</span><span class="p">,</span><span class="ne">UserWarning</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Wilks1992.electron_hot_temperature"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Wilks1992.electron_hot_temperature">[docs]</a>    <span class="k">def</span> <span class="nf">electron_hot_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an estimate of the hot electron temperature from the Wilks1992 model.</span>
+
+<span class="sd">        .. math:</span>
+<span class="sd">            T_e^h = (\sqrt{1 + a_0^2} - 1 ) m_e c^2</span>
+<span class="sd">            with $T_e^h$ the hot electron temperature</span>
+<span class="sd">            $a_0$ the normalized laser intensity</span>
+<span class="sd">            $m_e c^2$ the electron mass energy</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">intensityPeakNormalized</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">((</span><span class="mf">1.0</span> <span class="o">+</span> <span class="p">(</span><span class="n">a0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span> <span class="p">)</span> <span class="o">*</span> <span class="mi">511</span> <span class="o">*</span> <span class="n">_u</span><span class="p">(</span><span class="s1">&#39;keV&#39;</span><span class="p">)</span> <span class="c1"># TODO: a0 or a0/2 ?</span></div></div>
+
+
+<span class="c1">################################################################################</span>
+<div class="viewcode-block" id="Common"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Common">[docs]</a><span class="k">class</span> <span class="nc">Common</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class containing obvious theoretical estimations, for order of magnitudes.</span>
+<span class="sd">    It also contains commonly used functions, such as Maxwell-Boltzmann distribution,</span>
+<span class="sd">    Spitzer conductivity, etc ... that would not be relevant to include in a dedicated</span>
+<span class="sd">    object due to their old and massive use.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ---------</span>
+
+
+<span class="sd">    Methods</span>
+<span class="sd">    ------</span>
+
+
+
+<span class="sd">    Notes</span>
+<span class="sd">    ----</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">LaserPlasmaInteraction</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span>        <span class="o">=</span> <span class="n">LaserPlasmaInteraction</span>
+
+<div class="viewcode-block" id="Common.checkHypotheses"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Common.checkHypotheses">[docs]</a>    <span class="k">def</span> <span class="nf">checkHypotheses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Because this class is used for various features,</span>
+<span class="sd">        the checkHypotheses method do nothing here.</span>
+<span class="sd">        Hypotheses are checked in methods.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Common.electron_hot_numberTotal"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Common.electron_hot_numberTotal">[docs]</a>    <span class="k">def</span> <span class="nf">electron_hot_numberTotal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">temperature_hot</span><span class="p">,</span><span class="n">absorption_efficiency</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an estimate of the hot electron total number,</span>
+<span class="sd">        based on the assumption that hot electron distribution is a Maxwellian.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ---------</span>
+<span class="sd">        temperature_hot, float</span>
+<span class="sd">            Hot electron temperature</span>
+<span class="sd">        absorption_efficiency, float</span>
+<span class="sd">            Laser absorption efficiency into hot electrons</span>
+
+<span class="sd">        .. math:</span>
+<span class="sd">            n_0 = \\frac{\eta_{l} E_{l}}{3/2 T_e^{hot}}</span>
+<span class="sd">            with $n_0$ the hot electron total number,</span>
+<span class="sd">            $\eta_l$ the laser absorption efficiency into hot electrons,</span>
+<span class="sd">            $E_l$ the laser total energy,</span>
+<span class="sd">            $T_e^{hot}$ the thermal energy of hot electrons.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Teh</span> <span class="o">=</span> <span class="n">temperature_hot</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">energy</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mf">2.</span> <span class="o">*</span> <span class="n">Teh</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">_pu</span><span class="p">[</span><span class="s1">&#39;number&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Common.target_conductivity"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Common.target_conductivity">[docs]</a>    <span class="k">def</span> <span class="nf">target_conductivity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">temperature_cold</span><span class="p">,</span><span class="n">log_coulomb</span><span class="p">):</span> <span class="c1"># getSpitzer ? target_conductivity ?</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Spitzer conductivity.</span>
+
+<span class="sd">        .. math :</span>
+<span class="sd">            \\frac{(4 \pi \epsilon_0)^2 (k_b T_e^{cold})^{3/2}}{\pi Z e^2 \sqrt{m_e} \ln(\Lambda)}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Tec</span> <span class="o">=</span> <span class="n">temperature_cold</span>
+        <span class="n">lnC</span> <span class="o">=</span> <span class="n">log_coulomb</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">_u</span><span class="o">.</span><span class="n">epsilon_0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">Tec</span><span class="o">*</span><span class="n">_u</span><span class="o">.</span><span class="n">m_e</span><span class="o">*</span><span class="n">_u</span><span class="o">.</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">Z</span> <span class="o">*</span> <span class="n">_u</span><span class="o">.</span><span class="n">e</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">_u</span><span class="o">.</span><span class="n">m_e</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span> <span class="o">*</span> <span class="n">lnC</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Common.laser_efficiencyAbsorption"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Common.laser_efficiencyAbsorption">[docs]</a>    <span class="k">def</span> <span class="nf">laser_efficiencyAbsorption</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Common.electron_distribution"><a class="viewcode-back" href="../../../use.html#pelpi.Model.LaserPlasmaInteraction.Common.electron_distribution">[docs]</a>    <span class="k">def</span> <span class="nf">electron_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">distribution</span><span class="p">,</span><span class="n">kinetic_energy</span><span class="p">,</span><span class="n">temperature</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">available</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;MB&quot;</span><span class="p">]</span>
+        <span class="n">Ek</span> <span class="o">=</span> <span class="n">kinetic_energy</span>
+        <span class="n">Te</span> <span class="o">=</span> <span class="n">temperature</span>
+
+        <span class="k">if</span> <span class="n">name</span><span class="o">==</span><span class="s2">&quot;MB&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">4</span><span class="o">/</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Ek</span><span class="o">/</span><span class="n">Te</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span> <span class="o">-</span><span class="n">Ek</span><span class="o">/</span><span class="n">Te</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">distribution</span><span class="p">)</span><span class="o">!=</span><span class="nb">str</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;distribution&#39; type must be &#39;string&#39;, but it is &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">distribution</span><span class="p">)))</span>
+
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s2">&quot;Distribution name &quot;</span><span class="o">+</span><span class="n">distribution</span><span class="o">+</span><span class="s2">&quot; not found. Available are &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">available</span><span class="p">))</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2018, lesnat.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

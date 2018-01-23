@@ -1,0 +1,958 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Use &#8212; pelpi 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Understand" href="understand.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">pelpi</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="understand.html">Understand</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Use</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setting-target-parameters">Setting target parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#material">Material</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#target">Target</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-laser-parameters">Setting laser parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#profile">Profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#laser">Laser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#estimate-laser-plasma-interaction">Estimate laser plasma interaction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#laserplasmainteraction">LaserPlasmaInteraction</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#estimate-pic-parameters">Estimate PIC parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#particleincell">ParticleInCell</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#models-reference">Models Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">LaserPlasmaInteraction</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="use">
+<h1>Use<a class="headerlink" href="#use" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="setting-target-parameters">
+<h2>Setting target parameters<a class="headerlink" href="#setting-target-parameters" title="Permalink to this headline">¶</a></h2>
+<p>Comments …</p>
+<div class="section" id="material">
+<h3>Material<a class="headerlink" href="#material" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pelpi.Material">
+<em class="property">class </em><code class="descclassname">pelpi.</code><code class="descname">Material</code><span class="sig-paren">(</span><em>density</em>, <em>atomic_mass</em>, <em>Z</em>, <em>A</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Target.html#Material"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Material" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for defining a material.</p>
+<dl class="method">
+<dt id="pelpi.Material.electronNumberDensity">
+<code class="descname">electronNumberDensity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Target.html#Material.electronNumberDensity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Material.electronNumberDensity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Material.ionNumberDensity">
+<code class="descname">ionNumberDensity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Target.html#Material.ionNumberDensity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Material.ionNumberDensity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="target">
+<h3>Target<a class="headerlink" href="#target" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pelpi.Target">
+<em class="property">class </em><code class="descclassname">pelpi.</code><code class="descname">Target</code><span class="sig-paren">(</span><em>Material</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Target.html#Target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for defining the target characteristics.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="setting-laser-parameters">
+<h2>Setting laser parameters<a class="headerlink" href="#setting-laser-parameters" title="Permalink to this headline">¶</a></h2>
+<p>Comments …</p>
+<div class="section" id="profile">
+<h3>Profile<a class="headerlink" href="#profile" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pelpi.Profile">
+<em class="property">class </em><code class="descclassname">pelpi.</code><code class="descname">Profile</code><span class="sig-paren">(</span><em>time_profile</em>, <em>space_profile</em>, <em>time_fwhm=None</em>, <em>space_fwhm=None</em>, <em>space_radius=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pelpi._tools._PelpiObject</span></code></p>
+<p>Class for defining spatial and temporal pulse profiles.</p>
+<p>Yet only simple profiles are accepted (depends only on radius).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>time_profile</strong> (<em>str</em>) – Temporal profile of the pulse. Available : <code class="docutils literal"><span class="pre">gaussian</span></code></li>
+<li><strong>space_profile</strong> (<em>str</em>) – Spatial profile of the pulse (waist). Available : <code class="docutils literal"><span class="pre">gaussian</span></code>, <code class="docutils literal"><span class="pre">top-hat</span></code></li>
+<li><strong>time_fwhm</strong> (<em>time quantity</em><em>, </em><em>optional</em>) – Temporal Full Width Half Maximum of the laser pulse.</li>
+<li><strong>space_fwhm</strong> (<em>length quantity</em><em>, </em><em>optional</em>) – Spatial Full Width Half Maximum of the laser pulse.</li>
+<li><strong>space_radius</strong> (<em>length quantity</em><em>, </em><em>optional</em>) – Spatial radius of the laser pulse.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>If <code class="docutils literal"><span class="pre">time_profile</span></code> is <code class="docutils literal"><span class="pre">gaussian</span></code>, you must define <code class="docutils literal"><span class="pre">time_fwhm</span></code>.</p>
+<p>If <code class="docutils literal"><span class="pre">space_profile</span></code> is <code class="docutils literal"><span class="pre">gaussian</span></code>, you must define <code class="docutils literal"><span class="pre">space_fwhm</span></code>.</p>
+<p>If <code class="docutils literal"><span class="pre">space_profile</span></code> is <code class="docutils literal"><span class="pre">top-hat</span></code>, you must define <code class="docutils literal"><span class="pre">space_radius</span></code>.</p>
+<p class="rubric">Examples</p>
+<p>You can set a laser profile as follows :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pelpi</span> <span class="k">as</span> <span class="nn">pp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">prof</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">Profile</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">time_profile</span>  <span class="o">=</span> <span class="s2">&quot;gaussian&quot;</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">time_fwhm</span>     <span class="o">=</span> <span class="mi">30</span> <span class="o">*</span> <span class="n">pp</span><span class="o">.</span><span class="n">unit</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">),</span>
+<span class="gp">... </span>   <span class="n">space_profile</span> <span class="o">=</span> <span class="s2">&quot;top-hat&quot;</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">space_radius</span>  <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">pp</span><span class="o">.</span><span class="n">unit</span><span class="p">(</span><span class="s1">&#39;um&#39;</span><span class="p">)</span>
+<span class="gp">... </span>   <span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pelpi.Profile.envelope">
+<code class="descname">envelope</code><span class="sig-paren">(</span><em>r</em>, <em>t</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Profile.envelope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Profile.envelope" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Pulse envelope at given time and radius</strong></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">dimensionless quantity</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>r</strong> (<em>length quantity</em>) – Radius.</li>
+<li><strong>t</strong> (<em>time quantity</em>) – Time.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>envelope is centered at t=0 and r=0, and has a maximum value of 1.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Profile.spaceEnvelope">
+<code class="descname">spaceEnvelope</code><span class="sig-paren">(</span><em>r</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Profile.spaceEnvelope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Profile.spaceEnvelope" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>Space pulse envelope at given radius</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dimensionless quantity</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>r</strong> (<em>length quantity</em>) – Radius.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>spaceEnvelope is centered at r=0 and has a maximum value of 1.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Profile.spaceIntegralDouble">
+<code class="descname">spaceIntegralDouble</code><span class="sig-paren">(</span><em>lower_edge=None</em>, <em>upper_edge=None</em>, <em>number_points=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Profile.spaceIntegralDouble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Profile.spaceIntegralDouble" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Double integration of the space envelope under radius</strong></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">length**2 quantity</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lower_edge</strong> (<em>float</em><em>, </em><em>optional</em>) – Lower edge of integration</li>
+<li><strong>upper_edge</strong> (<em>float</em><em>, </em><em>optional</em>) – Upper edge of integration</li>
+<li><strong>number_points</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of points to use</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Some analytical solutions exists for space profiles :</p>
+<p><code class="docutils literal"><span class="pre">gaussian</span></code> :</p>
+<div class="math">
+\[S_r^0 = \pi (\frac{r_{FWHM}}{2 \sqrt{\ln{2}}})^2\]</div>
+<p><code class="docutils literal"><span class="pre">top-hat</span></code> :</p>
+<div class="math">
+\[S_r^0 = \pi r^2\]</div>
+<p>For other profiles, numerical integration is performed with numpy.trapz,
+so <code class="docutils literal"><span class="pre">lower_edge</span></code>, <code class="docutils literal"><span class="pre">upper_edge</span></code> and <code class="docutils literal"><span class="pre">number_points</span></code> must be defined.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Profile.space_fwhm">
+<code class="descname">space_fwhm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Profile.space_fwhm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Profile.space_fwhm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Profile.space_profile">
+<code class="descname">space_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Profile.space_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Profile.space_profile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Profile.space_radius">
+<code class="descname">space_radius</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Profile.space_radius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Profile.space_radius" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Profile.timeEnvelope">
+<code class="descname">timeEnvelope</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Profile.timeEnvelope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Profile.timeEnvelope" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>Time pulse envelope at given time</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dimensionless quantity</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>t</strong> (<em>time quantity</em>) – Time.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>timeEnvelope is centered at t=0, and has a maximum value of 1.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Profile.timeIntegral">
+<code class="descname">timeIntegral</code><span class="sig-paren">(</span><em>lower_edge=None</em>, <em>upper_edge=None</em>, <em>number_points=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Profile.timeIntegral"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Profile.timeIntegral" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Integration of timeEnvelope under time</strong></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">time quantity</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lower_edge</strong> (<em>float</em><em>, </em><em>optional</em>) – Lower edge of integration</li>
+<li><strong>upper_edge</strong> (<em>float</em><em>, </em><em>optional</em>) – Upper edge of integration</li>
+<li><strong>number_points</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of points to use</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Some analytical solutions exists for time profiles :</p>
+<p><code class="docutils literal"><span class="pre">gaussian</span></code> :</p>
+<div class="math">
+\[S_0^t = \sqrt{\pi} \frac{t_{FWHM}}{2 \sqrt{\ln{2}}}\]</div>
+<p>For other profiles, numerical integration is performed with numpy.trapz,
+so <code class="docutils literal"><span class="pre">lower_edge</span></code>, <code class="docutils literal"><span class="pre">upper_edge</span></code> and <code class="docutils literal"><span class="pre">number_points</span></code> must be defined.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Profile.time_fwhm">
+<code class="descname">time_fwhm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Profile.time_fwhm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Profile.time_fwhm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Profile.time_profile">
+<code class="descname">time_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Profile.time_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Profile.time_profile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="laser">
+<h3>Laser<a class="headerlink" href="#laser" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pelpi.Laser">
+<em class="property">class </em><code class="descclassname">pelpi.</code><code class="descname">Laser</code><span class="sig-paren">(</span><em>wavelength</em>, <em>energy</em>, <em>Profile</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Laser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Laser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pelpi._tools._PelpiObject</span></code></p>
+<p>Class for defining laser characteristics, and do some simple calculations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>wavelength</strong> (<em>length quantity</em>) – Laser monochromatic wavelength</li>
+<li><strong>energy</strong> (<em>energy quantity</em>) – Total energy of the laser pulse</li>
+<li><strong>profile</strong> (<em>object</em>) – Instanciated <code class="docutils literal"><span class="pre">Profile</span></code> object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p>Assuming you defined a <code class="docutils literal"><span class="pre">Profile</span></code> object as <code class="docutils literal"><span class="pre">prof</span></code>, you can instanciate a <code class="docutils literal"><span class="pre">Laser</span></code> class as follows</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">laser</span><span class="o">=</span><span class="n">pp</span><span class="o">.</span><span class="n">Laser</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">wavelength</span> <span class="o">=</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">pp</span><span class="o">.</span><span class="n">unit</span><span class="p">(</span><span class="s1">&#39;um&#39;</span><span class="p">),</span>
+<span class="gp">... </span>   <span class="n">energy</span>     <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">pp</span><span class="o">.</span><span class="n">unit</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">),</span>
+<span class="gp">... </span>   <span class="n">Profile</span>    <span class="o">=</span> <span class="n">prof</span>
+<span class="gp">... </span>   <span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>and then print some calculations</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Laser peak intensity : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">laser</span><span class="o">.</span><span class="n">intensity</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="o">*</span><span class="n">pp</span><span class="o">.</span><span class="n">unit</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">),</span><span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="o">*</span><span class="n">pp</span><span class="o">.</span><span class="n">unit</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">))))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Laser normalized intensity : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">laser</span><span class="o">.</span><span class="n">intensityNormalized</span><span class="p">()))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Critical number density : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">laser</span><span class="o">.</span><span class="n">numberDensityCritical</span><span class="p">()))</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="pelpi.Laser.energy">
+<code class="descname">energy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Laser.energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Laser.energy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Laser.intensity">
+<code class="descname">intensity</code><span class="sig-paren">(</span><em>r=&lt;Quantity(0</em>, <em>'meter')&gt;</em>, <em>t=&lt;Quantity(0</em>, <em>'second')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Laser.intensity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Laser.intensity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Laser.intensityPeakNormalized">
+<code class="descname">intensityPeakNormalized</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Laser.intensityPeakNormalized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Laser.intensityPeakNormalized" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>Normalized laser peak intensity</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dimensionless quantity</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>The normalized laser intensity <span class="math">\(a_0\)</span> is defined as follows :</p>
+<div class="math">
+\[a_0 = 0.85 \times \sqrt{I_{18} \lambda_{\mu}^2}\]</div>
+<p>with <span class="math">\(I_{18}\)</span> the laser peak intensity in <span class="math">\(10^{18} W.cm^{-2}\)</span>
+and <span class="math">\(\lambda_{\mu}\)</span> the laser wavelength in <span class="math">\(10^{-6} m\)</span>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Laser.numberDensityCritical">
+<code class="descname">numberDensityCritical</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Laser.numberDensityCritical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Laser.numberDensityCritical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the critical number density.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Laser.power">
+<code class="descname">power</code><span class="sig-paren">(</span><em>r=&lt;Quantity(0</em>, <em>'meter')&gt;</em>, <em>t=&lt;Quantity(0</em>, <em>'second')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Laser.power"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Laser.power" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Laser.pulsation">
+<code class="descname">pulsation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Laser.pulsation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Laser.pulsation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Laser.timeChirp">
+<code class="descname">timeChirp</code><span class="sig-paren">(</span><em>t</em>, <em>phase=&lt;Quantity(0.0</em>, <em>'degree')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Laser.timeChirp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Laser.timeChirp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Laser.wavelength">
+<code class="descname">wavelength</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Laser.html#Laser.wavelength"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Laser.wavelength" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="estimate-laser-plasma-interaction">
+<h2>Estimate laser plasma interaction<a class="headerlink" href="#estimate-laser-plasma-interaction" title="Permalink to this headline">¶</a></h2>
+<p>Comments …</p>
+<div class="section" id="laserplasmainteraction">
+<h3>LaserPlasmaInteraction<a class="headerlink" href="#laserplasmainteraction" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pelpi.LaserPlasmaInteraction">
+<em class="property">class </em><code class="descclassname">pelpi.</code><code class="descname">LaserPlasmaInteraction</code><span class="sig-paren">(</span><em>Laser</em>, <em>Target</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/LaserPlasmaInteraction.html#LaserPlasmaInteraction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.LaserPlasmaInteraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class for estimations in laser-plasma interaction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Laser</strong> (<em>object</em>) – Instanciated <code class="docutils literal"><span class="pre">pelpi.Laser</span></code> object</li>
+<li><strong>Target</strong> (<em>object</em>) – Instanciated <code class="docutils literal"><span class="pre">pelpi.Target</span></code> object</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>laser</strong> (<em>sub-module</em>) – The <code class="docutils literal"><span class="pre">pelpi.Laser</span></code> object given as argument when the class was declared.</li>
+<li><strong>target</strong> (<em>sub-module</em>) – The <code class="docutils literal"><span class="pre">pelpi.Target</span></code> object given as argument when the class was declared.</li>
+<li><strong>plasma</strong> (<em>sub-module</em>) – Contains usual plasma parameters.</li>
+<li><strong>model</strong> (<em>sub-module</em>) – Contains the all the available models.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Some models may need optional parameters, such as electron hot temperature
+or laser absorption efficiency for complete the calculus.
+These parameters can be choosen by the user (for order of magnitude) or
+calculated by other models and passed as argument.
+Please refer to the method documentation for more informations.</p>
+<p class="rubric">Examples</p>
+<p>Assuming you instanciated a <code class="docutils literal"><span class="pre">pelpi.Target</span></code> object as <code class="docutils literal"><span class="pre">targ</span></code>
+and a <code class="docutils literal"><span class="pre">pelpi.Laser</span></code> object as <code class="docutils literal"><span class="pre">las</span></code>,
+you can instanciate the <code class="docutils literal"><span class="pre">pelpi.LaserPlasmaInteraction</span></code> object as follows :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pelpi</span> <span class="k">as</span> <span class="nn">pp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lpi</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">LaserPlasmaInteraction</span><span class="p">(</span><span class="n">las</span><span class="p">,</span><span class="n">tar</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and can still access to <code class="docutils literal"><span class="pre">targ</span></code> and <code class="docutils literal"><span class="pre">las</span></code> properties from <code class="docutils literal"><span class="pre">lpi</span></code> object.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Laser normalized peak intensity : </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">intensityPeakNormalized</span><span class="p">()))</span>
+</pre></div>
+</div>
+<p>A list of available models for each estimate can be found in the method documentation.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">lpi</span><span class="o">.</span><span class="n">electron</span><span class="o">.</span><span class="n">hot</span><span class="o">.</span><span class="n">temperature</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once you choose one that corresponds to your case, you can get more informations about it</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">lpi</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">Beg1997</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>get an estimate (here the supra-thermal electron temperature from the Beg1997 model)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">eh</span>  <span class="o">=</span> <span class="n">lpi</span><span class="o">.</span><span class="n">electron</span><span class="o">.</span><span class="n">hot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Teh</span> <span class="o">=</span> <span class="n">eh</span><span class="o">.</span><span class="n">temperature</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;Beg1997&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and use the estimate for other calculations,
+like the corresponding normalized Maxwell-Boltzmann distribution.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Ek</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span> <span class="o">*</span> <span class="n">pp</span><span class="o">.</span><span class="n">unit</span><span class="p">(</span><span class="s1">&#39;MeV&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">MB</span> <span class="o">=</span> <span class="n">lpi</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">Common</span><span class="o">.</span><span class="n">distribution</span><span class="p">(</span><span class="s2">&quot;MB&quot;</span><span class="p">,</span><span class="n">kinetic_energy</span><span class="o">=</span><span class="n">Ek</span><span class="p">,</span><span class="n">temperature</span><span class="o">=</span><span class="n">Teh</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can build more and more complex estimations,</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">S</span>   <span class="o">=</span> <span class="n">lpi</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">conductivity</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nu</span>  <span class="o">=</span> <span class="n">lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">efficiencyAbsorption</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">neh_Bell</span> <span class="o">=</span> <span class="n">eh</span><span class="o">.</span><span class="n">numberDensity</span><span class="p">(</span>
+<span class="go">        model=&quot;Bell1997&quot;,</span>
+<span class="go">        temperature=Teh,</span>
+<span class="go">        conductivity=S,</span>
+<span class="go">        absorption_efficiency=nu)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">neh_Common</span> <span class="o">=</span> <span class="n">eh</span><span class="o">.</span><span class="n">numberDensity</span><span class="p">(</span>
+<span class="go">        model=&quot;Common&quot;,</span>
+<span class="go">        absorption_efficiency=nu)</span>
+</pre></div>
+</div>
+<p>and compare the different results with your experimental or simulation results.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Ek_sim</span><span class="p">,</span> <span class="n">Spec_sim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s2">&quot;spectrum.txt&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Ek_sim</span><span class="p">,</span><span class="n">Spec_sim</span><span class="p">,</span><span class="s2">&quot;Simulation results&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Ek</span><span class="p">,</span><span class="n">neh_Bell</span><span class="o">*</span><span class="n">MB</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;MB &#39;Beg1997&#39; estimate with &#39;Bell1997&#39; normalisation&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Ek</span><span class="p">,</span><span class="n">neh_Common</span><span class="o">*</span><span class="n">MB</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;MB &#39;Beg1997&#39; estimate with &#39;Common&#39; normalisation&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;$E_k$ (MeV)&#39;</span><span class="p">,</span><span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Number of $e^-$ per MeV&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Thank to the ‘all in method’ structure, it is then possible to loop over one or more parameters
+to plot parametric evolution of an estimate with several models involved</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tFWHM</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span><span class="o">*</span><span class="n">pp</span><span class="o">.</span><span class="n">unit</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">neh</span>     <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tFWHM</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">time_fwhm</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">Teh</span> <span class="o">=</span> <span class="n">eh</span><span class="o">.</span><span class="n">temperature</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;Haines2009&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">S</span>   <span class="o">=</span>
+<span class="gp">... </span>    <span class="n">nu</span>  <span class="o">=</span>
+<span class="gp">... </span>    <span class="n">neh</span><span class="o">.</span><span class="n">append</span><span class="p">()</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tFWHM</span><span class="p">,</span><span class="n">neh</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Pulse temporal FWHM (fs)&#39;</span><span class="p">,</span><span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Total number of hot electrons&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<div class="section" id="electron">
+<h4>electron<a class="headerlink" href="#electron" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="pelpi.LaserPlasmaInteraction._Electron">
+<em class="property">class </em><code class="descclassname">pelpi.LaserPlasmaInteraction.</code><code class="descname">_Electron</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/LaserPlasmaInteraction.html#_Electron"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.LaserPlasmaInteraction._Electron" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="plasma">
+<h4>plasma<a class="headerlink" href="#plasma" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="pelpi.LaserPlasmaInteraction.PlasmaParameters">
+<em class="property">class </em><code class="descclassname">pelpi.LaserPlasmaInteraction.</code><code class="descname">PlasmaParameters</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/LaserPlasmaInteraction.html#PlasmaParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.LaserPlasmaInteraction.PlasmaParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Comment faire pour utiliser une température autre que Te_pond ?
+via meilleure estimation de la température si abso != JxB ou donner le choix ?
+Passer tout ca en méthodes ?</p>
+<dl class="method">
+<dt id="pelpi.LaserPlasmaInteraction.PlasmaParameters.getInfo">
+<code class="descname">getInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/LaserPlasmaInteraction.html#PlasmaParameters.getInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.LaserPlasmaInteraction.PlasmaParameters.getInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.LaserPlasmaInteraction.PlasmaParameters.updateParameters">
+<code class="descname">updateParameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/LaserPlasmaInteraction.html#PlasmaParameters.updateParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.LaserPlasmaInteraction.PlasmaParameters.updateParameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+<div class="section" id="estimate-pic-parameters">
+<h2>Estimate PIC parameters<a class="headerlink" href="#estimate-pic-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="particleincell">
+<h3>ParticleInCell<a class="headerlink" href="#particleincell" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pelpi.ParticleInCell">
+<em class="property">class </em><code class="descclassname">pelpi.</code><code class="descname">ParticleInCell</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/ParticleInCell.html#ParticleInCell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.ParticleInCell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pelpi.ParticleInCell.lengthCell">
+<code class="descname">lengthCell</code><span class="sig-paren">(</span><em>temperature</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/ParticleInCell.html#ParticleInCell.lengthCell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.ParticleInCell.lengthCell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.ParticleInCell.other">
+<code class="descname">other</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/ParticleInCell.html#ParticleInCell.other"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.ParticleInCell.other" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="models-reference">
+<h2>Models Reference<a class="headerlink" href="#models-reference" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>LaserPlasmaInteraction<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-pelpi.Model.LaserPlasmaInteraction"></span><dl class="class">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Beg1997">
+<em class="property">class </em><code class="descclassname">pelpi.Model.LaserPlasmaInteraction.</code><code class="descname">Beg1997</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Beg1997"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Beg1997" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for estimating …
+Experimental fit</p>
+<p>hypotheses</p>
+<p>reference
+…
+Experimental laser intensity etc …</p>
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Beg1997.checkHypotheses">
+<code class="descname">checkHypotheses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Beg1997.checkHypotheses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Beg1997.checkHypotheses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the hypotheses of the model.</p>
+<p>Warnings can be configured in pelpi.warnings.filterwarnings method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Beg1997.electron_hot_temperature">
+<code class="descname">electron_hot_temperature</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Beg1997.electron_hot_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Beg1997.electron_hot_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an estimate of the hot electron temperature from the Beg1997 model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Beg1997.ion_energyCutoff">
+<code class="descname">ion_energyCutoff</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Beg1997.ion_energyCutoff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Beg1997.ion_energyCutoff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the maximum ion energy in me c**2,</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Bell1997">
+<em class="property">class </em><code class="descclassname">pelpi.Model.LaserPlasmaInteraction.</code><code class="descname">Bell1997</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Bell1997"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Bell1997" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for estimating …
+Return current</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>float</strong> (<em>z0</em><em>,</em>) – Estimate of the number of accelerated electrons.</li>
+<li><strong>float</strong> – Estimate of the penetration depth of fast electrons (distance from the surface).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Bell1997.checkHypotheses">
+<code class="descname">checkHypotheses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Bell1997.checkHypotheses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Bell1997.checkHypotheses" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_hot_numberTotal">
+<code class="descname">electron_hot_numberTotal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_hot_numberTotal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_hot_lengthCaracDepth">
+<code class="descname">electron_hot_lengthCaracDepth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Bell1997.electron_hot_lengthCaracDepth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_hot_lengthCaracDepth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Bell1997.Hypotheses">
+<code class="descname">Hypotheses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Bell1997.Hypotheses" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">---------</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">Short pulse (&lt; 1 ps)</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">High intensity (&gt;10^18 W.cm^-2)</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">Colisionless plasma</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">Maxwellian hot electron distribution</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">Constant conductivity in the plasma</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">T0 constant during the laser pulse (collision time larger than interaction time)</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Bell1997.Reference">
+<code class="descname">Reference</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Bell1997.Reference" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">--------</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">A R Bell, J R Davies, S Guerin, H Ruhl,</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">Fast-electron transport in high-intensity short-pulse laser-solid experiments,</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">Plasma Phys. Control. Fusion, 1997.</code></dt>
+<dd></dd></dl>
+
+<p class="rubric">Notes</p>
+<dl class="method">
+<dt>
+<code class="descname">checkHypotheses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Bell1997.checkHypotheses"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Check the hypotheses of the model.</p>
+<p>Warnings can be configured in pelpi.warnings.filterwarnings method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_density">
+<code class="descname">electron_density</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Bell1997.electron_density"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_density" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">electron_hot_lengthCaracDepth</code><span class="sig-paren">(</span><em>temperature_hot</em>, <em>conductivity</em>, <em>absorption_efficiency</em>, <em>t=&lt;Quantity(0.0</em>, <em>'second')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Bell1997.electron_hot_lengthCaracDepth"><span class="viewcode-link">[source]</span></a></dt>
+<dd><dl class="docutils">
+<dt>Return the estimate electron penetration depth</dt>
+<dd><ul class="first last simple">
+<li>In the interaction time</li>
+<li>After the interaction time (due to diffusion)</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>float</strong><strong> (</strong><strong>optional</strong><strong>, </strong><strong>default</strong> (<em>t</em><em>,</em>) – Time.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_hot_numberDensity">
+<code class="descname">electron_hot_numberDensity</code><span class="sig-paren">(</span><em>temperature_hot</em>, <em>conductivity</em>, <em>absorption_efficiency</em>, <em>t=0.0</em>, <em>z=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Bell1997.electron_hot_numberDensity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_hot_numberDensity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Braginskii1965">
+<em class="property">class </em><code class="descclassname">pelpi.Model.LaserPlasmaInteraction.</code><code class="descname">Braginskii1965</code><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Braginskii1965"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Braginskii1965" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_RMS">
+<code class="descname">electron_hot_RMS</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Braginskii1965.electron_hot_RMS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_RMS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_lengthCaracDepth">
+<code class="descname">electron_hot_lengthCaracDepth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Braginskii1965.electron_hot_lengthCaracDepth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_lengthCaracDepth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_timeAngularScattering">
+<code class="descname">electron_hot_timeAngularScattering</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Braginskii1965.electron_hot_timeAngularScattering"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_timeAngularScattering" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_timeEnergyLoss">
+<code class="descname">electron_hot_timeEnergyLoss</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Braginskii1965.electron_hot_timeEnergyLoss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_timeEnergyLoss" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Braginskii1965.target_conductivity">
+<code class="descname">target_conductivity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Braginskii1965.target_conductivity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Braginskii1965.target_conductivity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Common">
+<em class="property">class </em><code class="descclassname">pelpi.Model.LaserPlasmaInteraction.</code><code class="descname">Common</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Common"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Common" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class containing obvious theoretical estimations, for order of magnitudes.
+It also contains commonly used functions, such as Maxwell-Boltzmann distribution,
+Spitzer conductivity, etc … that would not be relevant to include in a dedicated
+object due to their old and massive use.</p>
+<p class="rubric">Notes</p>
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Common.checkHypotheses">
+<code class="descname">checkHypotheses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Common.checkHypotheses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Common.checkHypotheses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Because this class is used for various features,
+the checkHypotheses method do nothing here.
+Hypotheses are checked in methods.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Common.electron_distribution">
+<code class="descname">electron_distribution</code><span class="sig-paren">(</span><em>distribution</em>, <em>kinetic_energy</em>, <em>temperature</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Common.electron_distribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Common.electron_distribution" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Common.electron_hot_numberTotal">
+<code class="descname">electron_hot_numberTotal</code><span class="sig-paren">(</span><em>temperature_hot</em>, <em>absorption_efficiency</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Common.electron_hot_numberTotal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Common.electron_hot_numberTotal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an estimate of the hot electron total number,
+based on the assumption that hot electron distribution is a Maxwellian.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>float</strong> (<em>absorption_efficiency</em><em>,</em>) – Hot electron temperature</li>
+<li><strong>float</strong> – Laser absorption efficiency into hot electrons</li>
+<li><strong>math</strong> (<em>.</em>) – n_0 = frac{eta_{l} E_{l}}{3/2 T_e^{hot}}
+with $n_0$ the hot electron total number,
+$eta_l$ the laser absorption efficiency into hot electrons,
+$E_l$ the laser total energy,
+$T_e^{hot}$ the thermal energy of hot electrons.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Common.laser_efficiencyAbsorption">
+<code class="descname">laser_efficiencyAbsorption</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Common.laser_efficiencyAbsorption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Common.laser_efficiencyAbsorption" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Common.target_conductivity">
+<code class="descname">target_conductivity</code><span class="sig-paren">(</span><em>temperature_cold</em>, <em>log_coulomb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Common.target_conductivity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Common.target_conductivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spitzer conductivity.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Davies2003">
+<em class="property">class </em><code class="descclassname">pelpi.Model.LaserPlasmaInteraction.</code><code class="descname">Davies2003</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Davies2003"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Davies2003" title="Permalink to this definition">¶</a></dt>
+<dd><p>Theoretical paper on Electric and Magnetic field generation and target heating
+by laser-generated fast electrons + electrical conductivity.
+Change of resistivity due to Ohmic heating.</p>
+<p>Material is a conductor
+Arbitrary power law of resistivity on temperature
+Electron current is fixed (rigid beam approximation)
+Charge diffusion is instantaneous
+Magnetic diffusion is negligible</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Haines2009">
+<em class="property">class </em><code class="descclassname">pelpi.Model.LaserPlasmaInteraction.</code><code class="descname">Haines2009</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Haines2009"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Haines2009" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Haines2009.checkHypotheses">
+<code class="descname">checkHypotheses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Haines2009.checkHypotheses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Haines2009.checkHypotheses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the hypotheses of the model.</p>
+<p>Warnings can be configured in pelpi.warnings.filterwarnings method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Haines2009.electron_hot_temperature">
+<code class="descname">electron_hot_temperature</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Haines2009.electron_hot_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Haines2009.electron_hot_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an estimate of the hot electron temperature from the Haines2009 model.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Mora2003">
+<em class="property">class </em><code class="descclassname">pelpi.Model.LaserPlasmaInteraction.</code><code class="descname">Mora2003</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Mora2003"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Mora2003" title="Permalink to this definition">¶</a></dt>
+<dd><p>Theoretical paper on plasma expansion into vacuum, focused on ion acceleration
+and calculations of electric fields.</p>
+<p>1d, Maxwellian electron distribution (constant in time), sharp edge …</p>
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Mora2003.checkHypotheses">
+<code class="descname">checkHypotheses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Mora2003.checkHypotheses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Mora2003.checkHypotheses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the hypotheses of the model.</p>
+<p>Warnings can be configured in pelpi.warnings.filterwarnings method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Mora2003.getInitialFrontElectricField">
+<code class="descname">getInitialFrontElectricField</code><span class="sig-paren">(</span><em>Te</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Mora2003.getInitialFrontElectricField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Mora2003.getInitialFrontElectricField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the electric field in the front (=edge ?) for initial time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Mora2003.ion_energyCutoff">
+<code class="descname">ion_energyCutoff</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Mora2003.ion_energyCutoff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Mora2003.ion_energyCutoff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Wilks1992">
+<em class="property">class </em><code class="descclassname">pelpi.Model.LaserPlasmaInteraction.</code><code class="descname">Wilks1992</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Wilks1992"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Wilks1992" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for estimating …
+Based of the paper of Wilks, …, 1992.</p>
+<p class="rubric">Notes</p>
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Wilks1992.checkHypotheses">
+<code class="descname">checkHypotheses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Wilks1992.checkHypotheses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Wilks1992.checkHypotheses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the hypotheses of the model.</p>
+<p>Warnings can be configured in pelpi.warnings.filterwarnings method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Wilks1992.electron_hot_temperature">
+<code class="descname">electron_hot_temperature</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Wilks1992.electron_hot_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Wilks1992.electron_hot_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an estimate of the hot electron temperature from the Wilks1992 model.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2018, lesnat.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="_sources/use.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

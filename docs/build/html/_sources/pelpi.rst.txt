@@ -1,0 +1,59 @@
+pelpi package
+=============
+
+
+-------------------
+
+.. automodule:: pelpi.Laser
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pelpi\.LaserPlasmaInteraction module
+------------------------------------
+
+.. automodule:: pelpi.LaserPlasmaInteraction
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pelpi\.MonteCarlo module
+------------------------
+
+.. automodule:: pelpi.MonteCarlo
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pelpi\.ParticleInCell module
+----------------------------
+
+.. automodule:: pelpi.ParticleInCell
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pelpi\.ParticleInteraction module
+---------------------------------
+
+.. automodule:: pelpi.ParticleInteraction
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pelpi\.Target module
+--------------------
+
+.. automodule:: pelpi.Target
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: pelpi
+    :members:
+    :undoc-members:
+    :show-inheritance:

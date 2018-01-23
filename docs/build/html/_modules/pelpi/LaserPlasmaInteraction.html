@@ -1,0 +1,447 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pelpi.LaserPlasmaInteraction &#8212; pelpi 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">pelpi</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../understand.html">Understand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../use.html">Use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pelpi.LaserPlasmaInteraction</h1><div class="highlight"><pre>
+<span></span><span class="c1">#coding:utf8</span>
+
+<span class="c1"># import numpy as _np</span>
+<span class="c1"># from . import unit as _u</span>
+<span class="c1"># from . import prefered_unit as _pu</span>
+<span class="kn">from</span> <span class="nn">._global</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">._tools</span> <span class="k">import</span> <span class="n">_Estimate</span>
+<span class="kn">from</span> <span class="nn">.Model</span> <span class="k">import</span> <span class="n">LaserPlasmaInteraction</span> <span class="k">as</span> <span class="n">_m</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;LaserPlasmaInteraction&quot;</span><span class="p">]</span>
+
+<span class="c1">################################################################################</span>
+<div class="viewcode-block" id="LaserPlasmaInteraction"><a class="viewcode-back" href="../../use.html#pelpi.LaserPlasmaInteraction">[docs]</a><span class="k">class</span> <span class="nc">LaserPlasmaInteraction</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for estimations in laser-plasma interaction.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Laser : object</span>
+<span class="sd">        Instanciated ``pelpi.Laser`` object</span>
+<span class="sd">    Target : object</span>
+<span class="sd">        Instanciated ``pelpi.Target`` object</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    laser : sub-module</span>
+<span class="sd">        The ``pelpi.Laser`` object given as argument when the class was declared.</span>
+<span class="sd">    target : sub-module</span>
+<span class="sd">        The ``pelpi.Target`` object given as argument when the class was declared.</span>
+<span class="sd">    plasma : sub-module</span>
+<span class="sd">        Contains usual plasma parameters.</span>
+<span class="sd">    model : sub-module</span>
+<span class="sd">        Contains the all the available models.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Use of arguments (*args) in methods</span>
+<span class="sd">    +++++++++++++++++++++++++++++++++++</span>
+<span class="sd">    Some models may need optional parameters, such as electron hot temperature</span>
+<span class="sd">    or laser absorption efficiency for complete the calculus.</span>
+<span class="sd">    These parameters can be choosen by the user (for order of magnitude) or</span>
+<span class="sd">    calculated by other models and passed as argument.</span>
+<span class="sd">    Please refer to the method documentation for more informations.</span>
+
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Assuming you instanciated a ``pelpi.Target`` object as ``targ``</span>
+<span class="sd">    and a ``pelpi.Laser`` object as ``las``,</span>
+<span class="sd">    you can instanciate the ``pelpi.LaserPlasmaInteraction`` object as follows :</span>
+
+<span class="sd">    &gt;&gt;&gt; import pelpi as pp</span>
+<span class="sd">    &gt;&gt;&gt; lpi = pp.LaserPlasmaInteraction(las,tar)</span>
+
+<span class="sd">    and can still access to ``targ`` and ``las`` properties from ``lpi`` object.</span>
+
+<span class="sd">    &gt;&gt;&gt; print(&quot;Laser normalized peak intensity : {}&quot;.format(lpi.laser.intensityPeakNormalized()))</span>
+
+<span class="sd">    A list of available models for each estimate can be found in the method documentation.</span>
+
+<span class="sd">    &gt;&gt;&gt; help(lpi.electron.hot.temperature)</span>
+
+<span class="sd">    Once you choose one that corresponds to your case, you can get more informations about it</span>
+
+<span class="sd">    &gt;&gt;&gt; help(lpi.model.Beg1997)</span>
+
+<span class="sd">    get an estimate (here the supra-thermal electron temperature from the Beg1997 model)</span>
+
+<span class="sd">    &gt;&gt;&gt; eh  = lpi.electron.hot</span>
+<span class="sd">    &gt;&gt;&gt; Teh = eh.temperature(model=&quot;Beg1997&quot;)</span>
+
+<span class="sd">    and use the estimate for other calculations,</span>
+<span class="sd">    like the corresponding normalized Maxwell-Boltzmann distribution.</span>
+
+<span class="sd">    &gt;&gt;&gt; Ek = np.linspace(0.1,10,100) * pp.unit(&#39;MeV&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; MB = lpi.model.Common.distribution(&quot;MB&quot;,kinetic_energy=Ek,temperature=Teh)</span>
+
+<span class="sd">    You can build more and more complex estimations,</span>
+
+<span class="sd">    &gt;&gt;&gt; S   = lpi.target.conductivity(model=)</span>
+<span class="sd">    &gt;&gt;&gt; nu  = lpi.laser.efficiencyAbsorption(model=)</span>
+<span class="sd">    &gt;&gt;&gt; neh_Bell = eh.numberDensity(</span>
+<span class="sd">            model=&quot;Bell1997&quot;,</span>
+<span class="sd">            temperature=Teh,</span>
+<span class="sd">            conductivity=S,</span>
+<span class="sd">            absorption_efficiency=nu)</span>
+<span class="sd">    &gt;&gt;&gt; neh_Common = eh.numberDensity(</span>
+<span class="sd">            model=&quot;Common&quot;,</span>
+<span class="sd">            absorption_efficiency=nu)</span>
+
+<span class="sd">    and compare the different results with your experimental or simulation results.</span>
+
+<span class="sd">    &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; Ek_sim, Spec_sim = np.loadtxt(&quot;spectrum.txt&quot;).T</span>
+<span class="sd">    &gt;&gt;&gt; plt.plot(Ek_sim,Spec_sim,&quot;Simulation results&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.plot(Ek,neh_Bell*MB,label=&quot;MB &#39;Beg1997&#39; estimate with &#39;Bell1997&#39; normalisation&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.plot(Ek,neh_Common*MB,label=&quot;MB &#39;Beg1997&#39; estimate with &#39;Common&#39; normalisation&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.axes(xlabel=&#39;$E_k$ (MeV)&#39;,ylabel=&#39;Number of $e^-$ per MeV&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.legend()</span>
+<span class="sd">    &gt;&gt;&gt; plt.show()</span>
+
+<span class="sd">    Thank to the &#39;all in method&#39; structure, it is then possible to loop over one or more parameters</span>
+<span class="sd">    to plot parametric evolution of an estimate with several models involved</span>
+
+<span class="sd">    &gt;&gt;&gt; tFWHM   = np.linspace(20,200,100)*pp.unit(&#39;fs&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; neh     = []</span>
+<span class="sd">    &gt;&gt;&gt; for t in tFWHM:</span>
+<span class="sd">    ...     lpi.laser.set(time_fwhm=t)</span>
+<span class="sd">    ...     Teh = eh.temperature(model=&#39;Haines2009&#39;)</span>
+<span class="sd">    ...     S   =</span>
+<span class="sd">    ...     nu  =</span>
+<span class="sd">    ...     neh.append()</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt; plt.figure()</span>
+<span class="sd">    &gt;&gt;&gt; plt.plot(tFWHM,neh)</span>
+<span class="sd">    &gt;&gt;&gt; plt.axes(xlabel=&#39;Pulse temporal FWHM (fs)&#39;,ylabel=&#39;Total number of hot electrons&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Laser</span><span class="p">,</span><span class="n">Target</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">laser</span>      <span class="o">=</span> <span class="n">Laser</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span>     <span class="o">=</span> <span class="n">Target</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">plasma</span>     <span class="o">=</span> <span class="n">PlasmaParameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">absorption</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span>      <span class="o">=</span> <span class="n">_m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">electron</span>   <span class="o">=</span> <span class="n">_Electron</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="c1"># self.ion        = Ion(self)</span>
+
+<span class="k">class</span> <span class="nc">_Laser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">LaserPlasmaInteraction</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span>   <span class="o">=</span> <span class="n">LaserPlasmaInteraction</span>
+
+        <span class="c1"># Automatically add all new methods to laser object</span>
+        <span class="c1"># for model in self.__dict__.keys():</span>
+        <span class="c1">#     _addMethod(self._lpi.laser, self, model)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">efficiencyAbsorption</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">efficiencyAbsorption</span>
+
+    <span class="k">def</span> <span class="nf">efficiencyAbsorption</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">model</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="c1"># TODO: what this model is about ? hot electrons ? ions ? ...</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an estimate of the laser absorption efficiency into hot electrons ??.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        --------</span>
+<span class="sd">        model, string</span>
+<span class="sd">            Model name</span>
+<span class="sd">        *args,</span>
+<span class="sd">            Model input parameters</span>
+
+<span class="sd">        Models</span>
+<span class="sd">        -----</span>
+<span class="sd">        Common, a theoretical model for a rough estimate.</span>
+<span class="sd">            Input parameters : ...</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        ----</span>
+<span class="sd">        See pelpi.Model.LaserPlasmaInteraction.[Model] documentation</span>
+<span class="sd">        if you need more informations about the [Model] model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">available_models</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Common&quot;</span><span class="p">]</span>
+        <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;number&#39;</span>
+
+        <span class="n">estimate</span><span class="o">=</span><span class="n">_Estimate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="p">,</span><span class="n">model_name</span><span class="o">=</span><span class="n">model</span><span class="p">,</span><span class="n">available_models</span><span class="o">=</span><span class="n">available_models</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">estimate</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">method_name</span><span class="o">=</span><span class="s1">&#39;laser_efficiencyAbsorption&#39;</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">_Target</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">LaserPlasmaInteraction</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span>   <span class="o">=</span> <span class="n">LaserPlasmaInteraction</span>
+
+        <span class="c1"># Automatically add all new methods to laser object</span>
+        <span class="c1"># for model in self.__dict__.keys():</span>
+        <span class="c1">#     _addMethod(self._lpi.laser, self, model)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">conductivity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conductivity</span>
+
+        <span class="c1"># add targetdensitynormalized</span>
+
+
+    <span class="k">def</span> <span class="nf">conductivity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">model</span><span class="p">,</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an estimate of the target electric conductivity.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        --------</span>
+<span class="sd">        model, string</span>
+<span class="sd">            Model name</span>
+<span class="sd">        *args,</span>
+<span class="sd">            Model input parameters</span>
+
+<span class="sd">        Models</span>
+<span class="sd">        -----</span>
+<span class="sd">        Common, a theoretical model for a rough estimate.</span>
+<span class="sd">            Input parameters : ...</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        ----</span>
+<span class="sd">        See pelpi.Model.LaserPlasmaInteraction.[Model] documentation</span>
+<span class="sd">        if you need more informations about the [Model] model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">available_models</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Common&quot;</span><span class="p">]</span>
+        <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;conductivity&#39;</span>
+
+        <span class="n">estimate</span><span class="o">=</span><span class="n">_Estimate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="p">,</span><span class="n">model_name</span><span class="o">=</span><span class="n">model</span><span class="p">,</span><span class="n">available_models</span><span class="o">=</span><span class="n">available_models</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">estimate</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">method_name</span><span class="o">=</span><span class="s1">&#39;target_conductivity&#39;</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+<div class="viewcode-block" id="_Electron"><a class="viewcode-back" href="../../use.html#pelpi._Electron">[docs]</a><span class="k">class</span> <span class="nc">_Electron</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">LaserPlasmaInteraction</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span>   <span class="o">=</span> <span class="n">LaserPlasmaInteraction</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hot</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Hot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="p">)</span>
+        <span class="c1"># self.cold   = self.Cold(self._lpi)</span>
+
+    <span class="c1"># TODO: here general stuff about all the electrons</span>
+
+    <span class="k">class</span> <span class="nc">_Hot</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        In UHI, super thermal electrons</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">LaserPlasmaInteraction</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span> <span class="o">=</span> <span class="n">LaserPlasmaInteraction</span>
+
+        <span class="k">def</span> <span class="nf">numberTotal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">model</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Return an estimate of the total hot electron number.</span>
+
+<span class="sd">            Arguments</span>
+<span class="sd">            --------</span>
+<span class="sd">            model, string</span>
+<span class="sd">                Model name</span>
+<span class="sd">            *args,</span>
+<span class="sd">                Model input parameters</span>
+
+<span class="sd">            Models</span>
+<span class="sd">            -----</span>
+<span class="sd">            Common, a theoretical model for a rough estimate.</span>
+<span class="sd">                Input parameters : ...</span>
+
+<span class="sd">            Notes</span>
+<span class="sd">            ----</span>
+<span class="sd">            See pelpi.Model.LaserPlasmaInteraction.[Model] documentation</span>
+<span class="sd">            if you need more informations about the [Model] model.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">available_models</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Common&quot;</span><span class="p">]</span>
+            <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;number&#39;</span>
+
+            <span class="n">estimate</span><span class="o">=</span><span class="n">_Estimate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="p">,</span><span class="n">model_name</span><span class="o">=</span><span class="n">model</span><span class="p">,</span><span class="n">available_models</span><span class="o">=</span><span class="n">available_models</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">estimate</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">method_name</span><span class="o">=</span><span class="s1">&#39;electron_hot_numberTotal&#39;</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+
+        <span class="k">def</span> <span class="nf">lengthCaracDepth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">model</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Return an estimate of the characteristic penetration depth of</span>
+<span class="sd">            hot electrons in the target.</span>
+
+<span class="sd">            Arguments</span>
+<span class="sd">            --------</span>
+<span class="sd">            model, string</span>
+<span class="sd">                Model name</span>
+<span class="sd">            *args,</span>
+<span class="sd">                Model input parameters</span>
+
+<span class="sd">            Models</span>
+<span class="sd">            -----</span>
+<span class="sd">            Bell1997, a theoretical model taking into account the effects of</span>
+<span class="sd">            the hot electron return current.</span>
+<span class="sd">                Input parameters : temperature, conductivity, absorption_efficiency</span>
+
+<span class="sd">            Notes</span>
+<span class="sd">            ----</span>
+<span class="sd">            See pelpi.Model.LaserPlasmaInteraction.[Model] documentation</span>
+<span class="sd">            if you need more informations about the [Model] model.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">available_models</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Bell1997&quot;</span><span class="p">]</span>
+            <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;length&#39;</span>
+
+            <span class="n">estimate</span><span class="o">=</span><span class="n">_Estimate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="p">,</span><span class="n">model_name</span><span class="o">=</span><span class="n">model</span><span class="p">,</span><span class="n">available_models</span><span class="o">=</span><span class="n">available_models</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">estimate</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">method_name</span><span class="o">=</span><span class="s1">&#39;electron_hot_lengthCaracDepth&#39;</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">model</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Return an estimate of the hot electron temperature.</span>
+
+<span class="sd">            Arguments</span>
+<span class="sd">            --------</span>
+<span class="sd">            model, string</span>
+<span class="sd">                Model name</span>
+<span class="sd">            *args,</span>
+<span class="sd">                Model input parameters</span>
+
+<span class="sd">            Models</span>
+<span class="sd">            -----</span>
+<span class="sd">            Beg1997, an empirical model ...</span>
+<span class="sd">                Input parameters : None</span>
+
+<span class="sd">            Haines2009, a theoretical model ...</span>
+<span class="sd">                Input parameters : None</span>
+
+<span class="sd">            Wilks1992, a theoretical model</span>
+<span class="sd">                Input parameters : None</span>
+
+<span class="sd">            Notes</span>
+<span class="sd">            ----</span>
+<span class="sd">            See pelpi.Model.LaserPlasmaInteraction.[Model] documentation</span>
+<span class="sd">            if you need more informations about the [Model] model.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span>
+            <span class="n">available_models</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Beg1997&quot;</span><span class="p">,</span><span class="s2">&quot;Haines2009&quot;</span><span class="p">,</span><span class="s2">&quot;Wilks1992&quot;</span><span class="p">]</span>
+
+            <span class="n">estimate</span><span class="o">=</span><span class="n">_Estimate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span><span class="p">,</span><span class="n">model_name</span><span class="o">=</span><span class="n">model</span><span class="p">,</span><span class="n">available_models</span><span class="o">=</span><span class="n">available_models</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">estimate</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">method_name</span><span class="o">=</span><span class="s1">&#39;electron_hot_temperature&#39;</span><span class="p">,</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+
+        <span class="k">def</span> <span class="nf">timeInteractionMax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="mf">0.</span>
+
+        <span class="k">def</span> <span class="nf">lengthInteractionMax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mf">0.</span></div>
+
+
+<div class="viewcode-block" id="PlasmaParameters"><a class="viewcode-back" href="../../use.html#pelpi.PlasmaParameters">[docs]</a><span class="k">class</span> <span class="nc">PlasmaParameters</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Comment faire pour utiliser une température autre que Te_pond ?</span>
+<span class="sd">    via meilleure estimation de la température si abso != JxB ou donner le choix ?</span>
+<span class="sd">    Passer tout ca en méthodes ?</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">LaserPlasmaInteraction</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lpi</span>             <span class="o">=</span> <span class="n">LaserPlasmaInteraction</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updateParameters</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="PlasmaParameters.updateParameters"><a class="viewcode-back" href="../../use.html#pelpi.PlasmaParameters.updateParameters">[docs]</a>    <span class="k">def</span> <span class="nf">updateParameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># TODO; convert to methods</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wpe</span>        <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># Electron plasma frequency</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wpi</span>        <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># Ion plasma frequency</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_De</span>  <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># Debye length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vTe</span>        <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># Electron thermal velocity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vTi</span>        <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># Ion thermal velocity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vA</span>         <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># Alfven velocity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">EFermi</span>     <span class="o">=</span> <span class="mf">0.0</span></div>
+
+<div class="viewcode-block" id="PlasmaParameters.getInfo"><a class="viewcode-back" href="../../use.html#pelpi.PlasmaParameters.getInfo">[docs]</a>    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">txt</span>  <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">txt</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2018, lesnat.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

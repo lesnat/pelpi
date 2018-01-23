@@ -177,7 +177,7 @@ class Davies2003(object):
 
 
     Hypotheses
-    ---------
+    ----------
     Material is a conductor
     Arbitrary power law of resistivity on temperature
     Electron current is fixed (rigid beam approximation)

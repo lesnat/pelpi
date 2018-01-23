@@ -4,20 +4,29 @@ Estimate laser plasma interaction
 
 Comments ...
 
-
-
 LaserPlasmaInteraction
 ======================
 
 .. autoclass:: pelpi.LaserPlasmaInteraction
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
 
 electron
 ++++++++
 
-.. automodule:: pelpi.LaserPlasmaInteraction
-   :members: _Electron
+.. autoclass:: pelpi.LaserPlasmaInteraction._Electron
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 plasma
 ++++++
 
-.. autofunction:: pelpi.LaserPlasmaInteraction.PlasmaParameters
+.. autoclass:: pelpi.LaserPlasmaInteraction.PlasmaParameters
+   :members:
+   :undoc-members:
+   :show-inheritance:

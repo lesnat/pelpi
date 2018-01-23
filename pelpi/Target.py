@@ -1,16 +1,15 @@
 #coding:utf8
-import numpy as _np
-from . import unit as _u
-from . import prefered_unit as _pu
+from ._global import *
 
 
 __all__ = ["Material","Target"]
 
 class Material(object):
     """
+    Class for defining a material.
+
     """
-    def __init__(self,name,density,atomic_mass,Z,A): # TODO: which initialisation ?
-        self.name       = name
+    def __init__(self,density,atomic_mass,Z,A): # TODO: which initialisation ?
         self.density    = density
         self.atomic_mass = atomic_mass
         self.Z          = Z
@@ -25,6 +24,7 @@ class Material(object):
 
 class Target(object):
     """
+    Class for defining the target characteristics.
     """
     def __init__(self,Material):
         self.material=Material

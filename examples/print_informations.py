@@ -14,19 +14,10 @@ prof=pp.Profile(
 )
 
 laser=pp.Laser(
-    name       = "eclipse4",
-
     wavelength = 0.8 * u.um,
     energy     = 2.0 * u.J,
 
-    Profile    = prof,
-
-    contrast_1ps = 1e8,
-
-    polarization = [0,1,0],
-
-    direction  = [0,0,1],
-    angle      = 0. * u.deg,
+    Profile    = prof
 )
 
 mat=pp.Material(

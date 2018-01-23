@@ -8,20 +8,15 @@ Profile
 =======
 
 .. autoclass:: pelpi.Profile
-
-
-Methods
-+++++++
-
-include ...
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 
 Laser
 =====
 
 .. autoclass:: pelpi.Laser
-
-Methods
-+++++++
-
-include ...
+    :members:
+    :undoc-members:
+    :show-inheritance:

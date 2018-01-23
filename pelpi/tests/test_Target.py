@@ -11,7 +11,6 @@ import unittest
 class test_Material(unittest.TestCase):
     def setUp(self):
         self.matAl  = pp.Material(
-            name        = "Al",
             density     = 2.69890e3 * u.kg/u.m**3,
             atomic_mass = 26.98154 * u.u,
             Z           = 13,
@@ -23,7 +22,6 @@ class test_Material(unittest.TestCase):
 
     def test_instanciate(self):
         matAl  = pp.Material(
-            name        = "Al",
             density     = 2.69890e3 * u.kg/u.m**3,
             atomic_mass = 26.98154 * u.u,
             Z           = 13,
@@ -52,7 +50,6 @@ class test_Material(unittest.TestCase):
 class test_Target(unittest.TestCase):
     def setUp(self):
         matAl  = pp.Material(
-            name        = "Al",
             density     = 2.69890e3 * u.kg/u.m**3,
             atomic_mass = 26.98154 * u.u,
             Z           = 13,
@@ -70,7 +67,6 @@ class test_Target(unittest.TestCase):
 
     def test_instanciate(self):
         matAl  = pp.Material(
-            name        = "Al",
             density     = 2.69890e3 * u.kg/u.m**3,
             atomic_mass = 26.98154 * u.u,
             Z           = 13,

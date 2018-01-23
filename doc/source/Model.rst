@@ -1,10 +1,7 @@
-************
-Using models
-************
+****************
+Models Reference
+****************
 
-Beg1997
-=======
-
-
-Bell1997
-========
+.. automodule:: pelpi.Model.LaserPlasmaInteraction
+   :members:
+   :undoc-members:

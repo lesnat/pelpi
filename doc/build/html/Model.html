@@ -5,8 +5,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Using models &#8212; pelpi 0.0.1 documentation</title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <title>Models Reference &#8212; pelpi 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -21,67 +21,41 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Estimate PIC parameters" href="ParticleInCell.html" /> 
+    <link rel="prev" title="Estimate PIC parameters" href="ParticleInCell.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
   <body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="ParticleInCell.html" title="Estimate PIC parameters"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pelpi 0.0.1 documentation</a> &#187;</li> 
-      </ul>
-    </div>  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="using-models">
-<h1>Using models<a class="headerlink" href="#using-models" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="beg1997">
-<h2>Beg1997<a class="headerlink" href="#beg1997" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="bell1997">
-<h2>Bell1997<a class="headerlink" href="#bell1997" title="Permalink to this headline">¶</a></h2>
-</div>
-</div>
-
-
-          </div>
-        </div>
-      </div>
+  <div class="document">
+    
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Using models</a><ul>
-<li><a class="reference internal" href="#beg1997">Beg1997</a></li>
-<li><a class="reference internal" href="#bell1997">Bell1997</a></li>
-</ul>
-</li>
+<h1 class="logo"><a href="index.html">pelpi</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Target.html">Setting target parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Laser.html">Setting laser parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LaserPlasmaInteraction.html">Estimate laser plasma interaction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ParticleInCell.html">Estimate PIC parameters</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Models Reference</a></li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="ParticleInCell.html"
-                        title="previous chapter">Estimate PIC parameters</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/Model.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -94,26 +68,368 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-      <div class="clearer"></div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pelpi.Model.LaserPlasmaInteraction">
+<span id="models-reference"></span><h1>Models Reference<a class="headerlink" href="#module-pelpi.Model.LaserPlasmaInteraction" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Beg1997">
+<em class="property">class </em><code class="descclassname">pelpi.Model.LaserPlasmaInteraction.</code><code class="descname">Beg1997</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Beg1997"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Beg1997" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for estimating …
+Experimental fit</p>
+<p>hypotheses</p>
+<p>reference
+…
+Experimental laser intensity etc …</p>
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Beg1997.checkHypotheses">
+<code class="descname">checkHypotheses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Beg1997.checkHypotheses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Beg1997.checkHypotheses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the hypotheses of the model.</p>
+<p>Warnings can be configured in pelpi.warnings.filterwarnings method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Beg1997.electron_hot_temperature">
+<code class="descname">electron_hot_temperature</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Beg1997.electron_hot_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Beg1997.electron_hot_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an estimate of the hot electron temperature from the Beg1997 model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Beg1997.ion_energyCutoff">
+<code class="descname">ion_energyCutoff</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Beg1997.ion_energyCutoff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Beg1997.ion_energyCutoff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the maximum ion energy in me c**2,</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Bell1997">
+<em class="property">class </em><code class="descclassname">pelpi.Model.LaserPlasmaInteraction.</code><code class="descname">Bell1997</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Bell1997"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Bell1997" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for estimating …
+Return current</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>float</strong> (<em>z0</em><em>,</em>) – Estimate of the number of accelerated electrons.</li>
+<li><strong>float</strong> – Estimate of the penetration depth of fast electrons (distance from the surface).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Bell1997.checkHypotheses">
+<code class="descname">checkHypotheses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Bell1997.checkHypotheses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Bell1997.checkHypotheses" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_hot_numberTotal">
+<code class="descname">electron_hot_numberTotal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_hot_numberTotal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_hot_lengthCaracDepth">
+<code class="descname">electron_hot_lengthCaracDepth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Bell1997.electron_hot_lengthCaracDepth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_hot_lengthCaracDepth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Bell1997.Hypotheses">
+<code class="descname">Hypotheses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Bell1997.Hypotheses" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">---------</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">Short pulse (&lt; 1 ps)</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">High intensity (&gt;10^18 W.cm^-2)</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">Colisionless plasma</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">Maxwellian hot electron distribution</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">Constant conductivity in the plasma</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">T0 constant during the laser pulse (collision time larger than interaction time)</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Bell1997.Reference">
+<code class="descname">Reference</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Bell1997.Reference" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">--------</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">A R Bell, J R Davies, S Guerin, H Ruhl,</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">Fast-electron transport in high-intensity short-pulse laser-solid experiments,</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">Plasma Phys. Control. Fusion, 1997.</code></dt>
+<dd></dd></dl>
+
+<p class="rubric">Notes</p>
+<dl class="method">
+<dt>
+<code class="descname">checkHypotheses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Bell1997.checkHypotheses"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Check the hypotheses of the model.</p>
+<p>Warnings can be configured in pelpi.warnings.filterwarnings method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_density">
+<code class="descname">electron_density</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Bell1997.electron_density"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_density" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">electron_hot_lengthCaracDepth</code><span class="sig-paren">(</span><em>temperature_hot</em>, <em>conductivity</em>, <em>absorption_efficiency</em>, <em>t=&lt;Quantity(0.0</em>, <em>'second')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Bell1997.electron_hot_lengthCaracDepth"><span class="viewcode-link">[source]</span></a></dt>
+<dd><dl class="docutils">
+<dt>Return the estimate electron penetration depth</dt>
+<dd><ul class="first last simple">
+<li>In the interaction time</li>
+<li>After the interaction time (due to diffusion)</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><strong>float</strong><strong> (</strong><strong>optional</strong><strong>, </strong><strong>default</strong> (<em>t</em><em>,</em>) – Time.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_hot_numberDensity">
+<code class="descname">electron_hot_numberDensity</code><span class="sig-paren">(</span><em>temperature_hot</em>, <em>conductivity</em>, <em>absorption_efficiency</em>, <em>t=0.0</em>, <em>z=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Bell1997.electron_hot_numberDensity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Bell1997.electron_hot_numberDensity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Braginskii1965">
+<em class="property">class </em><code class="descclassname">pelpi.Model.LaserPlasmaInteraction.</code><code class="descname">Braginskii1965</code><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Braginskii1965"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Braginskii1965" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_RMS">
+<code class="descname">electron_hot_RMS</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Braginskii1965.electron_hot_RMS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_RMS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_lengthCaracDepth">
+<code class="descname">electron_hot_lengthCaracDepth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Braginskii1965.electron_hot_lengthCaracDepth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_lengthCaracDepth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_timeAngularScattering">
+<code class="descname">electron_hot_timeAngularScattering</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Braginskii1965.electron_hot_timeAngularScattering"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_timeAngularScattering" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_timeEnergyLoss">
+<code class="descname">electron_hot_timeEnergyLoss</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Braginskii1965.electron_hot_timeEnergyLoss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Braginskii1965.electron_hot_timeEnergyLoss" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Braginskii1965.target_conductivity">
+<code class="descname">target_conductivity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Braginskii1965.target_conductivity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Braginskii1965.target_conductivity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Common">
+<em class="property">class </em><code class="descclassname">pelpi.Model.LaserPlasmaInteraction.</code><code class="descname">Common</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Common"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Common" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class containing obvious theoretical estimations, for order of magnitudes.
+It also contains commonly used functions, such as Maxwell-Boltzmann distribution,
+Spitzer conductivity, etc … that would not be relevant to include in a dedicated
+object due to their old and massive use.</p>
+<p class="rubric">Notes</p>
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Common.checkHypotheses">
+<code class="descname">checkHypotheses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Common.checkHypotheses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Common.checkHypotheses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Because this class is used for various features,
+the checkHypotheses method do nothing here.
+Hypotheses are checked in methods.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Common.electron_distribution">
+<code class="descname">electron_distribution</code><span class="sig-paren">(</span><em>distribution</em>, <em>kinetic_energy</em>, <em>temperature</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Common.electron_distribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Common.electron_distribution" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Common.electron_hot_numberTotal">
+<code class="descname">electron_hot_numberTotal</code><span class="sig-paren">(</span><em>temperature_hot</em>, <em>absorption_efficiency</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Common.electron_hot_numberTotal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Common.electron_hot_numberTotal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an estimate of the hot electron total number,
+based on the assumption that hot electron distribution is a Maxwellian.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>float</strong> (<em>absorption_efficiency</em><em>,</em>) – Hot electron temperature</li>
+<li><strong>float</strong> – Laser absorption efficiency into hot electrons</li>
+<li><strong>math</strong> (<em>.</em>) – n_0 = frac{eta_{l} E_{l}}{3/2 T_e^{hot}}
+with $n_0$ the hot electron total number,
+$eta_l$ the laser absorption efficiency into hot electrons,
+$E_l$ the laser total energy,
+$T_e^{hot}$ the thermal energy of hot electrons.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Common.laser_efficiencyAbsorption">
+<code class="descname">laser_efficiencyAbsorption</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Common.laser_efficiencyAbsorption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Common.laser_efficiencyAbsorption" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Common.target_conductivity">
+<code class="descname">target_conductivity</code><span class="sig-paren">(</span><em>temperature_cold</em>, <em>log_coulomb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Common.target_conductivity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Common.target_conductivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spitzer conductivity.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Davies2003">
+<em class="property">class </em><code class="descclassname">pelpi.Model.LaserPlasmaInteraction.</code><code class="descname">Davies2003</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Davies2003"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Davies2003" title="Permalink to this definition">¶</a></dt>
+<dd><p>Theoretical paper on Electric and Magnetic field generation and target heating
+by laser-generated fast electrons + electrical conductivity.
+Change of resistivity due to Ohmic heating.</p>
+<p>Material is a conductor
+Arbitrary power law of resistivity on temperature
+Electron current is fixed (rigid beam approximation)
+Charge diffusion is instantaneous
+Magnetic diffusion is negligible</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Haines2009">
+<em class="property">class </em><code class="descclassname">pelpi.Model.LaserPlasmaInteraction.</code><code class="descname">Haines2009</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Haines2009"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Haines2009" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Haines2009.checkHypotheses">
+<code class="descname">checkHypotheses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Haines2009.checkHypotheses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Haines2009.checkHypotheses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the hypotheses of the model.</p>
+<p>Warnings can be configured in pelpi.warnings.filterwarnings method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Haines2009.electron_hot_temperature">
+<code class="descname">electron_hot_temperature</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Haines2009.electron_hot_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Haines2009.electron_hot_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an estimate of the hot electron temperature from the Haines2009 model.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Mora2003">
+<em class="property">class </em><code class="descclassname">pelpi.Model.LaserPlasmaInteraction.</code><code class="descname">Mora2003</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Mora2003"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Mora2003" title="Permalink to this definition">¶</a></dt>
+<dd><p>Theoretical paper on plasma expansion into vacuum, focused on ion acceleration
+and calculations of electric fields.</p>
+<p>1d, Maxwellian electron distribution (constant in time), sharp edge …</p>
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Mora2003.checkHypotheses">
+<code class="descname">checkHypotheses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Mora2003.checkHypotheses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Mora2003.checkHypotheses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the hypotheses of the model.</p>
+<p>Warnings can be configured in pelpi.warnings.filterwarnings method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Mora2003.getInitialFrontElectricField">
+<code class="descname">getInitialFrontElectricField</code><span class="sig-paren">(</span><em>Te</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Mora2003.getInitialFrontElectricField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Mora2003.getInitialFrontElectricField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the electric field in the front (=edge ?) for initial time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Mora2003.ion_energyCutoff">
+<code class="descname">ion_energyCutoff</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Mora2003.ion_energyCutoff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Mora2003.ion_energyCutoff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Wilks1992">
+<em class="property">class </em><code class="descclassname">pelpi.Model.LaserPlasmaInteraction.</code><code class="descname">Wilks1992</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Wilks1992"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Wilks1992" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for estimating …
+Based of the paper of Wilks, …, 1992.</p>
+<p class="rubric">Notes</p>
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Wilks1992.checkHypotheses">
+<code class="descname">checkHypotheses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Wilks1992.checkHypotheses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Wilks1992.checkHypotheses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the hypotheses of the model.</p>
+<p>Warnings can be configured in pelpi.warnings.filterwarnings method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pelpi.Model.LaserPlasmaInteraction.Wilks1992.electron_hot_temperature">
+<code class="descname">electron_hot_temperature</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/Model/LaserPlasmaInteraction.html#Wilks1992.electron_hot_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.Model.LaserPlasmaInteraction.Wilks1992.electron_hot_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an estimate of the hot electron temperature from the Wilks1992 model.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2018, lesnat.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="_sources/Model.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="ParticleInCell.html" title="Estimate PIC parameters"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pelpi 0.0.1 documentation</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2018, lesnat.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
-    </div>
+
+    
+
+    
   </body>
 </html>

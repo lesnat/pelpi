@@ -1,8 +1,85 @@
-
+#coding:utf8
 from . import prefered_unit as _pu
 
 
 __all__ = ["_Estimate"]
+
+
+class _PelpiObject(object):
+    """
+    Private base class for pelpi objects.
+
+    It contains methods such as _ckeckInput and set,
+    and automatically create methods for acessing to input param ?
+    """
+    def _checkInput(self,variable_dictionnary):
+        """
+        Dictionary of variables with expected type.
+
+        Examples
+        --------
+        >>> class Laser(_PelpiObject):
+        ...     def __init__(self,*args):
+        ...     # Some instructions here
+        ...     variable_dictionnary={'wavelength':'Quantity<>','energy':'Quantity<>','Profile':"<class 'pelpi.Profile'"}
+        ...     self._checkInput(variable_dictionnary)
+
+        Raises
+        ------
+        TypeError
+
+        NameError (if input not in variable_dictionnary.keys())
+
+        Notes
+        -----
+        If the variable type is NoneType, no exception is raised.
+        """
+        pass
+
+    def set(self,variable_name,value):
+        """
+        Reset an input parameter to a new value.
+
+        Parameters
+        ----------
+        variable_name : str
+            Name of the variable to reset a new value.
+        value : variable type
+            New value of the variable.
+
+        Examples
+        --------
+        Assuming a ``pelpi.Laser`` is instanciated as ``las``
+
+        >>> las.set(wavelength,1.054 * pelpi.unit('um'))
+        >>> las.wavelength()
+        <Quantity(1.054,'um')>
+
+        The 'set' method can be ... what is the name ?
+
+        >>> las.set(wavelength,1.054*pelpi.unit('um')).set(energy,2*pelpi.unit('J'))
+
+        Notes
+        -----
+        Because all the informations are accessed only in methods
+        and the class attributes are private ; all the following calculations
+        would be performed with the new wavelength value without having to instanciate
+        a new ``pelpi.Laser`` object, or setting the attribute to a new value manually.
+        """
+        self._checkInput(variable_dictionnary={variable_name:type(value)})
+        variable = self.__dict__.get("_"+variable_name)
+        variable = value
+        return self
+
+    def _defineMethodsFromVariables(self): # TODO : _setAttributes() & _setMethods
+        """
+        Define methods for accessing to user input
+        without having an access to the class attributes.
+        It is then safer and have a more coherent notation.
+        """
+        # method.__doc__="Returns\n------\n"+variable_name+" : "+str(type(value))
+        # self.__dict__.get()
+        pass
 
 class _Estimate(object):
     """

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Estimate PIC parameters &#8212; pelpi 0.0.1 documentation</title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -21,70 +21,45 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Using models" href="Model.html" />
-    <link rel="prev" title="Setting the laser plasma interaction" href="LaserPlasmaInteraction.html" /> 
+    <link rel="next" title="Models Reference" href="Model.html" />
+    <link rel="prev" title="Estimate laser plasma interaction" href="LaserPlasmaInteraction.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
   <body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="Model.html" title="Using models"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="LaserPlasmaInteraction.html" title="Setting the laser plasma interaction"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pelpi 0.0.1 documentation</a> &#187;</li> 
-      </ul>
-    </div>  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="estimate-pic-parameters">
-<h1>Estimate PIC parameters<a class="headerlink" href="#estimate-pic-parameters" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="particleincell">
-<h2>ParticleInCell<a class="headerlink" href="#particleincell" title="Permalink to this headline">¶</a></h2>
-</div>
-</div>
-
-
-          </div>
-        </div>
-      </div>
+  <div class="document">
+    
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Estimate PIC parameters</a><ul>
-<li><a class="reference internal" href="#particleincell">ParticleInCell</a></li>
+<h1 class="logo"><a href="index.html">pelpi</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Target.html">Setting target parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Laser.html">Setting laser parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LaserPlasmaInteraction.html">Estimate laser plasma interaction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Estimate PIC parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#particleincell">ParticleInCell</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="Model.html">Models Reference</a></li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="LaserPlasmaInteraction.html"
-                        title="previous chapter">Setting the laser plasma interaction</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="Model.html"
-                        title="next chapter">Using models</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/ParticleInCell.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -97,29 +72,53 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-      <div class="clearer"></div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="estimate-pic-parameters">
+<h1>Estimate PIC parameters<a class="headerlink" href="#estimate-pic-parameters" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="particleincell">
+<h2>ParticleInCell<a class="headerlink" href="#particleincell" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pelpi.ParticleInCell">
+<em class="property">class </em><code class="descclassname">pelpi.</code><code class="descname">ParticleInCell</code><span class="sig-paren">(</span><em>LaserPlasmaInteraction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/ParticleInCell.html#ParticleInCell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.ParticleInCell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pelpi.ParticleInCell.lengthCell">
+<code class="descname">lengthCell</code><span class="sig-paren">(</span><em>temperature</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/ParticleInCell.html#ParticleInCell.lengthCell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.ParticleInCell.lengthCell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pelpi.ParticleInCell.other">
+<code class="descname">other</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pelpi/ParticleInCell.html#ParticleInCell.other"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pelpi.ParticleInCell.other" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2018, lesnat.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="_sources/ParticleInCell.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="Model.html" title="Using models"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="LaserPlasmaInteraction.html" title="Setting the laser plasma interaction"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pelpi 0.0.1 documentation</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2018, lesnat.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
-    </div>
+
+    
+
+    
   </body>
 </html>

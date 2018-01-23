@@ -22,8 +22,6 @@ class ExampleLPI(object):
             space_fwhm      = 10*u.um
         )
         lasGG=pp.Laser(
-            name       = "test",
-
             wavelength = 0.8 * u.um,
             energy     = 2.0 * u.J,
 
@@ -37,7 +35,6 @@ class ExampleLPI(object):
             # angle      = 0. * u.deg,
         )
         matAl  = pp.Material(
-            name        = "Al",
             density     = 2.69890e3 * u.kg/u.m**3,
             atomic_mass = 26.98154 * u.u,
             Z           = 13,
@@ -69,8 +66,6 @@ class test_LaserPlasmaInteraction(unittest.TestCase):
             space_fwhm      = 10*u.um
         )
         lasGG=pp.Laser(
-            name       = "test",
-
             wavelength = 0.8 * u.um,
             energy     = 2.0 * u.J,
 
@@ -84,7 +79,6 @@ class test_LaserPlasmaInteraction(unittest.TestCase):
             # angle      = 0. * u.deg,
         )
         matAl  = pp.Material(
-            name        = "Al",
             density     = 2.69890e3 * u.kg/u.m**3,
             atomic_mass = 26.98154 * u.u,
             Z           = 13,

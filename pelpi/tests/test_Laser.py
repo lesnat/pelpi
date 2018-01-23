@@ -27,10 +27,10 @@ class test_Profile(unittest.TestCase):
             time_fwhm       = 30*u('fs'),
             space_profile   = "gaussian",
             space_fwhm      = 10*u('um'),)
-        self.assertEqual(self.profGG.time_profile , "gaussian")
-        self.assertEqual(self.profGG.time_fwhm    , 30*u('fs'))
-        self.assertEqual(self.profGG.space_profile, "gaussian")
-        self.assertEqual(self.profGG.space_fwhm   , 10*u('um'))
+        self.assertEqual(self.profGG.time_profile() , "gaussian")
+        self.assertEqual(self.profGG.time_fwhm()    , 30*u('fs'))
+        self.assertEqual(self.profGG.space_profile(), "gaussian")
+        self.assertEqual(self.profGG.space_fwhm()   , 10*u('um'))
 
         # tatatata + Super-gaussian profile
         # self.profTSg =
@@ -49,7 +49,7 @@ class test_Profile(unittest.TestCase):
             func(t=0*u.fs),
             1)
         self.assertAlmostEqual(
-            func(self.profGG.time_fwhm/2),
+            func(self.profGG.time_fwhm()/2),
             1/2.)
 
     def test_spaceEnvelope(self):
@@ -58,8 +58,17 @@ class test_Profile(unittest.TestCase):
             func(0*u.um),
             1)
         self.assertAlmostEqual(
-            func(self.profGG.space_fwhm/2),
+            func(self.profGG.space_fwhm()/2),
             1/2.)
+
+    def test_envelope(self):
+        func = self.profGG.envelope
+        self.assertAlmostEqual(
+            func(r=0*u.m,t=0*u.fs),
+            u.Quantity(1,''))
+        self.assertAlmostEqual(
+            func(t = self.profGG.time_fwhm()/2,r = self.profGG.space_fwhm()/2),
+            func(r=0*u.m,t=0*u.fs)/4)
 
     def test_timeIntegral(self):
         func = self.profGG.timeIntegral
@@ -83,8 +92,6 @@ class test_Laser(unittest.TestCase):
             space_fwhm      = 10*u.um)
 
         self.lasGG=pp.Laser(
-            name       = "test",
-
             wavelength = 0.8 * u.um,
             energy     = 2.0 * u.J,
 
@@ -110,8 +117,6 @@ class test_Laser(unittest.TestCase):
             space_fwhm      = 10*u.um)
 
         self.lasGG=pp.Laser(
-            name       = "test",
-
             wavelength = 0.8 * u.um,
             energy     = 2.0 * u.J,
 
@@ -125,9 +130,8 @@ class test_Laser(unittest.TestCase):
             # angle      = 0. * u.deg,
             )
 
-        self.assertEqual(self.lasGG.name        , "test")
-        self.assertEqual(self.lasGG.wavelength  , 0.8 * u.um)
-        self.assertEqual(self.lasGG.energy      , 2.0 * u.J)
+        self.assertEqual(self.lasGG.wavelength()  , 0.8 * u.um)
+        self.assertEqual(self.lasGG.energy()      , 2.0 * u.J)
         self.assertEqual(self.lasGG.profile     , profGG)
         # self.assertEqual(self.lasGG.contrast_1ps, 1e8)
         # self.assertEqual(self.lasGG.polarization, [0,1,0])
@@ -156,7 +160,7 @@ class test_Laser(unittest.TestCase):
             func(),
             func(r=0*u.m,t=0*u.fs))
         self.assertAlmostEqual(
-            func(t = self.lasGG.profile.time_fwhm/2,r = self.lasGG.profile.space_fwhm/2),
+            func(t = self.lasGG.profile.time_fwhm()/2,r = self.lasGG.profile.space_fwhm()/2),
             func()/4,
             delta=u.Quantity(1e-7, 'joule / femtosecond'))
         self.assertAlmostEqual(
@@ -169,7 +173,7 @@ class test_Laser(unittest.TestCase):
             func(),
             func(r=0*u.m,t=0*u.fs))
         self.assertAlmostEqual(
-            func(t = self.lasGG.profile.time_fwhm/2,r = self.lasGG.profile.space_fwhm/2),
+            func(t = self.lasGG.profile.time_fwhm()/2,r = self.lasGG.profile.space_fwhm()/2),
             func()/4,
             delta=u.Quantity(1e-7, 'joule / femtosecond / micrometer ** 2'))
         self.assertAlmostEqual(
@@ -177,21 +181,10 @@ class test_Laser(unittest.TestCase):
             u.Quantity(5.527288207777904e+19, 'watt / centimeter ** 2'))
 
     def test_intensityNormalized(self):
-        func = self.lasGG.intensityNormalized
+        func = self.lasGG.intensityPeakNormalized
         self.assertAlmostEqual(
             func(),
             u.Quantity(5.055509932021204, 'dimensionless'))
-
-
-    def test_envelope(self):
-        func = self.lasGG.envelope
-        self.assertAlmostEqual(
-            func(r=0*u.m,t=0*u.fs),
-            self.lasGG.intensity())
-        self.assertAlmostEqual(
-            func(t = self.lasGG.profile.time_fwhm/2,r = self.lasGG.profile.space_fwhm/2),
-            func(r=0*u.m,t=0*u.fs)/4,
-            delta=u.Quantity(1e-7, 'joule / femtosecond / micrometer ** 2'))
 
     def test_timeChirp(self):
         func = self.lasGG.timeChirp

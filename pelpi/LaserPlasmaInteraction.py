@@ -15,32 +15,27 @@ class LaserPlasmaInteraction(object):
     Class for estimations in laser-plasma interaction.
 
     Parameters
-    ==========
-    This class needs to be implemented with a laser object and a target object
-    as arguments. Those classes could then be find as a sub-module.
+    ----------
+    Laser : object
+        Instanciated ``pelpi.Laser`` object
+    Target : object
+        Instanciated ``pelpi.Target`` object
 
-    Class Attributes
-    ================
-    laser, object
-    The Laser object given as argument when the class was declared.
+    Attributes
+    ----------
+    laser : sub-module
+        The ``pelpi.Laser`` object given as argument when the class was declared.
+    target : sub-module
+        The ``pelpi.Target`` object given as argument when the class was declared.
+    plasma : sub-module
+        Contains usual plasma parameters.
+    model : sub-module
+        Contains the all the available models.
 
-    target, object
-    The Target object given as argument when the class was declared.
-
-    plasma, object
-    A sub-class containing usual plasma parameters.
-
-
-    Available Methods
-    =================
-    For extended documentation, refer to the desired method.
-
-    General Methods
-    --------------
-
-
+    Notes
+    -----
     Use of arguments (*args) in methods
-    ===================================
+    +++++++++++++++++++++++++++++++++++
     Some models may need optional parameters, such as electron hot temperature
     or laser absorption efficiency for complete the calculus.
     These parameters can be choosen by the user (for order of magnitude) or
@@ -49,21 +44,41 @@ class LaserPlasmaInteraction(object):
 
 
     Examples
-    ========
-    >>> ...
+    --------
+    Assuming you instanciated a ``pelpi.Target`` object as ``targ``
+    and a ``pelpi.Laser`` object as ``las``,
+    you can instanciate the ``pelpi.LaserPlasmaInteraction`` object as follows :
 
-    For complex models, see the documentation of modules,
-    in pelpi.Model.LaserPlasmaInteraction
+    >>> import pelpi as pp
+    >>> lpi = pp.LaserPlasmaInteraction(las,tar)
 
-    Assuming lpi is an instanciated LaserPlasmaInteraction object :
+    and can still access to ``targ`` and ``las`` properties from ``lpi`` object.
+
+    >>> print("Laser normalized peak intensity : {}".format(lpi.laser.intensityPeakNormalized()))
+
+    A list of available models for each estimate can be found in the method documentation.
+
+    >>> help(lpi.electron.hot.temperature)
+
+    Once you choose one that corresponds to your case, you can get more informations about it
+
+    >>> help(lpi.model.Beg1997)
+
+    get an estimate (here the supra-thermal electron temperature from the Beg1997 model)
 
     >>> eh  = lpi.electron.hot
-    >>> Teh = eh.temperature(model="Wilks1992")
+    >>> Teh = eh.temperature(model="Beg1997")
+
+    and use the estimate for other calculations,
+    like the corresponding normalized Maxwell-Boltzmann distribution.
+
+    >>> Ek = np.linspace(0.1,10,100) * pp.unit('MeV')
+    >>> MB = lpi.model.Common.distribution("MB",kinetic_energy=Ek,temperature=Teh)
+
+    You can build more and more complex estimations,
+
     >>> S   = lpi.target.conductivity(model=)
     >>> nu  = lpi.laser.efficiencyAbsorption(model=)
-
-    Use models
-
     >>> neh_Bell = eh.numberDensity(
             model="Bell1997",
             temperature=Teh,
@@ -73,14 +88,34 @@ class LaserPlasmaInteraction(object):
             model="Common",
             absorption_efficiency=nu)
 
-    Then print results
+    and compare the different results with your experimental or simulation results.
 
-    >>> print("Estimated hot electron density :")
-    >>> print("-----------------------------------------")
-    >>> print("Bell1997     : neh = "+str(neh_Bell))
-    >>> print("Common      : neh = "+str(neh_Obvious))
-    >>> print("-----------------------------------------")
+    >>> import matplotlib.pyplot as plt
+    >>> import numpy as np
+    >>> Ek_sim, Spec_sim = np.loadtxt("spectrum.txt").T
+    >>> plt.plot(Ek_sim,Spec_sim,"Simulation results")
+    >>> plt.plot(Ek,neh_Bell*MB,label="MB 'Beg1997' estimate with 'Bell1997' normalisation")
+    >>> plt.plot(Ek,neh_Common*MB,label="MB 'Beg1997' estimate with 'Common' normalisation")
+    >>> plt.axes(xlabel='$E_k$ (MeV)',ylabel='Number of $e^-$ per MeV')
+    >>> plt.legend()
+    >>> plt.show()
 
+    Thank to the 'all in method' structure, it is then possible to loop over one or more parameters
+    to plot parametric evolution of an estimate with several models involved
+
+    >>> tFWHM   = np.linspace(20,200,100)*pp.unit('fs')
+    >>> neh     = []
+    >>> for t in tFWHM:
+    ...     lpi.laser.set(time_fwhm=t)
+    ...     Teh = eh.temperature(model='Haines2009')
+    ...     S   =
+    ...     nu  =
+    ...     neh.append()
+    ...
+    >>> plt.figure()
+    >>> plt.plot(tFWHM,neh)
+    >>> plt.axes(xlabel='Pulse temporal FWHM (fs)',ylabel='Total number of hot electrons')
+    >>> plt.show()
     """
     def __init__(self,Laser,Target):
         self.laser      = Laser

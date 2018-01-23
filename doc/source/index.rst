@@ -6,13 +6,15 @@
 *****
 pelpi
 *****
-.. automodule:: pelpi.__init__
+.. include:: ../../README.md
+
 
 Contents
 ========
 .. toctree::
    :maxdepth: 2
 
+   intro
    Target
    Laser
    LaserPlasmaInteraction

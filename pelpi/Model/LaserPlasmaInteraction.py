@@ -41,7 +41,7 @@ class Beg1997(object):
             $\lambda_{\mu}$ the laser wavelength in $10^{-6}$ m
         """
         I0              = self._lpi.laser.intensity()
-        lambda_laser    = self._lpi.laser.wavelength
+        lambda_laser    = self._lpi.laser.wavelength()
 
         Te = 100.*_u('keV') * ((I0 * lambda_laser**2) / (1e17*_u('W/cm**2')*_u('um**2')) )**(1/3.)
 
@@ -213,7 +213,7 @@ class Haines2009(object):
             $a_0$ the normalized laser intensity
             $m_e c^2$ the electron mass energy
         """
-        a0 = self._lpi.laser.intensityNormalized()
+        a0 = self._lpi.laser.intensityPeakNormalized()
         return ((1.0 + 2.0**(1/2.) * a0)**(1/2.) - 1.0) * 511 * _u('keV')
 
 class Mora2003(object):
@@ -286,7 +286,7 @@ class Wilks1992(object):
             $a_0$ the normalized laser intensity
             $m_e c^2$ the electron mass energy
         """
-        a0 = self._lpi.laser.intensityNormalized()
+        a0 = self._lpi.laser.intensityPeakNormalized()
         return ((1.0 + (a0)**2)**(1/2.) - 1.0 ) * 511 * _u('keV') # TODO: a0 or a0/2 ?
 
 

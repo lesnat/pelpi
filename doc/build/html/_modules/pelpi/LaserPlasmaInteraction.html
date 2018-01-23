@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>pelpi.LaserPlasmaInteraction &#8212; pelpi 0.0.1 documentation</title>
-    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -21,25 +21,52 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
   <body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pelpi 0.0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
-      </ul>
-    </div>  
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">pelpi</a></h1>
 
-    <div class="document">
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Target.html">Setting target parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Laser.html">Setting laser parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../LaserPlasmaInteraction.html">Estimate laser plasma interaction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ParticleInCell.html">Estimate PIC parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Model.html">Models Reference</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
@@ -62,32 +89,27 @@
 <span class="sd">    Class for estimations in laser-plasma interaction.</span>
 
 <span class="sd">    Parameters</span>
-<span class="sd">    ==========</span>
-<span class="sd">    This class needs to be implemented with a laser object and a target object</span>
-<span class="sd">    as arguments. Those classes could then be find as a sub-module.</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Laser : object</span>
+<span class="sd">        Instanciated ``pelpi.Laser`` object</span>
+<span class="sd">    Target : object</span>
+<span class="sd">        Instanciated ``pelpi.Target`` object</span>
 
-<span class="sd">    Class Attributes</span>
-<span class="sd">    ================</span>
-<span class="sd">    laser, object</span>
-<span class="sd">    The Laser object given as argument when the class was declared.</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    laser : sub-module</span>
+<span class="sd">        The ``pelpi.Laser`` object given as argument when the class was declared.</span>
+<span class="sd">    target : sub-module</span>
+<span class="sd">        The ``pelpi.Target`` object given as argument when the class was declared.</span>
+<span class="sd">    plasma : sub-module</span>
+<span class="sd">        Contains usual plasma parameters.</span>
+<span class="sd">    model : sub-module</span>
+<span class="sd">        Contains the all the available models.</span>
 
-<span class="sd">    target, object</span>
-<span class="sd">    The Target object given as argument when the class was declared.</span>
-
-<span class="sd">    plasma, object</span>
-<span class="sd">    A sub-class containing usual plasma parameters.</span>
-
-
-<span class="sd">    Available Methods</span>
-<span class="sd">    =================</span>
-<span class="sd">    For extended documentation, refer to the desired method.</span>
-
-<span class="sd">    General Methods</span>
-<span class="sd">    --------------</span>
-
-
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
 <span class="sd">    Use of arguments (*args) in methods</span>
-<span class="sd">    ===================================</span>
+<span class="sd">    +++++++++++++++++++++++++++++++++++</span>
 <span class="sd">    Some models may need optional parameters, such as electron hot temperature</span>
 <span class="sd">    or laser absorption efficiency for complete the calculus.</span>
 <span class="sd">    These parameters can be choosen by the user (for order of magnitude) or</span>
@@ -96,21 +118,41 @@
 
 
 <span class="sd">    Examples</span>
-<span class="sd">    ========</span>
-<span class="sd">    &gt;&gt;&gt; ...</span>
+<span class="sd">    --------</span>
+<span class="sd">    Assuming you instanciated a ``pelpi.Target`` object as ``targ``</span>
+<span class="sd">    and a ``pelpi.Laser`` object as ``las``,</span>
+<span class="sd">    you can instanciate the ``pelpi.LaserPlasmaInteraction`` object as follows :</span>
 
-<span class="sd">    For complex models, see the documentation of modules,</span>
-<span class="sd">    in pelpi.Model.LaserPlasmaInteraction</span>
+<span class="sd">    &gt;&gt;&gt; import pelpi as pp</span>
+<span class="sd">    &gt;&gt;&gt; lpi = pp.LaserPlasmaInteraction(las,tar)</span>
 
-<span class="sd">    Assuming lpi is an instanciated LaserPlasmaInteraction object :</span>
+<span class="sd">    and can still access to ``targ`` and ``las`` properties from ``lpi`` object.</span>
+
+<span class="sd">    &gt;&gt;&gt; print(&quot;Laser normalized peak intensity : {}&quot;.format(lpi.laser.intensityPeakNormalized()))</span>
+
+<span class="sd">    A list of available models for each estimate can be found in the method documentation.</span>
+
+<span class="sd">    &gt;&gt;&gt; help(lpi.electron.hot.temperature)</span>
+
+<span class="sd">    Once you choose one that corresponds to your case, you can get more informations about it</span>
+
+<span class="sd">    &gt;&gt;&gt; help(lpi.model.Beg1997)</span>
+
+<span class="sd">    get an estimate (here the supra-thermal electron temperature from the Beg1997 model)</span>
 
 <span class="sd">    &gt;&gt;&gt; eh  = lpi.electron.hot</span>
-<span class="sd">    &gt;&gt;&gt; Teh = eh.temperature(model=&quot;Wilks1992&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; Teh = eh.temperature(model=&quot;Beg1997&quot;)</span>
+
+<span class="sd">    and use the estimate for other calculations,</span>
+<span class="sd">    like the corresponding normalized Maxwell-Boltzmann distribution.</span>
+
+<span class="sd">    &gt;&gt;&gt; Ek = np.linspace(0.1,10,100) * pp.unit(&#39;MeV&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; MB = lpi.model.Common.distribution(&quot;MB&quot;,kinetic_energy=Ek,temperature=Teh)</span>
+
+<span class="sd">    You can build more and more complex estimations,</span>
+
 <span class="sd">    &gt;&gt;&gt; S   = lpi.target.conductivity(model=)</span>
 <span class="sd">    &gt;&gt;&gt; nu  = lpi.laser.efficiencyAbsorption(model=)</span>
-
-<span class="sd">    Use models</span>
-
 <span class="sd">    &gt;&gt;&gt; neh_Bell = eh.numberDensity(</span>
 <span class="sd">            model=&quot;Bell1997&quot;,</span>
 <span class="sd">            temperature=Teh,</span>
@@ -120,14 +162,34 @@
 <span class="sd">            model=&quot;Common&quot;,</span>
 <span class="sd">            absorption_efficiency=nu)</span>
 
-<span class="sd">    Then print results</span>
+<span class="sd">    and compare the different results with your experimental or simulation results.</span>
 
-<span class="sd">    &gt;&gt;&gt; print(&quot;Estimated hot electron density :&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;-----------------------------------------&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;Bell1997     : neh = &quot;+str(neh_Bell))</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;Common      : neh = &quot;+str(neh_Obvious))</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;-----------------------------------------&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; Ek_sim, Spec_sim = np.loadtxt(&quot;spectrum.txt&quot;).T</span>
+<span class="sd">    &gt;&gt;&gt; plt.plot(Ek_sim,Spec_sim,&quot;Simulation results&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.plot(Ek,neh_Bell*MB,label=&quot;MB &#39;Beg1997&#39; estimate with &#39;Bell1997&#39; normalisation&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.plot(Ek,neh_Common*MB,label=&quot;MB &#39;Beg1997&#39; estimate with &#39;Common&#39; normalisation&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.axes(xlabel=&#39;$E_k$ (MeV)&#39;,ylabel=&#39;Number of $e^-$ per MeV&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.legend()</span>
+<span class="sd">    &gt;&gt;&gt; plt.show()</span>
 
+<span class="sd">    Thank to the &#39;all in method&#39; structure, it is then possible to loop over one or more parameters</span>
+<span class="sd">    to plot parametric evolution of an estimate with several models involved</span>
+
+<span class="sd">    &gt;&gt;&gt; tFWHM   = np.linspace(20,200,100)*pp.unit(&#39;fs&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; neh     = []</span>
+<span class="sd">    &gt;&gt;&gt; for t in tFWHM:</span>
+<span class="sd">    ...     lpi.laser.set(time_fwhm=t)</span>
+<span class="sd">    ...     Teh = eh.temperature(model=&#39;Haines2009&#39;)</span>
+<span class="sd">    ...     S   =</span>
+<span class="sd">    ...     nu  =</span>
+<span class="sd">    ...     neh.append()</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt; plt.figure()</span>
+<span class="sd">    &gt;&gt;&gt; plt.plot(tFWHM,neh)</span>
+<span class="sd">    &gt;&gt;&gt; plt.axes(xlabel=&#39;Pulse temporal FWHM (fs)&#39;,ylabel=&#39;Total number of hot electrons&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Laser</span><span class="p">,</span><span class="n">Target</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">laser</span>      <span class="o">=</span> <span class="n">Laser</span>
@@ -350,56 +412,37 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">updateParameters</span><span class="p">()</span>
 
 
-    <span class="k">def</span> <span class="nf">updateParameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># TODO; convert to methods</span>
+<div class="viewcode-block" id="PlasmaParameters.updateParameters"><a class="viewcode-back" href="../../LaserPlasmaInteraction.html#pelpi.PlasmaParameters.updateParameters">[docs]</a>    <span class="k">def</span> <span class="nf">updateParameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># TODO; convert to methods</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wpe</span>        <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># Electron plasma frequency</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wpi</span>        <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># Ion plasma frequency</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lambda_De</span>  <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># Debye length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vTe</span>        <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># Electron thermal velocity</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vTi</span>        <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># Ion thermal velocity</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vA</span>         <span class="o">=</span> <span class="mf">0.0</span> <span class="c1"># Alfven velocity</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">EFermi</span>     <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">EFermi</span>     <span class="o">=</span> <span class="mf">0.0</span></div>
 
-    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PlasmaParameters.getInfo"><a class="viewcode-back" href="../../LaserPlasmaInteraction.html#pelpi.PlasmaParameters.getInfo">[docs]</a>    <span class="k">def</span> <span class="nf">getInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">txt</span>  <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">txt</span></div>
+        <span class="k">return</span> <span class="n">txt</span></div></div>
 </pre></div>
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2018, lesnat.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">pelpi 0.0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2018, lesnat.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
-    </div>
+
+    
+
+    
   </body>
 </html>

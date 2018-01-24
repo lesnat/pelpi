@@ -2,8 +2,9 @@
 # from . import unit as _u
 # import numpy as _np
 from .._global import *
+from .._tools import _PelpiObject
 
-class ParticleInCell(object):
+class ParticleInCell(_PelpiObject):
     # Estimations
     # Faire un dictionnaire pour choisir unités et ajouter verbosities pour afficher calculs intermédiaires ?
     def __init__(self,LaserPlasmaInteraction):
@@ -43,7 +44,7 @@ class ParticleInCell(object):
         return self.dx.to(_pu['length'])
 
 
-    class _CodeUnit(object):
+    class _CodeUnit(_PelpiObject):
         """
         Sub-class for
 

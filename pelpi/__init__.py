@@ -1,13 +1,10 @@
 #coding:utf8
 """
-*****
-pelpi
-*****
 
 Module documentation ...
 
 """
-__all__ = ["Material","Geometry","Target","Laser","LaserPlasmaInteraction","Model"]
+__all__ = ["Material","Geometry","Target","Laser","LaserPlasmaInteraction"]
 
 import pint
 unit=pint.UnitRegistry()
@@ -29,5 +26,4 @@ warnings.simplefilter('always',UserWarning)
 from .Laser.classes import Laser,Profile
 from .Target.classes import Material,Target
 from .LaserPlasmaInteraction.classes import LaserPlasmaInteraction
-#import .LaserPlasmaInteraction.models as Models
 from .ParticleInCell.classes import ParticleInCell

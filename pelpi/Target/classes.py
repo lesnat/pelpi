@@ -5,7 +5,7 @@ from .._tools import _PelpiObject
 
 __all__ = ["Material","Target"]
 
-class Material(object):
+class Material(_PelpiObject):
     """
     Class for defining a material.
 
@@ -23,7 +23,7 @@ class Material(object):
     def ionNumberDensity(self):
         return self.density/self.atomic_mass
 
-class Target(object):
+class Target(_PelpiObject):
     """
     Class for defining the target characteristics.
     """

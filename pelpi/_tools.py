@@ -81,7 +81,7 @@ class _PelpiObject(object):
         # self.__dict__.get()
         pass
 
-class _Estimate(object):
+class _Estimate(_PelpiObject):
     """
     Class for using estimations models.
 
@@ -111,6 +111,8 @@ class _Estimate(object):
             raise TypeError("'model_name' type must be 'string', but it is "+str(type(model_name)))
         if type(available_models)!=list:
             raise TypeError("'available_models' type must be 'list', but it is "+str(type(available_models)))
+
+        # TODO: Replace by _checkInput method
 
         self._lpi       = LaserPlasmaInteraction
         if model_name in available_models:
@@ -151,7 +153,7 @@ class _Estimate(object):
         # Use it with kwargs and convert it
         return Method(*args).to(_pu[dim]) # TODO: check if OK with args
 
-class _Model(object):
+class _Model(_PelpiObject):
     """
     Base class for models.
     """

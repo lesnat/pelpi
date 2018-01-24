@@ -1,13 +1,13 @@
 #coding:utf8
 
 from .._global import *
-from .._tools import _Estimate
-from ..LaserPlasmaInteraction import models as _m
+from .._tools import _Estimate,_PelpiObject
+from ..LaserPlasmaInteraction import model as _m
 
 __all__ = ["LaserPlasmaInteraction"]
 
 ################################################################################
-class LaserPlasmaInteraction(object):
+class LaserPlasmaInteraction(_PelpiObject):
     """
     Class for estimations in laser-plasma interaction.
 
@@ -114,17 +114,18 @@ class LaserPlasmaInteraction(object):
     >>> plt.axes(xlabel='Pulse temporal FWHM (fs)',ylabel='Total number of hot electrons')
     >>> plt.show()
     """
+
+    model      = _m # public attribute
+
     def __init__(self,Laser,Target):
         self.laser      = Laser
         self.target     = Target
-
         self.plasma     = _PlasmaParameters(self)
-        self.absorption = []
-        self.model      = _m
         self.electron   = _Electron(self)
         # self.ion        = Ion(self)
 
-class _Laser(object):
+
+class _Laser(_PelpiObject):
     """
     """
     def __init__(self,LaserPlasmaInteraction):
@@ -164,7 +165,7 @@ class _Laser(object):
         return estimate.use(method_name='laser_efficiencyAbsorption',dim=dim,*args)
 
 
-class _Target(object):
+class _Target(_PelpiObject):
     """
     """
     def __init__(self,LaserPlasmaInteraction):
@@ -206,7 +207,7 @@ class _Target(object):
         estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
         return estimate.use(method_name='target_conductivity',dim=dim,*args)
 
-class _Electron(object):
+class _Electron(_PelpiObject):
     """
 
     """
@@ -217,7 +218,7 @@ class _Electron(object):
 
     # TODO: here general stuff about all the electrons
 
-    class _Hot(object):
+    class _Hot(_PelpiObject):
         """
         In UHI, super thermal electrons
         """
@@ -324,7 +325,7 @@ class _Electron(object):
             return 0.
 
 
-class _PlasmaParameters(object):
+class _PlasmaParameters(_PelpiObject):
     """
     Comment faire pour utiliser une température autre que Te_pond ?
     via meilleure estimation de la température si abso != JxB ou donner le choix ?

@@ -100,6 +100,6 @@ Models Reference
 LaserPlasmaInteraction
 ----------------------
 
-.. automodule:: pelpi.Model.LaserPlasmaInteraction
+.. automodule:: pelpi.LaserPlasmaInteraction.model
   :members:
   :undoc-members:

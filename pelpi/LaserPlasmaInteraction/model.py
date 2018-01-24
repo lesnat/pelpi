@@ -7,7 +7,7 @@ from .._global import *
 Malka 2001 -> Scaling Energie max electrons
 """
 
-class Beg1997(object):
+class Beg1997(_PelpiObject):
     """
     Class for estimating ...
     Experimental fit
@@ -54,7 +54,7 @@ class Beg1997(object):
         return (1.2e-2*_u('keV')) * (self._lpi.laser.I0.to('W/cm**2'))**(0.313)
 
 
-class Bell1997(object):
+class Bell1997(_PelpiObject):
     """
     Class for estimating ...
     Return current
@@ -148,7 +148,7 @@ class Bell1997(object):
     def electron_density(self):
         pass
 
-class Braginskii1965(object):
+class Braginskii1965(_PelpiObject):
     """
     """
     def __init__(self):
@@ -169,7 +169,7 @@ class Braginskii1965(object):
     def target_conductivity(self):
         pass
 
-class Davies2003(object):
+class Davies2003(_PelpiObject):
     """
     Theoretical paper on Electric and Magnetic field generation and target heating
     by laser-generated fast electrons + electrical conductivity.
@@ -188,7 +188,7 @@ class Davies2003(object):
     def __init__(self,LaserPlasmaInteraction):
         lpi         = LaserPlasmaInteraction
 
-class Haines2009(object):
+class Haines2009(_PelpiObject):
     """
     """
     def __init__(self,LaserPlasmaInteraction):
@@ -216,7 +216,7 @@ class Haines2009(object):
         a0 = self._lpi.laser.intensityPeakNormalized()
         return ((1.0 + 2.0**(1/2.) * a0)**(1/2.) - 1.0) * 511 * _u('keV')
 
-class Mora2003(object):
+class Mora2003(_PelpiObject):
     """
     Theoretical paper on plasma expansion into vacuum, focused on ion acceleration
     and calculations of electric fields.
@@ -244,7 +244,7 @@ class Mora2003(object):
     def ion_energyCutoff(self):
         pass
 
-class Wilks1992(object):
+class Wilks1992(_PelpiObject):
     """
     Class for estimating ...
     Based of the paper of Wilks, ..., 1992.
@@ -291,7 +291,7 @@ class Wilks1992(object):
 
 
 ################################################################################
-class Common(object):
+class Common(_PelpiObject):
     """
     Class containing obvious theoretical estimations, for order of magnitudes.
     It also contains commonly used functions, such as Maxwell-Boltzmann distribution,

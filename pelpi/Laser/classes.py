@@ -1,6 +1,6 @@
 #coding:utf8
-from ._global import *
-from ._tools import _PelpiObject
+from .._global import *
+from .._tools import _PelpiObject
 
 __all__ = ["Profile","Laser"]
 

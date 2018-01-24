@@ -26,7 +26,8 @@ warnings.formatwarning = lambda message, category, filename, lineno, line : \
 warnings.simplefilter('always',UserWarning)
 
 
-from .Laser import Laser,Profile
-from .Target import Material,Target
-from .LaserPlasmaInteraction import LaserPlasmaInteraction
-from .ParticleInCell import ParticleInCell
+from .Laser.classes import Laser,Profile
+from .Target.classes import Material,Target
+from .LaserPlasmaInteraction.classes import LaserPlasmaInteraction
+#import .LaserPlasmaInteraction.models as Models
+from .ParticleInCell.classes import ParticleInCell

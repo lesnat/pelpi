@@ -1,5 +1,6 @@
 #coding:utf8
-from ._global import *
+from .._global import *
+from .._tools import _PelpiObject
 
 
 __all__ = ["Material","Target"]

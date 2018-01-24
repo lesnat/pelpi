@@ -105,7 +105,7 @@ class _Estimate(object):
         Return the result of the model choosen method
     """
     def __init__(self,LaserPlasmaInteraction,model_name,available_models):
-        if str(type(LaserPlasmaInteraction))!="<class 'pelpi.LaserPlasmaInteraction.LaserPlasmaInteraction'>":
+        if str(type(LaserPlasmaInteraction))!="<class 'pelpi.LaserPlasmaInteraction.classes.LaserPlasmaInteraction'>":
             raise TypeError("'LaserPlasmaInteraction' type must be a pelpi module, but it is "+str(type(LaserPlasmaInteraction)))
         if type(model_name)!=str:
             raise TypeError("'model_name' type must be 'string', but it is "+str(type(model_name)))
@@ -151,6 +151,19 @@ class _Estimate(object):
         # Use it with kwargs and convert it
         return Method(*args).to(_pu[dim]) # TODO: check if OK with args
 
+class _Model(object):
+    """
+    Base class for models.
+    """
+    def __init__(self):
+        # self.electron = electron
+        pass
+
+    def checkHypotheses(self): # TODO: Necessary ? and if, how to do this ?
+        pass
+
+    def _addMethod(self):
+        pass
 
 # def _addMethod(InObject,OutObject,method):
 #     OutObject.__dict__.get(method) = InObject.__dict__.get(method)

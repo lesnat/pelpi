@@ -1,11 +1,8 @@
 #coding:utf8
 
-# import numpy as _np
-# from . import unit as _u
-# from . import prefered_unit as _pu
-from ._global import *
-from ._tools import _Estimate
-from .Model import LaserPlasmaInteraction as _m
+from .._global import *
+from .._tools import _Estimate
+from ..LaserPlasmaInteraction import models as _m
 
 __all__ = ["LaserPlasmaInteraction"]
 
@@ -379,7 +376,7 @@ class _PlasmaParameters(object):
         """
         Te  = temperature
 
-        return (_u.e**2)/(4*_np.pi * _u.epsilon_0 * Te)
+        return ((_u.e**2)/(4*_np.pi * _u.epsilon_0 * Te)).to(_pu['temperature'])
 
     def electronPulsationPlasma(self,temperature):
         """

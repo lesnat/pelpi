@@ -1,7 +1,7 @@
 #coding:utf8
 # from . import unit as _u
 # import numpy as _np
-from ._global import *
+from .._global import *
 
 class ParticleInCell(object):
     # Estimations

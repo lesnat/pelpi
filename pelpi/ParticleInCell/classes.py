@@ -9,7 +9,7 @@ class ParticleInCell(_PelpiObject):
     # Faire un dictionnaire pour choisir unités et ajouter verbosities pour afficher calculs intermédiaires ?
     def __init__(self,LaserPlasmaInteraction):
         self._lpi             = LaserPlasmaInteraction
-        self.unit             = self._CodeUnit(self._lpi,self._lpi.laser.pulsation())
+        self.code             = self._CodeUnit(self._lpi,self._lpi.laser.pulsation())
 
     def other(self):
         self.dt         = self.dx/_np.sqrt(2)
@@ -30,19 +30,30 @@ class ParticleInCell(_PelpiObject):
 
         self.Nynquist = 0. # facteur de nynquist pour echantillonage des diags
 
-    def lengthCellMin(self,temperature):
-        self.dx_laser   = self._lpi.laser.wavelength()/10 # voire pour les 2 pi
-        ne = self._lpi.target.material.electronNumberDensity()/self._lpi.laser.numberDensityCritical()
-        self.dx_target  = (0.1*_u('keV**-(1/2.)') * (self._lpi.laser.wavelength()) * \
-        _np.sqrt(temperature.to('keV')/ne))
-        self.dx         = max(self.dx_laser,self.dx_target)
-        return self.dx
-        # if _vb:
-        #     print("verbose")
+    def lengthCell(self,kind='min',temperature=None):
+        """
+        Tskahya et al.
+        """
+        if kind=="target":
+            return 3.4 * self._lpi.plasma.electronLengthDebye(temperature).to(_pu['length'])
+        if kind=="laser":
+            return (self._lpi.laser.wavelength()/10).to(_pu['length'])
+        if kind=="min":
+            return min(self.lengthCell(kind="target",temperature=temperature),self.lengthCell(kind="laser"))
+        else:
+            raise NameError
 
+    def timeStep(self,kind="min",CFL=True,temperature=None):
+        if CFL:
+            return (0.95*self.lengthCell(kind,temperature)/_np.sqrt(2)).to(_pu['time'])
+        else:
+            return (self.lengthCell(kind,temperature)/_u.c).to(_pu['time'])
 
-        return self.dx.to(_pu['length'])
+    def spaceResolution(self,kind,temperature=None):
+        return 1/self.lengthCell(kind=kind,temperature=temperature)
 
+    def timeResolution(self,kind,temperature=None):
+        return 1/self.timeStep()
 
     class _CodeUnit(_PelpiObject):
         """
@@ -53,7 +64,7 @@ class ParticleInCell(_PelpiObject):
             self._lpi   = LaserPlasmaInteraction
             self.referenceAngularFrequency = referenceAngularFrequency
 
-        def lengthCell(self):
+        def length(self):
             return (_u.c/self.referenceAngularFrequency.to('1/s')).to(_pu['length'])
             #
             # self.Wr         = self._lpi.laser.wl

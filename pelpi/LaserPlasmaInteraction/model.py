@@ -2,12 +2,13 @@
 # import numpy as _np
 # from .. import unit as _u
 from .._global import *
+from .._tools import _Model
 ################################################################################
 """
 Malka 2001 -> Scaling Energie max electrons
 """
 
-class Beg1997(_PelpiObject):
+class Beg1997(_Model):
     """
     Class for estimating ...
     Experimental fit
@@ -54,7 +55,7 @@ class Beg1997(_PelpiObject):
         return (1.2e-2*_u('keV')) * (self._lpi.laser.I0.to('W/cm**2'))**(0.313)
 
 
-class Bell1997(_PelpiObject):
+class Bell1997(_Model):
     """
     Class for estimating ...
     Return current
@@ -148,7 +149,7 @@ class Bell1997(_PelpiObject):
     def electron_density(self):
         pass
 
-class Braginskii1965(_PelpiObject):
+class Braginskii1965(_Model):
     """
     """
     def __init__(self):
@@ -169,7 +170,7 @@ class Braginskii1965(_PelpiObject):
     def target_conductivity(self):
         pass
 
-class Davies2003(_PelpiObject):
+class Davies2003(_Model):
     """
     Theoretical paper on Electric and Magnetic field generation and target heating
     by laser-generated fast electrons + electrical conductivity.
@@ -188,7 +189,7 @@ class Davies2003(_PelpiObject):
     def __init__(self,LaserPlasmaInteraction):
         lpi         = LaserPlasmaInteraction
 
-class Haines2009(_PelpiObject):
+class Haines2009(_Model):
     """
     """
     def __init__(self,LaserPlasmaInteraction):
@@ -216,7 +217,7 @@ class Haines2009(_PelpiObject):
         a0 = self._lpi.laser.intensityPeakNormalized()
         return ((1.0 + 2.0**(1/2.) * a0)**(1/2.) - 1.0) * 511 * _u('keV')
 
-class Mora2003(_PelpiObject):
+class Mora2003(_Model):
     """
     Theoretical paper on plasma expansion into vacuum, focused on ion acceleration
     and calculations of electric fields.
@@ -244,7 +245,7 @@ class Mora2003(_PelpiObject):
     def ion_energyCutoff(self):
         pass
 
-class Wilks1992(_PelpiObject):
+class Wilks1992(_Model):
     """
     Class for estimating ...
     Based of the paper of Wilks, ..., 1992.
@@ -291,7 +292,7 @@ class Wilks1992(_PelpiObject):
 
 
 ################################################################################
-class Common(_PelpiObject):
+class Common(_Model):
     """
     Class containing obvious theoretical estimations, for order of magnitudes.
     It also contains commonly used functions, such as Maxwell-Boltzmann distribution,
@@ -347,7 +348,7 @@ class Common(_PelpiObject):
 
         return (self._lpi.laser.energy/(3/2. * Teh)).to(_pu['number'])
 
-    def target_conductivity(self,temperature_cold,log_coulomb): # getSpitzer ? target_conductivity ?
+    def target_conductivity(self,temperature_cold,log_coulomb):
         """
         Spitzer conductivity.
 

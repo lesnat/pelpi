@@ -6,8 +6,7 @@
 *****
 pelpi
 *****
-.. include:: ../../README.md
-
+short description
 
 ========
 Contents

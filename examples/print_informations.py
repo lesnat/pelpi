@@ -3,6 +3,8 @@ import sys
 Modules_path="../"
 if sys.path[0]!=Modules_path:sys.path.insert(0, Modules_path)
 
+import numpy as np
+
 import pelpi as pp
 u=pp.unit
 
@@ -21,35 +23,36 @@ laser=pp.Laser(
 )
 
 mat=pp.Material(
-    name        = "Al",
-    density     = 2.69890e3 * u.kg/u.m**3,
-    atomic_mass = 26.98154 * u.u,
-    Z           = 13,
-    A           = 27,
+    density     = 2.69890e3 * u('kg/m**3'),
+    atomic_mass = 26.98154 * u('amu'),
+    Z           = 13 * u(''),
+    A           = 27 * u(''),
 )
 # mat=pp.Material(
-#     name        = "W",
-#     density     = 1.93000e4 * u.kg/u.m**3,
-#     atomic_mass = 183.85 * u.u,
-#     Z           = 74,
-#     A           = 184,
+#     density     = 1.93000e4 * u('kg/m**3'),
+#     atomic_mass = 183.85 * u('u'),
+#     Z           = 74 * u(''),
+#     A           = 184 * u(''),
 # )
 
-geom=pp.Geometry(
-    width=20 * u.um,
-    Lpp=8 * u.um
-)
-
-target=pp.Target(mat,geom)
+target=pp.Target(mat)
 
 lpi=pp.LaserPlasmaInteraction(laser,target)
 
 
-print("sigma : " + str((lpi.getTargetConductivity()).to(u.ohm**-1 * u.m**-1)))
-# print("sigma",(lpi.getTargetConductivity()).to(pp.prefered_unit['conductivity']))
-print("nu : "+str((lpi.getLaserAbsorptionEfficiency())))
-print("n0 : "+str((lpi.getHotElectronTotalNumber()).to_base_units()))
+# print("sigma : " + str((lpi.getTargetConductivity()).to(u.ohm**-1 * u.m**-1)))
+# # print("sigma",(lpi.getTargetConductivity()).to(pp.prefered_unit['conductivity']))
+# print("nu : "+str((lpi.getLaserAbsorptionEfficiency())))
+# print("n0 : "+str((lpi.getHotElectronTotalNumber()).to_base_units()))
 
+
+pic=pp.ParticleInCell(lpi)
+
+Teh = lpi.electron.hot.temperature(model="Haines2009")
+
+dx=pic.lengthCell(kind="min",temperature=Teh)
+print("dx           = {}        = {}".format(dx,dx/pic.code.length()))
+resx=pic.spaceResolution(kind="min",temperature=Teh)
+print("resx         = {}        = {}".format(resx,resx*pic.code.length()))
+print("2 pi * resx  = {}".format(2 * np.pi * resx*pic.code.length()))
 #
-# pic=ParticleInCell(lpi)
-# print(pic.getInfo())

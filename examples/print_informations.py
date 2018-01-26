@@ -50,9 +50,9 @@ pic=pp.ParticleInCell(lpi)
 
 Teh = lpi.electron.hot.temperature(model="Haines2009")
 
-dx=pic.lengthCell(kind="min",temperature=Teh)
+dx=pic.lengthCell(temperature=Teh)
 print("dx           = {}        = {}".format(dx,dx/pic.code.length()))
-resx=pic.spaceResolution(kind="min",temperature=Teh)
+resx=pic.spaceResolution(temperature=Teh)
 print("resx         = {}        = {}".format(resx,resx*pic.code.length()))
 print("2 pi * resx  = {}".format(2 * np.pi * resx*pic.code.length()))
 #

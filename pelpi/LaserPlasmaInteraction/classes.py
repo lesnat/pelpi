@@ -393,4 +393,23 @@ class _PlasmaParameters(_PelpiObject):
         """
         ne  = self._lpi.target.material.electronNumberDensity()
 
-        return _np.sqrt((ne * _u.e**2)/(_u.me * _u.epsilon_0))
+        return _np.sqrt((ne * _u.e**2)/(_u.m_e * _u.epsilon_0))
+
+    def ionPulsationPlasma(self):
+        """
+        Returns
+        -------
+        Plasma pulsation of ions : 1/time quantity
+
+        Notes
+        -----
+        The Landau length is defined as
+
+        .. math:: \omega_{pe} = \sqrt{\\frac{Z^2 n_i e^2}{m_i \epsilon_0}}
+        """
+        ni  = self._lpi.target.material.ionNumberDensity()
+        Z   = self._lpi.target.material.Z # TODO: Change to method
+        N   = self._lpi.target.material.N
+        mi  = Z * _u.m_p + N * _u.m_n
+
+        return _np.sqrt((ni * Z**2 * _u.e**2)/(mi * _u.epsilon_0))

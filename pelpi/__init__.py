@@ -14,7 +14,7 @@ prefered_unit={'intensity':unit.W/unit.cm**2,'energy':unit.J,'length':unit.um,'t
     'angle':unit.deg,'pulsation':unit.s**-1,'density':unit.kg * unit.m**-3,\
     'number density':unit.m**-3,'power':unit.TW,'temperature':unit.MeV,\
     'mass':unit.kg,'conductivity':unit.ohm**-1 * unit.m**-1, \
-    'number':unit('')}
+    'number':unit(''),'electric field':unit(''),'magnetic field':unit('')}# TODO: change E/B field
 
 
 import warnings

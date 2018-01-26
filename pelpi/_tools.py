@@ -36,7 +36,7 @@ class _PelpiObject(object):
         """
         pass
 
-    def set(self,variable_name,value):
+    def _set(self,variable_name,value):
         """
         Reset an input parameter to a new value.
 

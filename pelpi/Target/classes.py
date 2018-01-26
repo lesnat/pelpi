@@ -1,7 +1,7 @@
 #coding:utf8
 from .._global import *
 from .._tools import _PelpiObject
-# from ..Target.database import _MaterialDatabase
+from ..Target.database import _MaterialDatabase
 
 
 __all__ = ["Material","Target"]
@@ -11,7 +11,7 @@ class Material(_PelpiObject):
     Class for defining a material.
 
     """
-    # database = _MaterialDatabase()
+    database = _MaterialDatabase()
 
     def __init__(self,density,atomic_mass,Z,A): # TODO: which initialisation ?
         self.density    = density

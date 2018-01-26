@@ -1,26 +1,20 @@
 #coding:utf8
-# from . import unit as _u
-# import numpy as _np
+
 from .._global import *
 from .._tools import _PelpiObject
 
 class ParticleInCell(_PelpiObject):
-    # Estimations
-    # Faire un dictionnaire pour choisir unités et ajouter verbosities pour afficher calculs intermédiaires ?
+    """
+
+    """
     def __init__(self,LaserPlasmaInteraction):
         self._lpi             = LaserPlasmaInteraction
         self.code             = self._CodeUnit(self._lpi,self._lpi.laser.pulsation())
+        # self._autoconvert = True #TODO: variable for autoconvert to CU
 
     def other(self):
-        self.dt         = self.dx/_np.sqrt(2)
-        self.CFL        = self.dt/self.dx
-        if self.CFL>1.0:
-            print("Warning ! CFL condition not respected")
-
         self.LppTot     = -_np.log(0.01/self._lpi.ne_over_nc)*self._lpi.target.geom.Lpp
 
-        self.resx       = 1/self.dx
-        self.rest       = 1/self.dt
         self.Lsim_laser = _u.c * 2 * self._lpi.laser.tfwhm + self._lpi.target.geom.width + self.LppTot
         self.Lsim_lpi   = self._lpi.getInteractionLengthMax() + self._lpi.target.geom.width + self.LppTot
         self.Lsim       = max(self.Lsim_laser,self.Lsim_lpi)
@@ -30,30 +24,32 @@ class ParticleInCell(_PelpiObject):
 
         self.Nynquist = 0. # facteur de nynquist pour echantillonage des diags
 
-    def lengthCell(self,kind='min',temperature=None):
+    def lengthCell(self,temperature):
         """
         Tskahya et al.
         """
-        if kind=="target":
-            return 3.4 * self._lpi.plasma.electronLengthDebye(temperature).to(_pu['length'])
-        if kind=="laser":
-            return (self._lpi.laser.wavelength()/10).to(_pu['length'])
-        if kind=="min":
-            return min(self.lengthCell(kind="target",temperature=temperature),self.lengthCell(kind="laser"))
-        else:
-            raise NameError
+        dx_target   = 3.4 * self._lpi.plasma.electronLengthDebye(temperature).to(_pu['length'])
+        dx_laser    = (self._lpi.laser.wavelength()/10).to(_pu['length'])
+        return min(dx_laser,dx_target)
 
-    def timeStep(self,kind="min",CFL=True,temperature=None):
+    def timeStep(self,temperature,CFL=True):
         if CFL:
-            return (0.95*self.lengthCell(kind,temperature)/_np.sqrt(2)).to(_pu['time'])
+            return (1/_np.sqrt(2) *self.lengthCell(temperature)/_u.c).to(_pu['time'])
         else:
-            return (self.lengthCell(kind,temperature)/_u.c).to(_pu['time'])
+            return (self.lengthCell(temperature)/_u.c).to(_pu['time'])
 
-    def spaceResolution(self,kind,temperature=None):
-        return 1/self.lengthCell(kind=kind,temperature=temperature)
+    # def CFL(self,lengthCell=None,timeStep=None,*arg):
+    #     if lengthCell==None:
+    #         dx=self.lengthCell(*arg)
+    #     if timeStep==None:
+    #         dt=self.timeStep(*arg)
+    #     return (dx/dt * 1/_u.c).to('')
 
-    def timeResolution(self,kind,temperature=None):
-        return 1/self.timeStep()
+    def spaceResolution(self,temperature):
+        return 1/self.lengthCell(temperature=temperature)
+
+    def timeResolution(self,temperature,CFL=True):
+        return 1/self.timeStep(temperature=temperature,CFL=CFL)
 
     class _CodeUnit(_PelpiObject):
         """
@@ -62,17 +58,38 @@ class ParticleInCell(_PelpiObject):
         """ # TODO: add pint unit for CU conversion ?
         def __init__(self,LaserPlasmaInteraction,referenceAngularFrequency):
             self._lpi   = LaserPlasmaInteraction
-            self.referenceAngularFrequency = referenceAngularFrequency
+            self._referenceAngularFrequency = referenceAngularFrequency
+
+        def referenceAngularFrequency(self):
+            return self._referenceAngularFrequency
 
         def length(self):
-            return (_u.c/self.referenceAngularFrequency.to('1/s')).to(_pu['length'])
-            #
-            # self.Wr         = self._lpi.laser.wl
-            # self.Lr         = _u.c/self.Wr
-            # self.Tr         = 1/self.Wr
-            # self.Er         = _u.m_e * _u.c * self.Wr/_u.e
-            # self.Br         = _u.m_e * self.Wr/_u.e
-            # self.Nr         = self._lpi.laser.nc
-            # self.Jr         = _u.c * _u.e * self.Nr
-            # self.Kr         = _u.m_e * _u.c**2
-            # self.Pr         = _u.m_e * _u.c
+            return (_u.c/self.referenceAngularFrequency()).to(_pu['length'])
+
+        def time(self):
+            return (1/self.referenceAngularFrequency()).to(_pu['time'])
+
+        def pulsation(self):
+            return self.referenceAngularFrequency().to(_pu['pulsation'])
+
+        def electricField(self):
+            # return (_u.m_e * _u.c * self.referenceAngularFrequency()/_u.e).to(_pu['electric field'])
+            return (_u.m_e * _u.c * self.referenceAngularFrequency()/_u.e).to_base_units()
+
+        def magneticField(self):
+            # return (_u.m_e * self.referenceAngularFrequency()/_u.e).to(_pu['magnetic field'])
+            return (_u.m_e * self.referenceAngularFrequency()/_u.e).to_base_units()
+
+        def numberDensity(self):
+            return self._lpi.laser.numberDensityCritical()
+
+        def current(self):
+            # return (_u.c * _u.e * self.numberDensity()).to(_pu['current'])
+            return (_u.c * _u.e * self.numberDensity()).to_base_units()
+
+        def energy(self):
+            return (_u.m_e * _u.c**2).to(_pu['energy'])
+
+        def momentum(self):
+            # return (_u.m_e * _u.c).to(_pu['momentum'])
+            return (_u.m_e * _u.c).to_base_units()

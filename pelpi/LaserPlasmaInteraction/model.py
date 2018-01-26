@@ -370,8 +370,49 @@ class Common(_Model):
         Ek = kinetic_energy
         Te = temperature
 
-        if name=="MB":
-            return _np.sqrt(4/pi) * _np.sqrt(Ek/Te**3) * _np.exp( -Ek/Te )
+        if distribution=="MB":
+            return _np.sqrt(4/_np.pi) * _np.sqrt(Ek/Te**3) * _np.exp( -Ek/Te )
+        # elif distribution=="MJ":
+        #     """
+        #     From A. Aliano, L. Rondoni, G.P. Morriss,
+        #     Maxwell-Juttner distributions in relativistic molecular dynamics, 2005
+        #     (2D)
+        #     """
+        #     Ek=kinetic_energy
+        #     Te=temperature
+        #
+        #     Em=1 * _u.m_e * _u.c**2
+        #     a=Em/Te
+        #     d=(1/(2 * _np.pi * _u.m_e**2 * _u.c**2)) * (a**2 * _np.exp(a))/(1 + a)
+        #
+        #     return (2* _np.pi/_u.c**2) * d * (Ek + Em) * _np.exp(-a * (Ek + Em)/Em)
+        # elif distribution=="MJ":
+        #     """
+        #     From Wright 1975, in the rest frame
+        #     """
+        #     Em=1 * _u.m_e * _u.c**2
+        #
+        #     gammaR=(kinetic_energy/Em + 1 )
+        #     xiR=Em/temperature
+        #     # nR = self._lpi.target.material.electronNumberDensity()
+        #     nR = 1
+        #
+        #     from scipy.special import kn
+        #
+        #     return (nR * xiR)/(4 * _np.pi * kn(2,xiR)) * _np.exp(- xiR*gammaR)
+        elif distribution=="MJ":
+            """
+            From Wright 1975, in the rest frame
+            """
+            Em =1 * _u.m_e * _u.c**2
+            Ek = kinetic_energy
+            Te = temperature
+
+            # nR = self._lpi.target.material.electronNumberDensity()
+            nR = 1
+            from scipy.special import kn
+
+            return (nR)/(4 * _np.pi * Te * kn(2,Em/Te)) * _np.exp(- (Ek + Em)/Te)
         else:
             if type(distribution)!=str:
                 raise TypeError("'distribution' type must be 'string', but it is "+str(type(distribution)))

@@ -13,8 +13,8 @@ class test_Material(unittest.TestCase):
         self.matAl  = pp.Material(
             density     = 2.69890e3 * u.kg/u.m**3,
             atomic_mass = 26.98154 * u.u,
-            Z           = 13,
-            A           = 27,
+            Z           = 13 * u(''),
+            A           = 27 * u(''),
         )
 
     def tearDown(self):
@@ -35,7 +35,7 @@ class test_Material(unittest.TestCase):
             u.Quantity(7.830948876504127e+29, '1 / meter ** 3'))
         self.assertAlmostEqual(
             func(),
-            self.matAl.ionNumberDensity() * self.matAl.Z,
+            self.matAl.ionNumberDensity() * self.matAl.Z(),
             delta=u.Quantity(1e-7, 'kilogram / atomic_mass_unit / meter ** 3'))
 
     def test_ionNumberDensity(self):

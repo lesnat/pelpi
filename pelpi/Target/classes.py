@@ -14,17 +14,30 @@ class Material(_PelpiObject):
     database = _MaterialDatabase()
 
     def __init__(self,density,atomic_mass,Z,A): # TODO: which initialisation ?
-        self.density    = density
-        self.atomic_mass = atomic_mass
-        self.Z          = Z
-        self.A          = A
-        self.N          = A-Z
+        var_dict={\
+            'density':density,\
+            'atomic_mass':atomic_mass,\
+            'Z':Z,\
+            'A':A\
+        }
+        super(Material,self).__init__(var_dict)
 
     def electronNumberDensity(self): # TODO: class electron method density ?
-        return self.Z*self.density/self.atomic_mass
+        """
+        Return electron number density.
+        """
+
+        Z           = self.Z()
+        rho         = self.density()
+        am          = self.atomic_mass()
+
+        ne          = self._dor(Z*rho/am) # Return default value if define, or result
+        return ne.to(_pu['number density'])
 
     def ionNumberDensity(self):
-        return self.density/self.atomic_mass
+        rho         = self.density()
+        am          = self.atomic_mass()
+        return (rho/am).to(_pu['number density'])
 
 class Target(_PelpiObject):
     """

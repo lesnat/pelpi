@@ -146,8 +146,6 @@ class _Estimate(_PelpiObject):
         if dim not in _pu.keys():
             raise NameError("'dim' name "+dim+" not found. Available dimensions are "+str(_pu.keys()))
 
-        # Check the model hypotheses
-        self.model.checkHypotheses()
         # Get the method from the model
         Method = getattr(self.model,method_name)
         # Use it with kwargs and convert it
@@ -159,9 +157,6 @@ class _Model(_PelpiObject):
     """
     def __init__(self):
         # self.electron = electron
-        pass
-
-    def checkHypotheses(self): # TODO: Necessary ? and if, how to do this ?
         pass
 
     def _addMethod(self):

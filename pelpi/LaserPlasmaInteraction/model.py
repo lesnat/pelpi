@@ -22,15 +22,6 @@ class Beg1997(_Model):
     def __init__(self,LaserPlasmaInteraction):
         self._lpi         = LaserPlasmaInteraction
 
-    def checkHypotheses(self):
-        """
-        Check the hypotheses of the model.
-
-        Warnings can be configured in pelpi.warnings.filterwarnings method.
-        """
-        if self._lpi.laser.intensity()>1*_u('W/cm**2'):
-            _w.warn('Test warning because tatata')
-
     def electron_hot_temperature(self): # TODO: change by sub-class Electron sub-class Hot method temperature ?
         """
         Return an estimate of the hot electron temperature from the Beg1997 model.
@@ -96,24 +87,6 @@ class Bell1997(_Model):
 
     def __init__(self,LaserPlasmaInteraction): # A définir ici ou dans les méthodes ??? car certaines méthodes n'ont pas besoin de tous les param
         self._lpi        = LaserPlasmaInteraction
-
-    def checkHypotheses(self):
-        """
-        Check the hypotheses of the model.
-
-        Warnings can be configured in pelpi.warnings.filterwarnings method.
-        """
-        if self._lpi.laser.profile.timeIntegral()>1*_u('ps'): # TODO: maybe change by timeCarac()
-            _w.warn('Pulse duration > 1 ps')
-        if self._lpi.laser.intensity()<10**18 *_u('W/cm**2'):
-            _w.warn('Laser peak intensity < 10**18 W/cm**2')
-        # if self._lpi.plasma.collisionRate()>1e-3 * _u(''):
-        #     _w.warn('Plasma collision rate > 1e-3')
-        # if not self._lpi.electron.hot.isMaxwellian():
-        #     _w.warn('Electron not follow Maxwell-Boltzmann distribution')
-
-        # _w.warn('Conductivity is assumed to be constant in the plasma')
-        # _w.warn('Electron hot temperature is assumed to be constant during the laser pulse')
 
     def electron_hot_numberDensity(self,temperature_hot,conductivity,absorption_efficiency,t=0.0,z=0.0):
         Teh = temperature_hot
@@ -195,15 +168,6 @@ class Haines2009(_Model):
     def __init__(self,LaserPlasmaInteraction):
         self._lpi         = LaserPlasmaInteraction
 
-    def checkHypotheses(self):
-        """
-        Check the hypotheses of the model.
-
-        Warnings can be configured in pelpi.warnings.filterwarnings method.
-        """
-        if self._lpi.laser.intensity()>1*_u('W/cm**2'):
-            _w.warn('Test warning because tatata',UserWarning)
-
     def electron_hot_temperature(self):
         """
         Return an estimate of the hot electron temperature from the Haines2009 model.
@@ -226,15 +190,6 @@ class Mora2003(_Model):
     """
     def __init__(self,LaserPlasmaInteraction):
         lpi         = LaserPlasmaInteraction
-
-    def checkHypotheses(self):
-        """
-        Check the hypotheses of the model.
-
-        Warnings can be configured in pelpi.warnings.filterwarnings method.
-        """
-        if self._lpi.laser.intensity()>1*_u('W/cm**2'):
-            _w.warn('Test warning because tatata',UserWarning)
 
     def getInitialFrontElectricField(self,Te): # TODO: change the name + which temperature ??
         """
@@ -267,15 +222,6 @@ class Wilks1992(_Model):
 
     def __init__(self,LaserPlasmaInteraction):
         self._lpi        = LaserPlasmaInteraction
-
-    def checkHypotheses(self):
-        """
-        Check the hypotheses of the model.
-
-        Warnings can be configured in pelpi.warnings.filterwarnings method.
-        """
-        if self._lpi.laser.intensity()>1*_u('W/cm**2'):
-            _w.warn('Test warning because tatata',UserWarning)
 
     def electron_hot_temperature(self):
         """
@@ -316,14 +262,6 @@ class Common(_Model):
 
     def __init__(self,LaserPlasmaInteraction):
         self._lpi        = LaserPlasmaInteraction
-
-    def checkHypotheses(self):
-        """
-        Because this class is used for various features,
-        the checkHypotheses method do nothing here.
-        Hypotheses are checked in methods.
-        """
-        pass
 
     def electron_hot_numberTotal(self,temperature_hot,absorption_efficiency):
         """

@@ -4,7 +4,7 @@
 Module documentation ...
 
 """
-__all__ = ["Material","Geometry","Target","Laser","LaserPlasmaInteraction"]
+__all__ = ["Profile","Material","Geometry","Target","Laser","LaserPlasmaInteraction"]
 
 import pint
 unit=pint.UnitRegistry()

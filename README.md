@@ -49,6 +49,8 @@ laser.set('space_profile',sprof)
 
 prof	= pp.Profile('constant1D',x0=15 * u('um'),x1=25 * u('um'))
 mat		= pp.Target.database.Al
+# OR
+mat 	= pp.Material.search("Al")
 target	= pp.Target(mat,prof)
 
 lpi 	= pp.LaserPlasmaInteraction(laser,target)
@@ -72,6 +74,120 @@ print("Simulation times : {}".format(pic.time_simulation()))
 pic.autoconvert_to_code_units('all')
 print("Simulation times : {}".format(pic.time_simulation()))
 ```
+
+
+
+## v0.1
+
+### general
+
+in init & general structure
+
+#### Properties
+
+import, prefered_unit
+
+#### TODO
+
+warnings?
+
+structure OK ?
+
+start estimate methods by e like electron.hot.e_density for ex. for differenciate estimates from exact calculations ? analytical calc. also comes from models.
+
+### _PelpiObject
+
+Base class for all other objects
+
+#### Properties
+
+_checkInput, _set ('input':True ??),
+
+electron.hot etc ?
+
+how to : _addMethod
+
+#### TODO
+
+_defineMethodFromArg
+
+checkHypotheses ?
+
+
+
+### Profile
+
+Define basics profiles
+
+#### Properties
+
+Integrates
+
+#### TODO
+
+user-defined
+
+
+
+### Laser
+
+Define basic laser properties
+
+#### Properties
+
+intensity, intensityPeak, nc
+
+#### TODO
+
+polarisation, constrast, plot
+
+
+
+### Target
+
+Define basic target properties
+
+#### Properties
+
+ne, ni (electron.density ?)
+
+#### TODO
+
+Geometry, database
+
+
+
+### LaserPlasmaInteraction
+
+Instanciate a LaserPlasmaInteraction object (add)
+
+#### Properties
+
+plasma : calculation of plasma parameters : OK
+
+electron.hot.method : access to models : OK with _Estimate (see models structure)
+
+target.method : basic target properties + estimations (via _addMethod) : KO
+
+#### TODO
+
+More models
+
+
+
+### ParticleInCell
+
+PIC estimates
+
+#### Properties
+
+dx, CU calculations, Tsim, Lsim, Npatches (KO)
+
+#### TODO
+
+change struct for $\neq$ codes ?
+
+autoconvert to CU
 
 
 

@@ -10,17 +10,20 @@ u=pp.unit
 
 prof=pp.Profile(
     time_profile    = "gaussian",
-    time_fwhm       = 30 * u.fs,
+    time_fwhm       = 44 * u.fs,
     space_profile   = "gaussian",
-    space_fwhm      = 10 * u.um,
+    space_fwhm      = 12 * u.um,
 )
 
 laser=pp.Laser(
     wavelength = 0.8 * u.um,
-    energy     = 2.0 * u.J,
+    energy     = 0.154 * u.J,
 
     Profile    = prof
 )
+
+print("I0 = {}".format(laser.intensity().to(pp.prefered_unit['intensity'])))
+print("a0 = {}".format(laser.intensityPeakNormalized().to('')))
 
 mat=pp.Material(
     density     = 2.69890e3 * u('kg/m**3'),
@@ -55,4 +58,3 @@ print("dx           = {}        = {}".format(dx,dx/pic.code.length()))
 resx=pic.spaceResolution(temperature=Teh)
 print("resx         = {}        = {}".format(resx,resx*pic.code.length()))
 print("2 pi * resx  = {}".format(2 * np.pi * resx*pic.code.length()))
-#

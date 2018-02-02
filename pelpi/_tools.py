@@ -13,7 +13,10 @@ class _PelpiObject(object):
     and automatically create methods for acessing to input param ?
     """
 
-    def __init__(self,var_dict):
+    def __init__(self):
+        pass
+
+    def _initialize_defaults(self,var_dict):
         self._user_values={}
         self._setInputToDict(var_dict)
         self._setMethodsToDict()
@@ -188,6 +191,32 @@ class _PelpiObject(object):
             return self._user_values
         else:
             return self._user_values[key]
+
+
+class _Laser(_PelpiObject):
+    pass
+
+class _Target(_PelpiObject):
+    pass
+
+class _Electron(_PelpiObject):
+    def __init__(self):
+        self.hot=self._Hot()
+
+    class _Hot(_PelpiObject):
+        pass
+
+    class _Cold(_PelpiObject):
+        pass
+
+class _Ion(_PelpiObject):
+    pass
+
+class _Photon(_PelpiObject):
+    pass
+
+class _Positron(_PelpiObject):
+    pass
 
 
 class _Estimate(_PelpiObject):

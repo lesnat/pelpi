@@ -14,7 +14,6 @@ class test_Material(unittest.TestCase):
             density     = 2.69890e3 * u.kg/u.m**3,
             atomic_mass = 26.98154 * u.u,
             Z           = 13 * u(''),
-            A           = 27 * u(''),
         )
 
     def tearDown(self):
@@ -25,7 +24,6 @@ class test_Material(unittest.TestCase):
             density     = 2.69890e3 * u.kg/u.m**3,
             atomic_mass = 26.98154 * u.u,
             Z           = 13,
-            A           = 27,
         )
 
     def test_electronNumberDensity(self):
@@ -53,7 +51,6 @@ class test_Target(unittest.TestCase):
             density     = 2.69890e3 * u.kg/u.m**3,
             atomic_mass = 26.98154 * u.u,
             Z           = 13,
-            A           = 27,
         )
         # geom = pp.Geometry(
         #     width=20 * u.um,
@@ -70,7 +67,6 @@ class test_Target(unittest.TestCase):
             density     = 2.69890e3 * u.kg/u.m**3,
             atomic_mass = 26.98154 * u.u,
             Z           = 13,
-            A           = 27,
         )
         # geom = pp.Geometry(
         #     width=20 * u.um,

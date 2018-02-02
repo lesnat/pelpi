@@ -29,7 +29,6 @@ mat=pp.Material(
     density     = 2.69890e3 * u('kg/m**3'),
     atomic_mass = 26.98154 * u('amu'),
     Z           = 13 * u(''),
-    A           = 27 * u(''),
 )
 # mat=pp.Material(
 #     density     = 1.93000e4 * u('kg/m**3'),

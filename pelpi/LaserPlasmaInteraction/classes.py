@@ -131,20 +131,20 @@ class _Laser(_PelpiObject):
     def __init__(self,LaserPlasmaInteraction):
         self._lpi   = LaserPlasmaInteraction
 
-        self._user_values=self._lpi.laser._user_values
-
-        exclude=['set_default','get_default']
-        for var in dict(self._lpi.laser):
-            if var[0]!='_' and var not in exclude:
-                self.__dict__[var]=getattr(self._lpi.laser,var)
-
-        self._setMethodsToDict()
+        # self._user_values=self._lpi.laser._user_values
+        #
+        # exclude=['set_default','get_default']
+        # for var in dict(self._lpi.laser):
+        #     if var[0]!='_' and var not in exclude:
+        #         self.__dict__[var]=getattr(self._lpi.laser,var)
+        #
+        # self._setMethodsToDict()
 
         # Automatically add all new methods to laser object
         # for model in self.__dict__.keys():
         #     _addMethod(self._lpi.laser, self, model)
 
-        # self._lpi.laser.efficiencyAbsorption = self.efficiencyAbsorption
+        self._lpi.laser.efficiencyAbsorption = self.efficiencyAbsorption
 
     def efficiencyAbsorption(self,model,*args): # TODO: what this model is about ? hot electrons ? ions ? ...
         """

@@ -38,7 +38,6 @@ class ExampleLPI(object):
             density     = 2.69890e3 * u.kg/u.m**3,
             atomic_mass = 26.98154 * u.u,
             Z           = 13,
-            A           = 27,
         )
         # geomBas = pp.Geometry(
         #     width=20 * u.um,
@@ -82,7 +81,6 @@ class test_LaserPlasmaInteraction(unittest.TestCase):
             density     = 2.69890e3 * u.kg/u.m**3,
             atomic_mass = 26.98154 * u.u,
             Z           = 13,
-            A           = 27,
         )
         # geomBas = pp.Geometry(
         #     width=20 * u.um,

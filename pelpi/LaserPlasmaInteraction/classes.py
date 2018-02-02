@@ -120,124 +120,35 @@ class LaserPlasmaInteraction(_PelpiObject):
     def __init__(self,Laser,Target):
         self.laser      = Laser
         self.target     = Target
-        self.plasma     = _PlasmaParameters(self)
-        self.electron   = _Electron(self)
+        self.plasma     = self._PlasmaParameters(self)
+        self.electron   = self._Electron(self)
         # self.ion        = Ion(self)
 
 
-class _Laser(_PelpiObject):
-    """
-    """
-    def __init__(self,LaserPlasmaInteraction):
-        self._lpi   = LaserPlasmaInteraction
-
-        # self._user_values=self._lpi.laser._user_values
-        #
-        # exclude=['set_default','get_default']
-        # for var in dict(self._lpi.laser):
-        #     if var[0]!='_' and var not in exclude:
-        #         self.__dict__[var]=getattr(self._lpi.laser,var)
-        #
-        # self._setMethodsToDict()
-
-        # Automatically add all new methods to laser object
-        # for model in self.__dict__.keys():
-        #     _addMethod(self._lpi.laser, self, model)
-
-        self._lpi.laser.efficiencyAbsorption = self.efficiencyAbsorption
-
-    def efficiencyAbsorption(self,model,*args): # TODO: what this model is about ? hot electrons ? ions ? ...
+    class _Laser(_PelpiObject):
         """
-        Return an estimate of the laser absorption efficiency into hot electrons ??.
-
-        Arguments
-        --------
-        model, string
-            Model name
-        *args,
-            Model input parameters
-
-        Models
-        -----
-        Common, a theoretical model for a rough estimate.
-            Input parameters : ...
-
-        Notes
-        ----
-        See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
-        if you need more informations about the [Model] model.
-        """
-        available_models=["Common"]
-        dim='number'
-
-        estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-        return estimate.use(method_name='laser_efficiencyAbsorption',dim=dim,*args)
-
-
-class _Target(_PelpiObject):
-    """
-    """
-    def __init__(self,LaserPlasmaInteraction):
-        self._lpi   = LaserPlasmaInteraction
-
-        # Automatically add all new methods to laser object
-        # for model in self.__dict__.keys():
-        #     _addMethod(self._lpi.laser, self, model)
-
-        self._lpi.target.conductivity = self.conductivity
-
-        # add targetdensitynormalized
-
-
-    def conductivity(self,model,args):
-        """
-        Return an estimate of the target electric conductivity.
-
-        Arguments
-        --------
-        model, string
-            Model name
-        *args,
-            Model input parameters
-
-        Models
-        -----
-        Common, a theoretical model for a rough estimate.
-            Input parameters : ...
-
-        Notes
-        ----
-        See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
-        if you need more informations about the [Model] model.
-        """
-        available_models=["Common"]
-        dim='conductivity'
-
-        estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-        return estimate.use(method_name='target_conductivity',dim=dim,*args)
-
-class _Electron(_PelpiObject):
-    """
-
-    """
-    def __init__(self,LaserPlasmaInteraction):
-        self._lpi   = LaserPlasmaInteraction
-        self.hot    = self._Hot(self._lpi)
-        # self.cold   = self.Cold(self._lpi)
-
-    # TODO: here general stuff about all the electrons
-    # TODO: add number density ?
-
-    class _Hot(_PelpiObject):
-        """
-        In UHI, super thermal electrons
         """
         def __init__(self,LaserPlasmaInteraction):
-            self._lpi = LaserPlasmaInteraction
+            self._lpi   = LaserPlasmaInteraction
 
-        def numberTotal(self,model,*args):
+            # self._user_values=self._lpi.laser._user_values
+            #
+            # exclude=['set_default','get_default']
+            # for var in dict(self._lpi.laser):
+            #     if var[0]!='_' and var not in exclude:
+            #         self.__dict__[var]=getattr(self._lpi.laser,var)
+            #
+            # self._setMethodsToDict()
+
+            # Automatically add all new methods to laser object
+            # for model in self.__dict__.keys():
+            #     _addMethod(self._lpi.laser, self, model)
+
+            self._lpi.laser.efficiency_absorption = self.efficiency_absorption #TODO: on laser or e- ?
+
+        def efficiency_absorption(self,model,*args): # TODO: what this model is about ? hot electrons ? ions ? ...
             """
-            Return an estimate of the total hot electron number.
+            Return an estimate of the laser absorption efficiency into hot electrons ??.
 
             Arguments
             --------
@@ -260,11 +171,27 @@ class _Electron(_PelpiObject):
             dim='number'
 
             estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-            return estimate.use(method_name='electron_hot_numberTotal',dim=dim,*args)
+            return estimate.use(method_name='laser_efficiencyAbsorption',dim=dim,*args)
 
-        def temperature(self,model,*args):
+
+    class _Target(_PelpiObject):
+        """
+        """
+        def __init__(self,LaserPlasmaInteraction):
+            self._lpi   = LaserPlasmaInteraction
+
+            # Automatically add all new methods to laser object
+            # for model in self.__dict__.keys():
+            #     _addMethod(self._lpi.laser, self, model)
+
+            self._lpi.target.conductivity = self.conductivity
+
+            # add targetdensitynormalized
+
+
+        def conductivity(self,model,args):
             """
-            Return an estimate of the hot electron temperature.
+            Return an estimate of the target electric conductivity.
 
             Arguments
             --------
@@ -275,112 +202,194 @@ class _Electron(_PelpiObject):
 
             Models
             -----
-            Beg1997, an empirical model ...
-                Input parameters : None
-
-            Haines2009, a theoretical model ...
-                Input parameters : None
-
-            Wilks1992, a theoretical model
-                Input parameters : None
+            Common, a theoretical model for a rough estimate.
+                Input parameters : ...
 
             Notes
             ----
             See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
             if you need more informations about the [Model] model.
             """
-            dim='temperature'
-            available_models=["Beg1997","Haines2009","Wilks1992"]
+            available_models=["Common"]
+            dim='conductivity'
 
             estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-            return estimate.use(method_name='electron_hot_temperature',dim='temperature',*args)
+            return estimate.use(method_name='target_conductivity',dim=dim,*args)
 
-
-class _PlasmaParameters(_PelpiObject):
-    """
-    Comment faire pour utiliser une température autre que Te_pond ?
-    via meilleure estimation de la température si abso != JxB ou donner le choix ?
-    Passer tout ca en méthodes ?
-    """
-    def __init__(self,LaserPlasmaInteraction):
-        self._lpi             = LaserPlasmaInteraction
-
-
-    # def updateParameters(self): # TODO; convert to methods
-    #     self.wpe        = 0.0 # Electron plasma frequency
-    #     self.wpi        = 0.0 # Ion plasma frequency
-    #     self.lambda_De  = 0.0 # Debye length
-    #     self.vTe        = 0.0 # Electron thermal velocity
-    #     self.vTi        = 0.0 # Ion thermal velocity
-    #     self.vA         = 0.0 # Alfven velocity
-    #     self.EFermi     = 0.0
-    #
-    #
-    def electronLengthDebye(self,temperature):
+    class _Electron(_PelpiObject):
         """
-        Returns
-        -------
-        Debye length of electrons : length quantity
 
-        Notes
-        -----
-        The Debye length is defined as
-
-        .. math:: \lambda_{De} = \sqrt{\\frac{\epsilon_0 T_e}{n_e e^2}}
         """
-        ne  = self._lpi.target.material.electronNumberDensity()
-        Te  = temperature
+        def __init__(self,LaserPlasmaInteraction):
+            self._lpi   = LaserPlasmaInteraction
+            self.hot    = self._Hot(self._lpi)
+            # self.cold   = self.Cold(self._lpi)
 
-        return _np.sqrt((_u.epsilon_0 * Te)/(ne * _u.e**2)).to(_pu['length'])
+        # TODO: here general stuff about all the electrons
+        # TODO: add number density ?
+
+        class _Hot(_PelpiObject):
+            """
+            In UHI, super thermal electrons
+            """
+            def __init__(self,LaserPlasmaInteraction):
+                self._lpi = LaserPlasmaInteraction
+
+            def number_total(self,model,*args):
+                """
+                Return an estimate of the total hot electron number.
+
+                Arguments
+                --------
+                model, string
+                    Model name
+                *args,
+                    Model input parameters
+
+                Models
+                -----
+                Common, a theoretical model for a rough estimate.
+                    Input parameters : ...
+
+                Notes
+                ----
+                See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
+                if you need more informations about the [Model] model.
+                """
+                available_models=["Common"]
+                dim='number'
+
+                estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
+                return estimate.use(method_name='electron_hot_numberTotal',dim=dim,*args)
+
+            def temperature(self,model,*args):
+                """
+                Return an estimate of the hot electron temperature.
+
+                Arguments
+                --------
+                model, string
+                    Model name
+                *args,
+                    Model input parameters
+
+                Models
+                -----
+                Beg1997, an empirical model ...
+                    Input parameters : None
+
+                Haines2009, a theoretical model ...
+                    Input parameters : None
+
+                Wilks1992, a theoretical model
+                    Input parameters : None
+
+                Notes
+                ----
+                See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
+                if you need more informations about the [Model] model.
+                """
+                dim='temperature'
+                available_models=["Beg1997","Haines2009","Wilks1992"]
+
+                estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
+                return estimate.use(method_name='electron_hot_temperature',dim='temperature',*args)
 
 
-    def electronLengthLandau(self,temperature):
+    class _PlasmaParameters(_PelpiObject):
         """
-        Returns
-        -------
-        Landau length of electrons : length quantity
-
-        Notes
-        -----
-        The Landau length is defined as
-
-        .. math:: r_0 = \\frac{e^2}{4 \pi \epsilon_0 T_e}
+        Comment faire pour utiliser une température autre que Te_pond ?
+        via meilleure estimation de la température si abso != JxB ou donner le choix ?
+        Passer tout ca en méthodes ?
         """
-        Te  = temperature
+        def __init__(self,LaserPlasmaInteraction):
+            self._lpi             = LaserPlasmaInteraction
+            self.electron         = self._Electron(self._lpi)
 
-        return ((_u.e**2)/(4*_np.pi * _u.epsilon_0 * Te)).to(_pu['temperature'])
+        # def updateParameters(self): # TODO; convert to methods
+        #     self.wpe        = 0.0 # Electron plasma frequency
+        #     self.wpi        = 0.0 # Ion plasma frequency
+        #     self.lambda_De  = 0.0 # Debye length
+        #     self.vTe        = 0.0 # Electron thermal velocity
+        #     self.vTi        = 0.0 # Ion thermal velocity
+        #     self.vA         = 0.0 # Alfven velocity
+        #     self.EFermi     = 0.0
+        #
+        #
 
-    def electronPulsationPlasma(self,temperature):
-        """
-        Returns
-        -------
-        Plasma pulsation of electrons : 1/time quantity
+        class _Electron(_PelpiObject):
+            def __init__(self,LaserPlasmaInteraction):
+                self._lpi = LaserPlasmaInteraction
 
-        Notes
-        -----
-        The Landau length is defined as
+            def length_Debye(self,temperature):
+                """
+                Returns
+                -------
+                Debye length of electrons : length quantity
 
-        .. math:: \omega_{pe} = \sqrt{\\frac{n_e e^2}{m_e \epsilon_0}}
-        """
-        ne  = self._lpi.target.material.electronNumberDensity()
+                Notes
+                -----
+                The Debye length is defined as
 
-        return _np.sqrt((ne * _u.e**2)/(_u.m_e * _u.epsilon_0))
+                .. math:: \lambda_{De} = \sqrt{\\frac{\epsilon_0 T_e}{n_e e^2}}
+                """
+                ne  = self._lpi.target.material.electronNumberDensity()
+                Te  = temperature
 
-    def ionPulsationPlasma(self):
-        """
-        Returns
-        -------
-        Plasma pulsation of ions : 1/time quantity
+                return _np.sqrt((_u.epsilon_0 * Te)/(ne * _u.e**2)).to(_pu['length'])
 
-        Notes
-        -----
-        The Landau length is defined as
 
-        .. math:: \omega_{pe} = \sqrt{\\frac{Z^2 n_i e^2}{m_i \epsilon_0}}
-        """
-        ni  = self._lpi.target.material.ionNumberDensity()
-        Z   = self._lpi.target.material.Z # TODO: Change to method
-        N   = self._lpi.target.material.N
-        mi  = Z * _u.m_p + N * _u.m_n
+            def length_Landau(self,temperature):
+                """
+                Returns
+                -------
+                Landau length of electrons : length quantity
 
-        return _np.sqrt((ni * Z**2 * _u.e**2)/(mi * _u.epsilon_0))
+                Notes
+                -----
+                The Landau length is defined as
+
+                .. math:: r_0 = \\frac{e^2}{4 \pi \epsilon_0 T_e}
+                """
+                Te  = temperature
+
+                return ((_u.e**2)/(4*_np.pi * _u.epsilon_0 * Te)).to(_pu['temperature'])
+
+            def pulsation_plasma(self,temperature):
+                """
+                Returns
+                -------
+                Plasma pulsation of electrons : 1/time quantity
+
+                Notes
+                -----
+                The Landau length is defined as
+
+                .. math:: \omega_{pe} = \sqrt{\\frac{n_e e^2}{m_e \epsilon_0}}
+                """
+                ne  = self._lpi.target.material.electronNumberDensity()
+
+                return _np.sqrt((ne * _u.e**2)/(_u.m_e * _u.epsilon_0))
+
+        class _Ion(_PelpiObject):
+            def __init__(self,LaserPlasmaInteraction):
+                self._lpi = LaserPlasmaInteraction
+
+            def ionPulsationPlasma(self):
+                """
+                Returns
+                -------
+                Plasma pulsation of ions : 1/time quantity
+
+                Notes
+                -----
+                The Landau length is defined as
+
+                .. math:: \omega_{pe} = \sqrt{\\frac{Z^2 n_i e^2}{m_i \epsilon_0}}
+                """
+                ni  = self._lpi.target.material.ionNumberDensity()
+                Z   = self._lpi.target.material.Z # TODO: Change to method
+                N   = self._lpi.target.material.N
+                mi  = Z * _u.m_p + N * _u.m_n
+
+                return _np.sqrt((ni * Z**2 * _u.e**2)/(mi * _u.epsilon_0))

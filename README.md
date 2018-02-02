@@ -113,6 +113,8 @@ _defineMethodFromArg
 
 checkHypotheses ?
 
+split _input & _default ?
+
 
 
 ### Profile

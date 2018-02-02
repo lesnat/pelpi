@@ -217,6 +217,7 @@ class _Electron(_PelpiObject):
         # self.cold   = self.Cold(self._lpi)
 
     # TODO: here general stuff about all the electrons
+    # TODO: add number density ?
 
     class _Hot(_PelpiObject):
         """
@@ -252,36 +253,6 @@ class _Electron(_PelpiObject):
             estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
             return estimate.use(method_name='electron_hot_numberTotal',dim=dim,*args)
 
-
-        def lengthCaracDepth(self,model,*args):
-            """
-            Return an estimate of the characteristic penetration depth of
-            hot electrons in the target.
-
-            Arguments
-            --------
-            model, string
-                Model name
-            *args,
-                Model input parameters
-
-            Models
-            -----
-            Bell1997, a theoretical model taking into account the effects of
-            the hot electron return current.
-                Input parameters : temperature, conductivity, absorption_efficiency
-
-            Notes
-            ----
-            See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
-            if you need more informations about the [Model] model.
-            """
-            available_models=["Bell1997"]
-            dim='length'
-
-            estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-            return estimate.use(method_name='electron_hot_lengthCaracDepth',dim=dim,*args)
-
         def temperature(self,model,*args):
             """
             Return an estimate of the hot electron temperature.
@@ -314,15 +285,6 @@ class _Electron(_PelpiObject):
 
             estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
             return estimate.use(method_name='electron_hot_temperature',dim='temperature',*args)
-
-
-        def timeInteractionMax(self,verbose=True):
-            """
-            """
-            return 0.
-
-        def lengthInteractionMax(self,verbose=True):
-            return 0.
 
 
 class _PlasmaParameters(_PelpiObject):

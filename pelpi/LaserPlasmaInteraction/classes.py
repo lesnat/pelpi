@@ -171,7 +171,7 @@ class LaserPlasmaInteraction(_PelpiObject):
             dim='number'
 
             estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-            return estimate.use(method_name='laser.efficiency_absorption',dim=dim,*args)
+            return estimate.use(method_name='laser_efficiency_absorption',dim=dim,*args)
 
 
     class _Target(_PelpiObject):
@@ -214,7 +214,7 @@ class LaserPlasmaInteraction(_PelpiObject):
             dim='conductivity'
 
             estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-            return estimate.use(method_name='target.conductivity',dim=dim,*args)
+            return estimate.use(method_name='target_conductivity',dim=dim,*args)
 
     class _Electron(_PelpiObject):
         """
@@ -260,7 +260,7 @@ class LaserPlasmaInteraction(_PelpiObject):
                 dim='number'
 
                 estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-                return estimate.use(method_name='electron.hot.number_total',dim=dim,*args)
+                return estimate.use(method_name='electron_number_total',dim=dim,*args)
 
             def temperature(self,model,*args):
                 """
@@ -293,7 +293,7 @@ class LaserPlasmaInteraction(_PelpiObject):
                 available_models=["Beg1997","Haines2009","Wilks1992"]
 
                 estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-                return estimate.use(method_name='electron.hot.temperature',dim='temperature',*args)
+                return estimate.use(method_name='electron_hot_temperature',dim='temperature',*args)
 
 
     class _PlasmaParameters(_PelpiObject):

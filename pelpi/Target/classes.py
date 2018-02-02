@@ -17,6 +17,8 @@ class Material(_PelpiObject):
         self._density      = density
         self._atomic_mass  = atomic_mass
         self._Z            = Z
+        self.electron      = self._Electron(self)
+        self.ion           = self._Ion(self)
 
     def density(self):
         return self._density
@@ -27,30 +29,30 @@ class Material(_PelpiObject):
     def Z(self):
         return self._Z
 
-class _Electron(_PelpiObject):
-    def __init__(self,Material):
-        self._mat = Material
+    class _Electron(_PelpiObject):
+        def __init__(self,Material):
+            self._mat = Material
 
-    def number_density(self): # TODO: class electron method density ?
-        """
-        Return electron number density.
-        """
+        def number_density(self): # TODO: class electron method density ?
+            """
+            Return electron number density.
+            """
 
-        Z           = self._mat.Z()
-        rho         = self._mat.density()
-        am          = self._mat.atomic_mass()
+            Z           = self._mat.Z()
+            rho         = self._mat.density()
+            am          = self._mat.atomic_mass()
 
-        ne          = (Z*rho/am) # TODO: Return default value if define, or result
-        return ne.to(_pu['number_density'])
+            ne          = (Z*rho/am) # TODO: Return default value if define, or result
+            return ne.to(_pu['number_density'])
 
-class _Ion(_PelpiObject):
-    def __init__(self,Material):
-        self._mat = Material
+    class _Ion(_PelpiObject):
+        def __init__(self,Material):
+            self._mat = Material
 
-    def number_density(self):
-        rho         = self._mat.density()
-        am          = self._mat.atomic_mass()
-        return (rho/am).to(_pu['number_density'])
+        def number_density(self):
+            rho         = self._mat.density()
+            am          = self._mat.atomic_mass()
+            return (rho/am).to(_pu['number_density'])
 
 class Target(_PelpiObject):
     """

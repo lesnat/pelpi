@@ -45,42 +45,28 @@ class Profile(_PelpiObject):
     ...    )
     ...
     """
-    def __init__(self,time_profile,space_profile,\
-                time_fwhm=None,\
-                space_fwhm=None,space_radius=None):
-        self._time_profile   = time_profile
-        self._time_fwhm      = time_fwhm
-        self._space_profile  = space_profile
-        self._space_fwhm     = space_fwhm
-        self._space_radius   = space_radius
+    def __init__(self,profile,fwhm=None,radius=None):
+        self._profile   = profile
+        self._fwhm      = fwhm
+        self._radius   = radius
 
-        self._checkInput(variable_dictionnary={\
-            'time_profile':str,'space_profile':str,\
-            'time_fwhm':type(_u('s')),
-            'space_fwhm':type(_u('m')),'space_radius':type(_u('m')),\
-            }) # TODO: How to do this with NoneType object ?
+        # self._checkInput(variable_dictionnary={\
+        #     'time_profile':str,'space_profile':str,\
+        #     'time_fwhm':type(_u('s')),
+        #     'space_fwhm':type(_u('m')),'space_radius':type(_u('m')),\
+        #     }) # TODO: How to do this with NoneType object ?
 
-    def time_profile(self):
+    def profile(self):
         """
         """
-        return self._time_profile
+        return self._profile
 
-    def time_fwhm(self):
+    def fwhm(self):
         """
         """
-        return self._time_fwhm
+        return self._fwhm
 
-    def space_profile(self):
-        """
-        """
-        return self._space_profile
-
-    def space_fwhm(self):
-        """
-        """
-        return self._space_fwhm
-
-    def space_radius(self):
+    def radius(self):
         """
         """
         return self._space_radius
@@ -119,14 +105,18 @@ class Profile(_PelpiObject):
         -----
         spaceEnvelope is centered at r=0 and has a maximum value of 1.
         """
-        if self.space_profile()=="gaussian":
-            r0=self.space_fwhm()/(2 * _np.sqrt(_np.log(2)))
+        if self.profile()=="gaussian1D":
+            t0=self.fwhm()/(2 * _np.sqrt(_np.log(2)))
+            return _np.exp(-(r/t0)**2)
+
+        if self.profile()=="gaussian2D":
+            r0=self.fwhm()/(2 * _np.sqrt(_np.log(2)))
             return _np.exp(-(r/r0)**2)
-        elif self.space_profile()=="supergaussian":
+        elif self.profile()=="supergaussian":
             n=10
-            return _np.exp(-(2*_np.sqrt(_np.log(2))*r/self.space_fwhm())**(2*n))
-        elif self.space_profile()=="top-hat":
-            if abs(r)<self.space_radius():
+            return _np.exp(-(2*_np.sqrt(_np.log(2))*r/self.fwhm())**(2*n))
+        elif self.profile()=="top-hat":
+            if abs(r)<self.radius():
                 return 1.0
             else:
                 return 0.0
@@ -158,8 +148,8 @@ class Profile(_PelpiObject):
         For other profiles, numerical integration is performed with numpy.trapz,
         so ``lower_edge``, ``upper_edge`` and ``number_points`` must be defined.
         """
-        if self.time_profile()=="gaussian":
-            t0=self.time_fwhm()/(2 * _np.sqrt(_np.log(2)))
+        if self.profile()=="gaussian1D":
+            t0=self.fwhm()/(2 * _np.sqrt(_np.log(2)))
             S0t=t0 * _np.sqrt(_np.pi)
             return S0t
         else:
@@ -196,11 +186,11 @@ class Profile(_PelpiObject):
         For other profiles, numerical integration is performed with numpy.trapz,
         so ``lower_edge``, ``upper_edge`` and ``number_points`` must be defined.
         """
-        if self.space_profile()=="gaussian":
-            r0=self.space_fwhm()/(2 * _np.sqrt(_np.log(2)))
+        if self.profile()=="gaussian2D":
+            r0=self.fwhm()/(2 * _np.sqrt(_np.log(2)))
             S0r=_np.pi * r0**2
             return S0r
-        elif self.space_profile()=="top-hat":
-            return _np.pi*self.space_radius()**2
+        elif self.profile()=="top-hat":
+            return _np.pi*self.radius()**2
         else:
             raise NameError("Unknown laser space profile name.")

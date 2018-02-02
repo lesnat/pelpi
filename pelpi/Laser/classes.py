@@ -75,7 +75,7 @@ class Laser(_PelpiObject):
         -----
         envelope is centered at t=0 and r=0, and has a maximum value of 1.
         """
-        return self.spaceEnvelope(r) * self.timeEnvelope(t)
+        return self.space_profile.envelope(r) * self.time_profile.envelope(t)
 
     def power(self,r=0*_u('m'),t=0*_u('s')):
         return self.energy()/self.time_profile.integral1D() * self.envelope(r,t)

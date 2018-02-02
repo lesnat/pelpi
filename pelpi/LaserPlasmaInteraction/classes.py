@@ -171,7 +171,7 @@ class LaserPlasmaInteraction(_PelpiObject):
             dim='number'
 
             estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-            return estimate.use(method_name='laser_efficiencyAbsorption',dim=dim,*args)
+            return estimate.use(method_name='laser.efficiency_absorption',dim=dim,*args)
 
 
     class _Target(_PelpiObject):
@@ -189,7 +189,7 @@ class LaserPlasmaInteraction(_PelpiObject):
             # add targetdensitynormalized
 
 
-        def conductivity(self,model,args):
+        def conductivity(self,model,args): # TODO: in target or e- ?
             """
             Return an estimate of the target electric conductivity.
 
@@ -214,7 +214,7 @@ class LaserPlasmaInteraction(_PelpiObject):
             dim='conductivity'
 
             estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-            return estimate.use(method_name='target_conductivity',dim=dim,*args)
+            return estimate.use(method_name='target.conductivity',dim=dim,*args)
 
     class _Electron(_PelpiObject):
         """
@@ -260,7 +260,7 @@ class LaserPlasmaInteraction(_PelpiObject):
                 dim='number'
 
                 estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-                return estimate.use(method_name='electron_hot_numberTotal',dim=dim,*args)
+                return estimate.use(method_name='electron.hot.number_total',dim=dim,*args)
 
             def temperature(self,model,*args):
                 """
@@ -293,7 +293,7 @@ class LaserPlasmaInteraction(_PelpiObject):
                 available_models=["Beg1997","Haines2009","Wilks1992"]
 
                 estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-                return estimate.use(method_name='electron_hot_temperature',dim='temperature',*args)
+                return estimate.use(method_name='electron.hot.temperature',dim='temperature',*args)
 
 
     class _PlasmaParameters(_PelpiObject):
@@ -305,6 +305,7 @@ class LaserPlasmaInteraction(_PelpiObject):
         def __init__(self,LaserPlasmaInteraction):
             self._lpi             = LaserPlasmaInteraction
             self.electron         = self._Electron(self._lpi)
+            self.ion              = self._Ion(self._lpi)
 
         # def updateParameters(self): # TODO; convert to methods
         #     self.wpe        = 0.0 # Electron plasma frequency
@@ -333,7 +334,7 @@ class LaserPlasmaInteraction(_PelpiObject):
 
                 .. math:: \lambda_{De} = \sqrt{\\frac{\epsilon_0 T_e}{n_e e^2}}
                 """
-                ne  = self._lpi.target.material.electronNumberDensity()
+                ne  = self._lpi.target.material.electron.number_density()
                 Te  = temperature
 
                 return _np.sqrt((_u.epsilon_0 * Te)/(ne * _u.e**2)).to(_pu['length'])
@@ -367,7 +368,7 @@ class LaserPlasmaInteraction(_PelpiObject):
 
                 .. math:: \omega_{pe} = \sqrt{\\frac{n_e e^2}{m_e \epsilon_0}}
                 """
-                ne  = self._lpi.target.material.electronNumberDensity()
+                ne  = self._lpi.target.material.electron.number_density()
 
                 return _np.sqrt((ne * _u.e**2)/(_u.m_e * _u.epsilon_0))
 
@@ -375,7 +376,7 @@ class LaserPlasmaInteraction(_PelpiObject):
             def __init__(self,LaserPlasmaInteraction):
                 self._lpi = LaserPlasmaInteraction
 
-            def ionPulsationPlasma(self):
+            def pulsation_plasma(self):
                 """
                 Returns
                 -------
@@ -387,9 +388,9 @@ class LaserPlasmaInteraction(_PelpiObject):
 
                 .. math:: \omega_{pe} = \sqrt{\\frac{Z^2 n_i e^2}{m_i \epsilon_0}}
                 """
-                ni  = self._lpi.target.material.ionNumberDensity()
-                Z   = self._lpi.target.material.Z # TODO: Change to method
-                N   = self._lpi.target.material.N
+                ni  = self._lpi.target.material.ion.number_density()
+                Z   = self._lpi.target.material.Z() # TODO: Change to method
+                N   = self._lpi.target.material.N()
                 mi  = Z * _u.m_p + N * _u.m_n
 
                 return _np.sqrt((ni * Z**2 * _u.e**2)/(mi * _u.epsilon_0))

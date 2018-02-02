@@ -8,22 +8,25 @@ import numpy as np
 import pelpi as pp
 u=pp.unit
 
-prof=pp.Profile(
-    time_profile    = "gaussian",
-    time_fwhm       = 44 * u.fs,
-    space_profile   = "gaussian",
-    space_fwhm      = 12 * u.um,
+tprof=pp.Profile(
+    profile    = "gaussian1D",
+    fwhm       = 44 * u.fs,
+)
+sprof=pp.Profile(
+    profile    = "gaussian2D",
+    fwhm       = 12 * u.um
 )
 
 laser=pp.Laser(
     wavelength = 0.8 * u.um,
     energy     = 0.154 * u.J,
 
-    Profile    = prof
+    time_profile = tprof,
+    space_profile = sprof
 )
 
 print("I0 = {}".format(laser.intensity().to(pp.prefered_unit['intensity'])))
-print("a0 = {}".format(laser.intensityPeakNormalized().to('')))
+print("a0 = {}".format(laser.intensity_peak_normalized().to('')))
 
 mat=pp.Material(
     density     = 2.69890e3 * u('kg/m**3'),
@@ -50,10 +53,10 @@ lpi=pp.LaserPlasmaInteraction(laser,target)
 
 pic=pp.ParticleInCell(lpi)
 
-Teh = lpi.electron.hot.temperature(model="Haines2009")
-
-dx=pic.lengthCell(temperature=Teh)
-print("dx           = {}        = {}".format(dx,dx/pic.code.length()))
-resx=pic.spaceResolution(temperature=Teh)
-print("resx         = {}        = {}".format(resx,resx*pic.code.length()))
-print("2 pi * resx  = {}".format(2 * np.pi * resx*pic.code.length()))
+# Teh = lpi.electron.hot.temperature(model="Haines2009")
+#
+# dx=pic.lengthCell(temperature=Teh)
+# print("dx           = {}        = {}".format(dx,dx/pic.code.length()))
+# resx=pic.spaceResolution(temperature=Teh)
+# print("resx         = {}        = {}".format(resx,resx*pic.code.length()))
+# print("2 pi * resx  = {}".format(2 * np.pi * resx*pic.code.length()))

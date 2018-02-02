@@ -24,63 +24,63 @@ class ParticleInCell(_PelpiObject):
 
         self.Nynquist = 0. # facteur de nynquist pour echantillonage des diags
 
-    def lengthCell(self,temperature):
+    def length_cell(self,temperature):
         """
         Tskahya et al.
         """
-        dx_target   = 3.4 * self._lpi.plasma.electronLengthDebye(temperature).to(_pu['length'])
+        dx_target   = 3.4 * self._lpi.plasma.electron.length_Debye(temperature).to(_pu['length'])
         dx_laser    = (self._lpi.laser.wavelength()/10).to(_pu['length'])
         return min(dx_laser,dx_target)
 
-    def timeStep(self,temperature,CFL=True):
+    def time_step(self,temperature,CFL=True):
         if CFL:
-            return (1/_np.sqrt(2) *self.lengthCell(temperature)/_u.c).to(_pu['time'])
+            return (1/_np.sqrt(2) *self.length_cell(temperature)/_u.c).to(_pu['time'])
         else:
-            return (self.lengthCell(temperature)/_u.c).to(_pu['time'])
+            return (self.length_cell(temperature)/_u.c).to(_pu['time'])
 
-    # def CFL(self,lengthCell=None,timeStep=None,*arg):
-    #     if lengthCell==None:
-    #         dx=self.lengthCell(*arg)
-    #     if timeStep==None:
-    #         dt=self.timeStep(*arg)
+    # def CFL(self,length_cell=None,time_step=None,*arg):
+    #     if length_cell==None:
+    #         dx=self.length_cell(*arg)
+    #     if time_step==None:
+    #         dt=self.time_step(*arg)
     #     return (dx/dt * 1/_u.c).to('')
 
-    def spaceResolution(self,temperature):
-        return 1/self.lengthCell(temperature=temperature)
+    def space_resolution(self,temperature):
+        return 1/self.length_cell(temperature=temperature)
 
-    def timeResolution(self,temperature,CFL=True):
-        return 1/self.timeStep(temperature=temperature,CFL=CFL)
+    def time_resolution(self,temperature,CFL=True):
+        return 1/self.time_step(temperature=temperature,CFL=CFL)
 
     class _CodeUnit(_PelpiObject):
         """
         Sub-class for
 
         """ # TODO: add pint unit for CU conversion ?
-        def __init__(self,LaserPlasmaInteraction,referenceAngularFrequency):
+        def __init__(self,LaserPlasmaInteraction,reference_pulsation):
             self._lpi   = LaserPlasmaInteraction
-            self._referenceAngularFrequency = referenceAngularFrequency
+            self._reference_pulsation = reference_pulsation
 
-        def referenceAngularFrequency(self):
-            return self._referenceAngularFrequency
+        def reference_pulsation(self):
+            return self._reference_pulsation
 
         def length(self):
-            return (_u.c/self.referenceAngularFrequency()).to(_pu['length'])
+            return (_u.c/self.reference_pulsation()).to(_pu['length'])
 
         def time(self):
-            return (1/self.referenceAngularFrequency()).to(_pu['time'])
+            return (1/self.reference_pulsation()).to(_pu['time'])
 
         def pulsation(self):
-            return self.referenceAngularFrequency().to(_pu['pulsation'])
+            return self.reference_pulsation().to(_pu['pulsation'])
 
-        def electricField(self):
-            # return (_u.m_e * _u.c * self.referenceAngularFrequency()/_u.e).to(_pu['electric field'])
-            return (_u.m_e * _u.c * self.referenceAngularFrequency()/_u.e).to_base_units()
+        def electric_field(self):
+            # return (_u.m_e * _u.c * self.reference_pulsation()/_u.e).to(_pu['electric field'])
+            return (_u.m_e * _u.c * self.reference_pulsation()/_u.e).to_base_units()
 
-        def magneticField(self):
-            # return (_u.m_e * self.referenceAngularFrequency()/_u.e).to(_pu['magnetic field'])
-            return (_u.m_e * self.referenceAngularFrequency()/_u.e).to_base_units()
+        def magnetic_field(self):
+            # return (_u.m_e * self.reference_pulsation()/_u.e).to(_pu['magnetic field'])
+            return (_u.m_e * self.reference_pulsation()/_u.e).to_base_units()
 
-        def numberDensity(self):
+        def number_density(self):
             return self._lpi.laser.numberDensityCritical()
 
         def current(self):

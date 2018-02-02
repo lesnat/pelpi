@@ -53,10 +53,10 @@ lpi=pp.LaserPlasmaInteraction(laser,target)
 
 pic=pp.ParticleInCell(lpi)
 
-# Teh = lpi.electron.hot.temperature(model="Haines2009")
-#
-# dx=pic.lengthCell(temperature=Teh)
-# print("dx           = {}        = {}".format(dx,dx/pic.code.length()))
-# resx=pic.spaceResolution(temperature=Teh)
-# print("resx         = {}        = {}".format(resx,resx*pic.code.length()))
-# print("2 pi * resx  = {}".format(2 * np.pi * resx*pic.code.length()))
+Teh = lpi.electron.hot.temperature(model="Haines2009")
+
+dx=pic.length_cell(temperature=Teh)
+print("dx           = {}        = {}".format(dx,dx/pic.code.length()))
+resx=pic.space_resolution(temperature=Teh)
+print("resx         = {}        = {}".format(resx,resx*pic.code.length()))
+print("2 pi * resx  = {}".format(2 * np.pi * resx*pic.code.length()))

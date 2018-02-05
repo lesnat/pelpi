@@ -11,11 +11,13 @@ class Laser(_PelpiObject):
     Parameters
     ----------
     wavelength : length quantity
-        Laser monochromatic wavelength
+        Laser monochromatic wavelength.
     energy : energy quantity
-        Total energy of the laser pulse
-    profile : object
-        Instanciated ``Profile`` object
+        Total energy of the laser pulse.
+    time_profile : object
+        Pulse time profile. Might be an instanciated ``Profile`` object.
+    space_profile : object
+        Pulse space profile (waist). Might be an instanciated ``Profile`` object.
 
     Examples
     --------
@@ -56,7 +58,7 @@ class Laser(_PelpiObject):
         return self._energy
 
     def pulsation(self):
-        return 2*_np.pi*_u.c/self.wavelength()
+        return (2*_np.pi*_u.c/self.wavelength()).to(_du['pulsation'])
 
     def envelope(self,r,t):
         """
@@ -75,15 +77,15 @@ class Laser(_PelpiObject):
         -----
         envelope is centered at t=0 and r=0, and has a maximum value of 1.
         """
-        return self.space_profile.envelope(r) * self.time_profile.envelope(t)
+        return (self.space_profile.envelope(r) * self.time_profile.envelope(t)).to('')
 
     def power(self,r=0*_u('m'),t=0*_u('s')):
-        return self.energy()/self.time_profile.integral1D() * self.envelope(r,t)
+        return (self.energy()/self.time_profile.integral1D() * self.envelope(r,t)).to(_du['power'])
 
     def intensity(self,r=0*_u('m'),t=0*_u('s')):
-        return self.power(r,t)/self.space_profile.integral2D()
+        return (self.power(r,t)/self.space_profile.integral2D()).to(_du['intensity'])
 
-    def intensity_peak_normalized(self):
+    def intensity_peak_normalized(self): # TODO: give the real definition
         """
         Returns
         -------
@@ -98,12 +100,12 @@ class Laser(_PelpiObject):
         with :math:`I_{18}` the laser peak intensity in :math:`10^{18} W.cm^{-2}`
         and :math:`\lambda_{\mu}` the laser wavelength in :math:`10^{-6} m`.
         """
-        return 0.85*_np.sqrt(\
-                (self.intensity(r=0*_u('m'),t=0*_u('s')).to('W/cm**2')*(self.wavelength().to('um'))**2)\
-                /(1.e18 * _u('W*um**2/cm**2')))
+        I0 = self.intensity(r=0*_u('m'),t=0*_u('s'))
+        a0 = 0.85*_np.sqrt((I0*(self.wavelength())**2)/(1.e18*_u('W*um**2/cm**2')))
+        return a0.to('')
 
     def time_chirp(self,t,phase=0.0 *_u('deg')):
-        return _np.sin(self.pulsation().to(t.units**-1) * t - phase)
+        return _np.sin(self.pulsation().to(t.units**-1) * t - phase.to('rad'))
 
 class _Electron(_PelpiObject):
     def __init__(self,Laser):
@@ -113,4 +115,5 @@ class _Electron(_PelpiObject):
         """
         Return the critical number density.
         """
-        return _u.m_e*_u.epsilon_0*(self._las.pulsation()/_u.e)**2
+        nc = _u.m_e*_u.epsilon_0*(self._las.pulsation()/_u.e)**2
+        return nc.to(_du['number_density'])

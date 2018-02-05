@@ -69,7 +69,7 @@ class Profile(_PelpiObject):
     def radius(self):
         """
         """
-        return self._space_radius
+        return self._radius
 
     # def timeEnvelope(self,t):
     #     """

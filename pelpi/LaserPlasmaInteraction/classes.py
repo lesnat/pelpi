@@ -337,7 +337,7 @@ class LaserPlasmaInteraction(_PelpiObject):
                 ne  = self._lpi.target.material.electron.number_density()
                 Te  = temperature
 
-                return _np.sqrt((_u.epsilon_0 * Te)/(ne * _u.e**2)).to(_pu['length'])
+                return _np.sqrt((_u.epsilon_0 * Te)/(ne * _u.e**2)).to(_du['length'])
 
 
             def length_Landau(self,temperature):
@@ -354,7 +354,7 @@ class LaserPlasmaInteraction(_PelpiObject):
                 """
                 Te  = temperature
 
-                return ((_u.e**2)/(4*_np.pi * _u.epsilon_0 * Te)).to(_pu['temperature'])
+                return ((_u.e**2)/(4*_np.pi * _u.epsilon_0 * Te)).to(_du['temperature'])
 
             def pulsation_plasma(self,temperature):
                 """
@@ -389,8 +389,8 @@ class LaserPlasmaInteraction(_PelpiObject):
                 .. math:: \omega_{pe} = \sqrt{\\frac{Z^2 n_i e^2}{m_i \epsilon_0}}
                 """
                 ni  = self._lpi.target.material.ion.number_density()
-                Z   = self._lpi.target.material.Z() # TODO: Change to method
-                N   = self._lpi.target.material.N()
-                mi  = Z * _u.m_p + N * _u.m_n
+                Z   = self._lpi.target.material.Z()
+                mi  = self._lpi.target.material.atomic_mass()
 
-                return _np.sqrt((ni * Z**2 * _u.e**2)/(mi * _u.epsilon_0))
+                wpi = _np.sqrt((ni * (Z * _u.e)**2)/(mi * _u.epsilon_0))
+                return wpi.to(_du['pulsation'])

@@ -37,7 +37,7 @@ class Beg1997(_PelpiObject):
 
         Te = 100.*_u('keV') * ((I0 * lambda_laser**2) / (1e17*_u('W/cm**2')*_u('um**2')) )**(1/3.)
 
-        return Te.to(_pu['temperature'])
+        return Te.to(_du['temperature'])
 
     def ion_energy_cutoff(self):
         """
@@ -250,4 +250,4 @@ class Common(_PelpiObject):
         """
         Te = temperature
 
-        return (self._lpi.laser.energy/(3/2. * Te)).to(_pu['number'])
+        return (self._lpi.laser.energy/(3/2. * Te)).to(_du['number'])

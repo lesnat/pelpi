@@ -56,28 +56,36 @@ LaserPlasmaInteraction
 ----------------------
 
 .. autoclass:: pelpi.LaserPlasmaInteraction
-  :members:
-  :undoc-members:
-  :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-
-
-electron
-++++++++
-
-.. autoclass:: pelpi.LaserPlasmaInteraction._Electron
-  :members:
-  :undoc-members:
-  :show-inheritance:
 
 
 plasma
-++++++
+------
 
-.. autoclass:: pelpi.LaserPlasmaInteraction.PlasmaParameters
-  :members:
-  :undoc-members:
-  :show-inheritance:
+.. autoclass:: pelpi.LaserPlasmaInteraction._PlasmaParameters
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+electron
+--------
+
+.. autoclass:: pelpi.LaserPlasmaInteraction._Electron
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hot
++++
+
+.. autoclass:: pelpi.LaserPlasmaInteraction._Electron._Hot
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 
 

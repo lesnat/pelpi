@@ -43,7 +43,7 @@ class Material(_PelpiObject):
             am          = self._mat.atomic_mass()
 
             ne          = (Z*rho/am) # TODO: Return default value if define, or result
-            return ne.to(_pu['number_density'])
+            return ne.to(_du['number_density'])
 
     class _Ion(_PelpiObject):
         def __init__(self,Material):
@@ -52,7 +52,7 @@ class Material(_PelpiObject):
         def number_density(self):
             rho         = self._mat.density()
             am          = self._mat.atomic_mass()
-            return (rho/am).to(_pu['number_density'])
+            return (rho/am).to(_du['number_density'])
 
 class Target(_PelpiObject):
     """

@@ -1,5 +1,5 @@
 #coding:utf8
-from . import prefered_unit as _pu
+from . import default_unit as _du
 
 
 __all__ = ["_Estimate"]
@@ -281,13 +281,13 @@ class _Estimate(_PelpiObject):
         if type(dim)!=str:
             raise TypeError("'dim' type must be 'string', but it is "+str(type(dim)))
 
-        if dim not in _pu.keys():
-            raise NameError("'dim' name "+dim+" not found. Available dimensions are "+str(_pu.keys()))
+        if dim not in _du.keys():
+            raise NameError("'dim' name "+dim+" not found. Available dimensions are "+str(_du.keys()))
 
         # Get the method from the model
         Method = getattr(self.model,method_name)
         # Use it with kwargs and convert it
-        return Method(*args).to(_pu[dim]) # TODO: check if OK with args
+        return Method(*args).to(_du[dim]) # TODO: check if OK with args
 
 class _Model(_PelpiObject):
     """

@@ -14,24 +14,26 @@ class Material(_PelpiObject):
     # database = _MaterialDatabase()
 
     def __init__(self,density,atomic_mass,Z): # TODO: which initialisation ?
-        self._density      = density
-        self._atomic_mass  = atomic_mass
-        self._Z            = Z
+        self.default                 = {}
+        self.default['density']      = density
+        self.default['atomic_mass']  = atomic_mass
+        self.default['Z']            = Z
+
         self.electron      = self._Electron(self)
         self.ion           = self._Ion(self)
 
     def density(self):
-        return self._density
+        return self.default['density']
 
     def atomic_mass(self):
-        return self._atomic_mass
+        return self.default['atomic_mass']
 
     def Z(self):
-        return self._Z
+        return self.default['Z']
 
     class _Electron(_PelpiObject):
-        def __init__(self,Material):
-            self._mat = Material
+        def __init__(self,material):
+            self._mat = material
 
         def number_density(self): # TODO: class electron method density ?
             """
@@ -58,5 +60,5 @@ class Target(_PelpiObject):
     """
     Class for defining the target characteristics.
     """
-    def __init__(self,Material):
-        self.material=Material
+    def __init__(self,material):
+        self.material=material

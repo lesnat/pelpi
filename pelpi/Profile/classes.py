@@ -46,9 +46,10 @@ class Profile(_PelpiObject):
     ...
     """
     def __init__(self,profile,fwhm=None,radius=None):
-        self._profile   = profile
-        self._fwhm      = fwhm
-        self._radius   = radius
+        self.default            = {}
+        self.default['profile'] = profile
+        self.default['fwhm']    = fwhm
+        self.default['radius']  = radius
 
         # self._checkInput(variable_dictionnary={\
         #     'time_profile':str,'space_profile':str,\
@@ -59,17 +60,17 @@ class Profile(_PelpiObject):
     def profile(self):
         """
         """
-        return self._profile
+        return self.default['profile']
 
     def fwhm(self):
         """
         """
-        return self._fwhm
+        return self.default['fwhm']
 
     def radius(self):
         """
         """
-        return self._radius
+        return self.default['radius']
 
     # def timeEnvelope(self,t):
     #     """
@@ -107,19 +108,19 @@ class Profile(_PelpiObject):
         """
         if self.profile()=="gaussian1D":
             t0=self.fwhm()/(2 * _np.sqrt(_np.log(2)))
-            return _np.exp(-(r/t0)**2)
+            return _np.exp(-(r/t0)**2) * _u('')
 
         if self.profile()=="gaussian2D":
             r0=self.fwhm()/(2 * _np.sqrt(_np.log(2)))
-            return _np.exp(-(r/r0)**2)
+            return _np.exp(-(r/r0)**2) * _u('')
         elif self.profile()=="supergaussian":
             n=10
-            return _np.exp(-(2*_np.sqrt(_np.log(2))*r/self.fwhm())**(2*n))
+            return _np.exp(-(2*_np.sqrt(_np.log(2))*r/self.fwhm())**(2*n)) * _u('')
         elif self.profile()=="top-hat":
             if abs(r)<self.radius():
-                return 1.0
+                return 1.0 * _u('')
             else:
-                return 0.0
+                return 0.0 * _u('')
 
 
     def integral1D(self,lower_edge=None,upper_edge=None,number_points=None):

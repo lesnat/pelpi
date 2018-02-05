@@ -37,8 +37,9 @@ class Laser(_PelpiObject):
     >>> print("Critical number density : {}".format(laser.numberDensityCritical()))
     """
     def __init__(self,wavelength,energy,time_profile,space_profile,**kwargs):
-        self._wavelength = wavelength
-        self._energy     = energy
+        self.default               = {}
+        self.default['wavelength'] = wavelength
+        self.default['energy']     = energy
 
         self.time_profile  = time_profile
         self.space_profile  = space_profile
@@ -50,12 +51,12 @@ class Laser(_PelpiObject):
     def wavelength(self):
         """
         """
-        return self._wavelength
+        return self.default['wavelength']
 
     def energy(self):
         """
         """
-        return self._energy
+        return self.default['energy']
 
     def pulsation(self):
         return (2*_np.pi*_u.c/self.wavelength()).to(_du['pulsation'])

@@ -113,6 +113,8 @@ _defineMethodFromArg
 
 checkHypotheses ?
 
+split _input & _default ?
+
 
 
 ### Profile
@@ -235,7 +237,7 @@ self._defaultValues={}
 
 # class.set('resx',20) 
 # -> 	class._userValues['resx']=True
-# 		class._defaultValues.append('resx':20)
+# 		if not class._defaultValues['resx'] : class._defaultValues.append('resx':20)
 
 def Tsim(self):
     if self._userValues['Lsim']:

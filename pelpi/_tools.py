@@ -1,5 +1,5 @@
 #coding:utf8
-from . import prefered_unit as _pu
+from . import default_unit as _du
 
 
 __all__ = ["_Estimate"]
@@ -12,6 +12,81 @@ class _PelpiObject(object):
     It contains methods such as _ckeckInput and set,
     and automatically create methods for acessing to input param ?
     """
+
+    def __init__(self):
+        pass
+
+    def _initialize_defaults(self,var_dict):
+        self._user_values={}
+        self._setInputToDict(var_dict)
+        self._setMethodsToDict()
+        self._setInputToMethod(var_dict)
+
+
+    def _setInputToDict(self,var_dict):
+        """
+        Set the object __init__ parameters to _user_values dictionary.
+        """
+        for key,val in var_dict.items():
+            self.set_default(key,val)
+
+    def _setMethodsToDict(self):
+        """
+        Initialize all the object method names to None in _user_defined dict.
+        """
+        exclude=['set_default','get_default'] # + model, plasma, database etc ?
+        for method in dir(self):
+            if method[0]!='_' and method not in exclude: # If public method
+                self.set_default(method,None)
+                # getattr(self,method).__doc__=\
+                # "Return\n------\nThe input parameter "+method# not working
+
+    def _setInputToMethod(self,var_dict):
+        """
+        Define methods for accessing the input values (now in dict)
+        """
+        for key in var_dict.keys():
+            self.__dict__[key] = \
+                lambda : self.get_default(key=key)
+
+    # def _initialize_defaults(self,var_dict):
+    #     self._setInputToDict(var_dict)
+    #     self._setMethodsToDict()
+    #     self._setInputToMethod(var_dict)
+
+
+    def _dor(self,result,**kwargs):
+        """
+        Return default or result (udom).
+
+        Check if a default value for result is defined,
+        if yes return it
+        else return method result with the same name.
+
+        Default values are prior to non-default.
+        """
+        # func_name=
+        return result
+        if self.get_default(result)!=None:
+            return self.get_default(result)
+        else:
+            return result
+
+    # def _udom(self,variable_name,**kwargs):
+    #     """
+    #     Use default or method (udom).
+    #
+    #     Check if a default value for variable_name is defined,
+    #     if yes return it
+    #     else return method result with the same name.
+    #
+    #     Default values are prior to non-default.
+    #     """
+    #     if self.get_default(variable_name)!=None:
+    #         return self.get_default(variable_name)
+    #     else:
+    #         return getattr(self.__dict__,variable_name)(**kwargs)
+
     def _checkInput(self,variable_dictionnary):
         """
         Dictionary of variables with expected type.
@@ -36,50 +111,113 @@ class _PelpiObject(object):
         """
         pass
 
-    def _set(self,variable_name,value):
+    def set_default(self,key,value):
         """
-        Reset an input parameter to a new value.
+        Set a parameter to a default value.
+        This can be an input parameter or not.
 
         Parameters
         ----------
-        variable_name : str
-            Name of the variable to reset a new value.
-        value : variable type
+        key : str
+            Name of the variable to set.
+        value : object, quantity, str, ...
             New value of the variable.
 
         Examples
         --------
-        Assuming a ``pelpi.Laser`` is instanciated as ``las``
+        Assuming a ``pelpi.LaserPlasmaInteraction`` is instanciated as ``lpi``
 
-        >>> las.set(wavelength,1.054 * pelpi.unit('um'))
-        >>> las.wavelength()
+        You can use the set method for setting a new value to
+        an input parameter
+
+        >>> lpi.laser.wavelength()
+        <Quantity(0.8,'um')>
+
+        >>> lpi.laser.set('wavelength',1.054 * pelpi.unit('um'))
+        >>> lpi.laser.wavelength()
         <Quantity(1.054,'um')>
 
-        The 'set' method can be ... what is the name ?
+        Then all the further calculations are done with this new value.
 
-        >>> las.set(wavelength,1.054*pelpi.unit('um')).set(energy,2*pelpi.unit('J'))
+
+        You can also use it for setting a calculated parameter to a new value
+
+        >>> lpi.electron.hot.set('temperature',1*pelpi.unit('MeV'))
+
+        You can still access to estimates
+
+        >>> lpi.electron.hot.temperature(model="Haines2009")
+        <Quantity(0.72,'MeV')>
+
+        But hot electron temperature have now a default behaviour
+
+        >>> lpi.electron.hot.temperature()
+        <Quantity(1.0,'MeV')>
+
+        And further estimates can be acomplished with both of them
+
+        >>> pic=pp.ParticleInCell(lpi)
+
+        Without default temperature
+
+        >>> Teh = lpi.electron.hot.temperature(model="Haines2009")
+        >>> pic.length_cell(temperature=Teh)
+        <Quantity(0.1456847,'um')>
+
+        Or with
+
+        >>> pic.length_cell()
+        <Quantity(0.125468,'um')>
+
+        This can be usefull when a lot of estimates
+        are done with the same parameters, or when a rough estimate or exp. values
+        can be set.
 
         Notes
         -----
-        Because all the informations are accessed only in methods
-        and the class attributes are private ; all the following calculations
-        would be performed with the new wavelength value without having to instanciate
-        a new ``pelpi.Laser`` object, or setting the attribute to a new value manually.
+        >>> lpi.electron.set_default('temperature',value) would not work.
+        -> needs to define to more close of the method.
         """
-        self._checkInput(variable_dictionnary={variable_name:type(value)})
-        variable = self.__dict__.get("_"+variable_name)
-        variable = value
-        return self
+        self._user_values[key]=value
 
-    def _defineMethodsFromVariables(self): # TODO : _setAttributes() & _setMethods
+    def get_default(self,key='all'):
         """
-        Define methods for accessing to user input
-        without having an access to the class attributes.
-        It is then safer and have a more coherent notation.
+        Return the default values.
+
+        For all values variable_name='all'
+
         """
-        # method.__doc__="Returns\n------\n"+variable_name+" : "+str(type(value))
-        # self.__dict__.get()
+        if key=='all':
+            return self._user_values
+        else:
+            return self._user_values[key]
+
+
+class _Laser(_PelpiObject):
+    pass
+
+class _Target(_PelpiObject):
+    pass
+
+class _Electron(_PelpiObject):
+    def __init__(self):
+        self.hot=self._Hot()
+
+    class _Hot(_PelpiObject):
         pass
+
+    class _Cold(_PelpiObject):
+        pass
+
+class _Ion(_PelpiObject):
+    pass
+
+class _Photon(_PelpiObject):
+    pass
+
+class _Positron(_PelpiObject):
+    pass
+
 
 class _Estimate(_PelpiObject):
     """
@@ -143,15 +281,13 @@ class _Estimate(_PelpiObject):
         if type(dim)!=str:
             raise TypeError("'dim' type must be 'string', but it is "+str(type(dim)))
 
-        if dim not in _pu.keys():
-            raise NameError("'dim' name "+dim+" not found. Available dimensions are "+str(_pu.keys()))
+        if dim not in _du.keys():
+            raise NameError("'dim' name "+dim+" not found. Available dimensions are "+str(_du.keys()))
 
-        # Check the model hypotheses
-        self.model.checkHypotheses()
         # Get the method from the model
         Method = getattr(self.model,method_name)
         # Use it with kwargs and convert it
-        return Method(*args).to(_pu[dim]) # TODO: check if OK with args
+        return Method(*args).to(_du[dim]) # TODO: check if OK with args
 
 class _Model(_PelpiObject):
     """
@@ -159,9 +295,6 @@ class _Model(_PelpiObject):
     """
     def __init__(self):
         # self.electron = electron
-        pass
-
-    def checkHypotheses(self): # TODO: Necessary ? and if, how to do this ?
         pass
 
     def _addMethod(self):

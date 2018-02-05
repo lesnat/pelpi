@@ -10,20 +10,28 @@ import pint
 unit=pint.UnitRegistry()
 
 # TODO: voire prefered unit et temperature via @context
-prefered_unit={'intensity':unit.W/unit.cm**2,'energy':unit.J,'length':unit.um,'time':unit.fs,\
-    'angle':unit.deg,'pulsation':unit.s**-1,'density':unit.kg * unit.m**-3,\
-    'number density':unit.m**-3,'power':unit.TW,'temperature':unit.MeV,\
-    'mass':unit.kg,'conductivity':unit.ohm**-1 * unit.m**-1, \
-    'number':unit(''),'electric field':unit(''),'magnetic field':unit('')}# TODO: change E/B field
+default_unit={\
+    'number':unit(''),\
+    'length':unit('m'),\
+    'time':unit('s'),\
+    'mass':unit('kg'),\
+    'energy':unit('J'),\
+    'angle':unit('deg'),\
+    'pulsation':unit('s**-1'),\
+    'density':unit('kg * m**-3'),\
+    'number_density':unit('m**-3'),\
+    'intensity':unit('W/m**2'),\
+    'power':unit('TW'),\
+    'temperature':unit('MeV'),\
+    'conductivity':unit('ohm**-1 * m**-1'),\
+    'current':unit('A/m**2'),\
+    'momentum':unit('kg * m / s'),\
+    'electric_field':unit('kg * m / A / s**3'),\
+    'magnetic_field':unit('kg / A / s'),\
+}
 
-
-import warnings
-warnings.formatwarning = lambda message, category, filename, lineno, line : \
-    "\n"+'%s:%s:%s\n    %s : %s' % (filename,lineno,line, category.__name__,message)+"\n"
-warnings.simplefilter('always',UserWarning)
-
-
-from .Laser.classes import Laser,Profile
+from .Profile.classes import Profile
+from .Laser.classes import Laser
 from .Target.classes import Material,Target
 from .LaserPlasmaInteraction.classes import LaserPlasmaInteraction
 from .ParticleInCell.classes import ParticleInCell

@@ -38,81 +38,6 @@ class LaserPlasmaInteraction(_PelpiObject):
     These parameters can be choosen by the user (for order of magnitude) or
     calculated by other models and passed as argument.
     Please refer to the method documentation for more informations.
-
-
-    Examples
-    --------
-    Assuming you instanciated a ``pelpi.Target`` object as ``targ``
-    and a ``pelpi.Laser`` object as ``las``,
-    you can instanciate the ``pelpi.LaserPlasmaInteraction`` object as follows :
-
-    >>> import pelpi as pp
-    >>> lpi = pp.LaserPlasmaInteraction(las,tar)
-
-    and can still access to ``targ`` and ``las`` properties from ``lpi`` object.
-
-    >>> print("Laser normalized peak intensity : {}".format(lpi.laser.intensityPeakNormalized()))
-
-    A list of available models for each estimate can be found in the method documentation.
-
-    >>> help(lpi.electron.hot.temperature)
-
-    Once you choose one that corresponds to your case, you can get more informations about it
-
-    >>> help(lpi.model.Beg1997)
-
-    get an estimate (here the supra-thermal electron temperature from the Beg1997 model)
-
-    >>> eh  = lpi.electron.hot
-    >>> Teh = eh.temperature(model="Beg1997")
-
-    and use the estimate for other calculations,
-    like the corresponding normalized Maxwell-Boltzmann distribution.
-
-    >>> Ek = np.linspace(0.1,10,100) * pp.unit('MeV')
-    >>> MB = lpi.model.Common.distribution("MB",kinetic_energy=Ek,temperature=Teh)
-
-    You can build more and more complex estimations,
-
-    >>> S   = lpi.target.conductivity(model=)
-    >>> nu  = lpi.laser.efficiencyAbsorption(model=)
-    >>> neh_Bell = eh.numberDensity(
-            model="Bell1997",
-            temperature=Teh,
-            conductivity=S,
-            absorption_efficiency=nu)
-    >>> neh_Common = eh.numberDensity(
-            model="Common",
-            absorption_efficiency=nu)
-
-    and compare the different results with your experimental or simulation results.
-
-    >>> import matplotlib.pyplot as plt
-    >>> import numpy as np
-    >>> Ek_sim, Spec_sim = np.loadtxt("spectrum.txt").T
-    >>> plt.plot(Ek_sim,Spec_sim,"Simulation results")
-    >>> plt.plot(Ek,neh_Bell*MB,label="MB 'Beg1997' estimate with 'Bell1997' normalisation")
-    >>> plt.plot(Ek,neh_Common*MB,label="MB 'Beg1997' estimate with 'Common' normalisation")
-    >>> plt.axes(xlabel='$E_k$ (MeV)',ylabel='Number of $e^-$ per MeV')
-    >>> plt.legend()
-    >>> plt.show()
-
-    Thank to the 'all in method' structure, it is then possible to loop over one or more parameters
-    to plot parametric evolution of an estimate with several models involved
-
-    >>> tFWHM   = np.linspace(20,200,100)*pp.unit('fs')
-    >>> neh     = []
-    >>> for t in tFWHM:
-    ...     lpi.laser.set(time_fwhm=t)
-    ...     Teh = eh.temperature(model='Haines2009')
-    ...     S   =
-    ...     nu  =
-    ...     neh.append()
-    ...
-    >>> plt.figure()
-    >>> plt.plot(tFWHM,neh)
-    >>> plt.axes(xlabel='Pulse temporal FWHM (fs)',ylabel='Total number of hot electrons')
-    >>> plt.show()
     """
 
     model      = _m # public attribute
@@ -337,7 +262,8 @@ class LaserPlasmaInteraction(_PelpiObject):
                 ne  = self._lpi.target.material.electron.number_density()
                 Te  = temperature
 
-                return _np.sqrt((_u.epsilon_0 * Te)/(ne * _u.e**2)).to(_du['length'])
+                LDe = _np.sqrt((_u.epsilon_0 * Te)/(ne * _u.e**2))
+                return LDe.to(_du['length'])
 
 
             def length_Landau(self,temperature):
@@ -354,7 +280,8 @@ class LaserPlasmaInteraction(_PelpiObject):
                 """
                 Te  = temperature
 
-                return ((_u.e**2)/(4*_np.pi * _u.epsilon_0 * Te)).to(_du['temperature'])
+                LLa = ((_u.e**2)/(4*_np.pi * _u.epsilon_0 * Te)) # TODO: OK ? check
+                return LLa.to(_du['length'])
 
             def pulsation_plasma(self,temperature):
                 """
@@ -370,7 +297,8 @@ class LaserPlasmaInteraction(_PelpiObject):
                 """
                 ne  = self._lpi.target.material.electron.number_density()
 
-                return _np.sqrt((ne * _u.e**2)/(_u.m_e * _u.epsilon_0))
+                wpe = _np.sqrt((ne * _u.e**2)/(_u.m_e * _u.epsilon_0))
+                return wpe.to(_du['pulsation'])
 
         class _Ion(_PelpiObject):
             def __init__(self,LaserPlasmaInteraction):

@@ -88,36 +88,32 @@ class Profile(_PelpiObject):
     #     timeEnvelope is centered at t=0, and has a maximum value of 1.
     #     """
     #     if self.time_profile()=="gaussian":
-    #         t0=self.time_fwhm()/(2 * _np.sqrt(_np.log(2)))
-    #         return _np.exp(-(t/t0)**2)
+    #         x0=self.time_fwhm()/(2 * _np.sqrt(_np.log(2)))
+    #         return _np.exp(-(t/x0)**2)
 
-    def envelope(self,r):
+    def envelope(self,x):
         """
         Returns
         -------
-        Space pulse envelope at given radius : dimensionless quantity
+        Profile envelope at x : dimensionless quantity
 
         Parameters
         ----------
-        r : length quantity
-            Radius.
+        x : quantity (length or time)
 
         Notes
         -----
-        spaceEnvelope is centered at r=0 and has a maximum value of 1.
+        envelope is centered at x=0 and has a maximum value of 1.
         """
         if self.profile()=="gaussian1D":
-            t0=self.fwhm()/(2 * _np.sqrt(_np.log(2)))
-            return _np.exp(-(r/t0)**2) * _u('')
+            x0=self.fwhm()/(2 * _np.sqrt(_np.log(2)))
+            return _np.exp(-(x/x0)**2) * _u('')
 
         if self.profile()=="gaussian2D":
-            r0=self.fwhm()/(2 * _np.sqrt(_np.log(2)))
-            return _np.exp(-(r/r0)**2) * _u('')
-        elif self.profile()=="supergaussian":
-            n=10
-            return _np.exp(-(2*_np.sqrt(_np.log(2))*r/self.fwhm())**(2*n)) * _u('')
+            x0=self.fwhm()/(2 * _np.sqrt(_np.log(2)))
+            return _np.exp(-(x/x0)**2) * _u('')
         elif self.profile()=="top-hat":
-            if abs(r)<self.radius():
+            if abs(x)<self.radius():
                 return 1.0 * _u('')
             else:
                 return 0.0 * _u('')
@@ -144,15 +140,15 @@ class Profile(_PelpiObject):
 
         ``gaussian`` :
 
-        .. math:: S_0^t = \sqrt{\pi} \\frac{t_{FWHM}}{2 \sqrt{\ln{2}}}
+        .. math:: I_x = \sqrt{\pi} \\frac{t_{FWHM}}{2 \sqrt{\ln{2}}}
 
         For other profiles, numerical integration is performed with numpy.trapz,
         so ``lower_edge``, ``upper_edge`` and ``number_points`` must be defined.
         """
         if self.profile()=="gaussian1D":
-            t0=self.fwhm()/(2 * _np.sqrt(_np.log(2)))
-            S0t=t0 * _np.sqrt(_np.pi)
-            return S0t
+            x0=self.fwhm()/(2 * _np.sqrt(_np.log(2)))
+            Ix=x0 * _np.sqrt(_np.pi)
+            return Ix
         else:
             raise NameError("Unknown laser time profile name.")
 
@@ -160,7 +156,7 @@ class Profile(_PelpiObject):
         """
         Returns
         -------
-        Double integration of the space envelope under radius: length**2 quantity
+        Double integration of the envelope under x: quantity
 
         Parameters
         ----------
@@ -177,20 +173,20 @@ class Profile(_PelpiObject):
 
         ``gaussian`` :
 
-        .. math:: S_r^0 = \pi (\\frac{r_{FWHM}}{2 \sqrt{\ln{2}}})^2
+        .. math:: I_x = \pi (\\frac{x_{FWHM}}{2 \sqrt{\ln{2}}})^2
 
         ``top-hat`` :
 
-        .. math:: S_r^0 = \pi r^2
+        .. math:: I_x = \pi x^2
 
 
         For other profiles, numerical integration is performed with numpy.trapz,
         so ``lower_edge``, ``upper_edge`` and ``number_points`` must be defined.
         """
         if self.profile()=="gaussian2D":
-            r0=self.fwhm()/(2 * _np.sqrt(_np.log(2)))
-            S0r=_np.pi * r0**2
-            return S0r
+            x0=self.fwhm()/(2 * _np.sqrt(_np.log(2)))
+            Ix=_np.pi * x0**2
+            return Ix
         elif self.profile()=="top-hat":
             return _np.pi*self.radius()**2
         else:

@@ -44,7 +44,7 @@ class Laser(_PelpiObject):
         self.time_profile  = time_profile
         self.space_profile  = space_profile
 
-        self.electron   = _Electron(self)
+        self.electron   = self._Electron(self)
 
         # self._checkInput(variable_dictionnary={})
 
@@ -105,16 +105,17 @@ class Laser(_PelpiObject):
         a0 = 0.85*_np.sqrt((I0*(self.wavelength())**2)/(1.e18*_u('W*um**2/cm**2')))
         return a0.to('')
 
-    def time_chirp(self,t,phase=0.0 *_u('deg')):
-        return _np.sin(self.pulsation().to(t.units**-1) * t - phase.to('rad'))
+    # def time_chirp(self,t,phase=0.0 *_u('deg')):
+    #     return _np.sin(self.pulsation().to(t.units**-1) * t - phase.to('rad'))
 
-class _Electron(_PelpiObject):
-    def __init__(self,Laser):
-        self._las = Laser
+    class _Electron(_PelpiObject):
+        def __init__(self,Laser):
+            self._las = Laser
 
-    def number_density_critical(self):
-        """
-        Return the critical number density.
-        """
-        nc = _u.m_e*_u.epsilon_0*(self._las.pulsation()/_u.e)**2
-        return nc.to(_du['number_density'])
+        def number_density_critical(self):
+            """
+            Return the critical number density.
+            """
+            nc = _u.m_e*_u.epsilon_0*(self._las.pulsation()/_u.e)**2
+            return nc.to(_du['number_density'])
+        

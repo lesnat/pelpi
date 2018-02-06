@@ -62,19 +62,19 @@ class ParticleInCell(_PelpiObject):
             return self._pulsation_reference
 
         def length_reference(self):
-            Lr = _u.c/self.pulsation()
+            Lr = _u.c/self.pulsation_reference()
             return Lr.to(_du['length'])
 
         def time_reference(self):
-            Tr = 1/self.pulsation()
+            Tr = 1/self.pulsation_reference()
             return Tr.to(_du['time'])
 
         def electric_field_reference(self):
-            Er = _u.m_e * _u.c * self.pulsation()/_u.e
+            Er = _u.m_e * _u.c * self.pulsation_reference()/_u.e
             return Er.to(_du['electric_field'])
 
         def magnetic_field_reference(self):
-            Br = _u.m_e * self.pulsation()/_u.e
+            Br = _u.m_e * self.pulsation_reference()/_u.e
             return Br.to(_du['magnetic_field'])
 
         def number_density_reference(self):

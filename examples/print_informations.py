@@ -36,9 +36,11 @@ laser=pp.Laser(
     space_profile   = sprof
 )
 
-# Print informations
+# Print & save results
 print("I0 = {}".format(laser.intensity()))
 print("a0 = {}".format(laser.intensity_peak_normalized()))
+print()
+nc = laser.electron.number_density_critical()
 
 # Define a material
 Al=pp.Material(
@@ -51,33 +53,38 @@ Al=pp.Material(
 # TODO: add geometrical stuff via a Profile object
 target=pp.Target(Al)
 
-# Save important values to a variable
+# Save & print results
 ne = target.material.electron.number_density()
+print("Electron density (in critical density)           : {}".format(ne/nc))
+print()
 
 
 # Instanciate a LaserPlasmaInteraction object with Laser and Target objects
 lpi=pp.LaserPlasmaInteraction(laser,target)
 
-# Print some estimates
-# print("sigma : " + str((lpi.getTargetConductivity()).to(u.ohm**-1 * u.m**-1)))
-# # print("sigma",(lpi.getTargetConductivity()).to(pp.default_unit['conductivity']))
-# print("nu : "+str((lpi.getLaserAbsorptionEfficiency())))
-# print("n0 : "+str((lpi.getHotElectronTotalNumber()).to_base_units()))
-
-
-# Set defaults
+# Save & print some estimates
 Teh = lpi.electron.hot.temperature(model="Haines2009")
-# lpi.electron.hot.set('temperature',Teh)
+print("Hot electron temperature  (model = Haines2009)   : {}".format(Teh))
+print()
+# TODO: *args in _Estimate
+# n0 = lpi.electron.hot.number_total(model="Common",temperature=Teh,absorption_efficiency=0.4)
+# print("Hot electron total number (model = Common)       : {}".format(n0))
 
-# Plot some results
-# ... # Here the default temperature is used
+
+# Compare to simulation/experiments
+# ...
 
 # Instanciate a ParticleInCell object with a LaserPlasmaInteraction object
 pic=pp.ParticleInCell(lpi)
 
-# Get some estimates
+# Set default parameters
+# lpi.electron.hot.set('temperature',Teh)
+
+# Get estimates
 dx=pic.length_cell(temperature=Teh)
-print("dx           = {}        = {}".format(dx,dx/pic.code.length()))
+Lr=pic.smilei.length_reference()
+
+print("dx           = {}        = {}".format(dx,dx/Lr))
 resx=pic.space_resolution(temperature=Teh)
-print("resx         = {}        = {}".format(resx,resx*pic.code.length()))
-print("2 pi * resx  = {}".format(2 * np.pi * resx*pic.code.length()))
+print("resx         = {}        = {}".format(resx,resx*Lr))
+print("2 pi * resx  = {}".format(2 * np.pi * resx*Lr))

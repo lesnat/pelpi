@@ -160,7 +160,7 @@ class LaserPlasmaInteraction(_PelpiObject):
             def __init__(self,LaserPlasmaInteraction):
                 self._lpi = LaserPlasmaInteraction
 
-            def number_total(self,model,*args):
+            def number_total(self,model,**kwargs):
                 """
                 Return an estimate of the total hot electron number.
 
@@ -185,9 +185,9 @@ class LaserPlasmaInteraction(_PelpiObject):
                 dim='number'
 
                 estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-                return estimate.use(method_name='electron_number_total',dim=dim,*args)
+                return estimate.use(method_name='electron_number_total',dim=dim,**kwargs)
 
-            def temperature(self,model,*args):
+            def temperature(self,model,**kwargs):
                 """
                 Return an estimate of the hot electron temperature.
 
@@ -218,7 +218,7 @@ class LaserPlasmaInteraction(_PelpiObject):
                 available_models=["Beg1997","Haines2009","Wilks1992"]
 
                 estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-                return estimate.use(method_name='electron_hot_temperature',dim='temperature',*args)
+                return estimate.use(method_name='electron_hot_temperature',dim='temperature',**kwargs)
 
 
     class _PlasmaParameters(_PelpiObject):

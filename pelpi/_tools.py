@@ -261,7 +261,7 @@ class _Estimate(_PelpiObject):
         else:
             raise NameError("Model name "+model_name+" not found. Available models are "+str(available_models))
 
-    def use(self,method_name,dim,*args):
+    def use(self,method_name,dim,**kwargs):
         """
         Return the result of the model choosen method.
 
@@ -287,7 +287,7 @@ class _Estimate(_PelpiObject):
         # Get the method from the model
         Method = getattr(self.model,method_name)
         # Use it with kwargs and convert it
-        return Method(*args).to(_du[dim]) # TODO: check if OK with args
+        return Method(**kwargs).to(_du[dim]) # TODO: check if OK with args
 
 class _Model(_PelpiObject):
     """

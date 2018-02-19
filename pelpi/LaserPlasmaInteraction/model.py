@@ -250,4 +250,5 @@ class Common(_PelpiObject):
         """
         Te = temperature
 
-        return (self._lpi.laser.energy/(3/2. * Te)).to(_du['number'])
+        ne = self._lpi.laser.energy()/(3/2. * Te)
+        return ne.to(_du['number'])

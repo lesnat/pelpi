@@ -41,7 +41,35 @@ class _PelpiObject(object):
         """
         if str(type(var_value))!=str(exp_type):
             raise TypeError(var_name+" type is expected to be "+str(exp_type)+", but got "+str(type(var_value))+" instead.")
-            
+
+    def _initialize_defaults(self,input_dict=None):
+        """
+        Initialize `default` dictionary.
+        
+        ...
+        
+        Create the default dictionnary, then put instance methods & input_dict to it.
+        """
+        #self._check_input()
+        
+        # Create the dictionnary
+        self.default={}
+        
+        # Put input_dict into default if input_dict is defined
+        if input_dict is not None:
+            for key,val in input_dict:
+                self.default[key]=val
+        
+        # Loop over all class attributes
+        for attr_name in dir(self):
+            # Get the 'attr_name' type
+            attr_type = type(getattr(self,attr_name))
+            # if 'attr_name' is a method, and is not private (i.e. not starts with '_')
+            if str(attr_type)=="<type 'instancemethod'>" and attr_name[0]!="_":
+                # then a new dict entry is initialize to None
+                self.default[attr_name]=None
+
+        
     def _estimate(self,lpi,model_name,method_name,**kwargs):
         """
         Return the result of lpi.model.model_name.method_name(**kwargs)

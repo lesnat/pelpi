@@ -160,6 +160,7 @@ class LaserPlasmaInteraction(_PelpiObject):
             def __init__(self,LaserPlasmaInteraction):
                 self._lpi = LaserPlasmaInteraction
                 self.default={'temperature':None}
+                self._initialize_defaults()
 
             def number_total(self,model,**kwargs):
                 """

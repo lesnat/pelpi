@@ -9,8 +9,42 @@ class _PelpiObject(object):
     """
     Private base class for pelpi objects.
     """
-    pass
-
+    def _check_input(self,input_lst):
+        """
+        Compare conversion into str
+        
+        Parameters
+        ----------
+        lst : list of tuples
+            {(name, value, type)}
+            name    : str
+            value   : Quantity, object, ...
+            type    : type or str, value expected type 
+        
+        Raises
+        ------
+        NameError
+            If input not in in_ref_dict.keys()
+        TypeError
+            If input type is not ref
+        
+        Examples
+        --------
+        class Laser(_PelpiObject)
+            def __init__(self,wavelength,energy,time_profile,space_profile,**kwargs):
+                input_lst = [\
+                ('wavelength'   , wavelength    , type(_du['length'])),\
+                ('energy'       , energy        , type(_du['energy'])),\
+                ('time_profile' , time_profile  , 'pelpi.Profile.classes.Profile'),\
+                ('space_profile', space_profile , 'pelpi.Profile.classes.Profile')\
+                ]
+                
+                self._check_input(input_lst)
+        """
+        for name,value,type_ in input_lst:
+            if str(type(value))!=str(type_):
+                raise TypeError(name+" type is expected to be "+str(type_)+" but it is "+str(type(value)))
+        
 
 class _Estimate(_PelpiObject):
     """

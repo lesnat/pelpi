@@ -1,7 +1,7 @@
 #coding:utf8
 
 from .._global import *
-from .._tools import _Estimate,_PelpiObject
+from .._tools import _PelpiObject
 from ..LaserPlasmaInteraction import model as _m
 
 __all__ = ["LaserPlasmaInteraction"]
@@ -31,7 +31,7 @@ class LaserPlasmaInteraction(_PelpiObject):
 
     Notes
     -----
-    Use of arguments (*args) in methods
+    result of arguments (*args) in methods
     +++++++++++++++++++++++++++++++++++
     Some models may need optional parameters, such as electron hot temperature
     or laser absorption efficiency for complete the calculus.
@@ -71,7 +71,7 @@ class LaserPlasmaInteraction(_PelpiObject):
 
             self._lpi.laser.efficiency_absorption = self.efficiency_absorption #TODO: on laser or e- ?
 
-        def efficiency_absorption(self,model,*args): # TODO: what this model is about ? hot electrons ? ions ? ...
+        def efficiency_absorption(self,model,**kwargs): # TODO: what this model is about ? hot electrons ? ions ? ...
             """
             Return an estimate of the laser absorption efficiency into hot electrons ??.
 
@@ -79,7 +79,7 @@ class LaserPlasmaInteraction(_PelpiObject):
             --------
             model, string
                 Model name
-            *args,
+            **kwargs,
                 Model input parameters
 
             Models
@@ -93,10 +93,10 @@ class LaserPlasmaInteraction(_PelpiObject):
             if you need more informations about the [Model] model.
             """
             available_models=["Common"]
-            dim='number'
+            dimension='number'
 
             estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-            return estimate.use(method_name='laser_efficiency_absorption',dim=dim,*args)
+            return estimate.result(method_name='laser_efficiency_absorption',dimension=dimension,**kwargs)
 
 
     class _Target(_PelpiObject):
@@ -114,7 +114,7 @@ class LaserPlasmaInteraction(_PelpiObject):
             # add targetdensitynormalized
 
 
-        def conductivity(self,model,args): # TODO: in target or e- ?
+        def conductivity(self,model,**kwargs): # TODO: in target or e- ?
             """
             Return an estimate of the target electric conductivity.
 
@@ -122,7 +122,7 @@ class LaserPlasmaInteraction(_PelpiObject):
             --------
             model, string
                 Model name
-            *args,
+            **kwargs,
                 Model input parameters
 
             Models
@@ -136,10 +136,10 @@ class LaserPlasmaInteraction(_PelpiObject):
             if you need more informations about the [Model] model.
             """
             available_models=["Common"]
-            dim='conductivity'
+            dimension='conductivity'
 
             estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-            return estimate.use(method_name='target_conductivity',dim=dim,*args)
+            return estimate.result(method_name='target_conductivity',dimension=dimension,**kwargs)
 
     class _Electron(_PelpiObject):
         """
@@ -159,6 +159,7 @@ class LaserPlasmaInteraction(_PelpiObject):
             """
             def __init__(self,LaserPlasmaInteraction):
                 self._lpi = LaserPlasmaInteraction
+                self.default={'temperature':None}
 
             def number_total(self,model,**kwargs):
                 """
@@ -182,10 +183,10 @@ class LaserPlasmaInteraction(_PelpiObject):
                 if you need more informations about the [Model] model.
                 """
                 available_models=["Common"]
-                dim='number'
+                dimension='number'
 
                 estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-                return estimate.use(method_name='electron_number_total',dim=dim,**kwargs)
+                return estimate.result(method_name='electron_number_total',dimension=dimension,**kwargs)
 
             def temperature(self,model,**kwargs):
                 """
@@ -214,12 +215,19 @@ class LaserPlasmaInteraction(_PelpiObject):
                 See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
                 if you need more informations about the [Model] model.
                 """
-                dim='temperature'
+                if self.default['temperature'] is not None:
+                    return self.default['temperature']
+                else:
+                    temperature = self._estimate(self._lpi,model,'electron_hot_temperature',**kwargs)
+                    return temperature.to(_du['temperature'])
+                
+                """
+                dimension='temperature'
                 available_models=["Beg1997","Haines2009","Wilks1992"]
 
                 estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-                return estimate.use(method_name='electron_hot_temperature',dim='temperature',**kwargs)
-
+                return estimate.result(method_name='electron_hot_temperature',dimension=dimension,**kwargs)
+                """
 
     class _PlasmaParameters(_PelpiObject):
         """

@@ -9,102 +9,59 @@ class _PelpiObject(object):
     """
     Private base class for pelpi objects.
     """
-    def _check_input(self,input_lst):
+    def _check_input(self,var_name,var_value,exp_type):
         """
-        Compare conversion into str
+        Check if the user input have the correct type.
+        
+        Compare the str conversion of exp_type with str conversion of var_value type, so exp_type can be a str.
         
         Parameters
         ----------
-        lst : list of tuples
-            {(name, value, type)}
-            name    : str
-            value   : Quantity, object, ...
-            type    : type or str, value expected type 
+        var_name    : str
+            Name of the variable
+        var_value   : Quantity or str or ...
+            User input value
+        exp_type    : type or str
+            Value expected type 
         
         Raises
         ------
-        NameError
-            If input not in in_ref_dict.keys()
         TypeError
-            If input type is not ref
+            If input type is not the same as expected type.
         
         Examples
         --------
         class Laser(_PelpiObject)
             def __init__(self,wavelength,energy,time_profile,space_profile,**kwargs):
-                input_lst = [\
-                ('wavelength'   , wavelength    , type(_du['length'])),\
-                ('energy'       , energy        , type(_du['energy'])),\
-                ('time_profile' , time_profile  , 'pelpi.Profile.classes.Profile'),\
-                ('space_profile', space_profile , 'pelpi.Profile.classes.Profile')\
-                ]
-                
-                self._check_input(input_lst)
-        """
-        for name,value,type_ in input_lst:
-            if str(type(value))!=str(type_):
-                raise TypeError(name+" type is expected to be "+str(type_)+" but it is "+str(type(value)))
+                self._check_input('wavelength'   , wavelength    , type(_du['length']))
+                self._check_input('energy'       , energy        , type(_du['energy']))
+                self._check_input('time_profile' , time_profile  , "<class 'pelpi.Profile.classes.Profile'>")
+                self._check_input('space_profile', space_profile , "<class 'pelpi.Profile.classes.Profile'>")
         
-
-class _Estimate(_PelpiObject):
-    """
-    Class for using estimations models.
-
-    It takes strings as arguments (model_name, method_name) and return the result
-    of the given method.
-    It is recommended to use this class in all estimations methods of
-    LaserPlasmaInteraction.
-
-    Parameters
-    ----------
-    LaserPlasmaInteraction, object
-        Instanciated class of LaserPlasmaInteraction
-    model_name, string
-        Needed model name
-    available_models, list of strings
-        List of all models that can be used with the lpi method
-
-    Methods
-    -------
-    use
-        Return the result of the model choosen method
-    """
-    def __init__(self,LaserPlasmaInteraction,model_name,available_models):
-        self._lpi       = LaserPlasmaInteraction
-        if model_name in available_models:
-            # Get the 'model_name' class from the 'model' attribute of _lpi
-            Model=getattr(self._lpi.model,model_name)
-            # and instanciate it with _lpi
-            self.model=Model(self._lpi)
-        else:
-            raise NameError("Model name "+model_name+" not found. Available models are "+str(available_models))
-
-    def use(self,method_name,dim,**kwargs):
         """
-        Return the result of the model choosen method.
-
-        Result is automatically converted into the pelpi.default_unit unit.
-
-        Parameters
-        ---------
-        method_name, string
-            Needed method name of the model
-        dim, string
-            Dimension of the result (i.e. 'temperature', 'conductivity', ...)
-        args
-            Arguments to use in the method
+        if str(type(var_value))!=str(exp_type):
+            raise TypeError(var_name+" type is expected to be "+str(exp_type)+", but got "+str(type(var_value))+" instead.")
+            
+    def _estimate(self,lpi,model_name,method_name,**kwargs):
         """
-        if type(method_name)!=str:
-            raise TypeError("'method_name' type must be 'string', but it is "+str(type(method_name)))
-        if type(dim)!=str:
-            raise TypeError("'dim' type must be 'string', but it is "+str(type(dim)))
+        Return the result of lpi.model.model_name.method_name(**kwargs)
+        
+        """
+        # Check developer input type. kwargs types are tested in model methods.
+        self._check_input('lpi'         , lpi           , "<class 'pelpi.LaserPlasmaInteraction.classes.LaserPlasmaInteraction'>")
+        self._check_input('model_name'  , model_name    , str)
+        self._check_input('method_name' , method_name   , str)
+        
+        # Find the 'model_name' class in lpi.model
+        model_class = getattr(lpi.model , model_name)
+        # and instanciate is with the lpi instance
+        model_inst  = model_class(lpi)
+        # When this is done, get the 'method_name' method from the 'model_name' instance
+        method      = getattr(model_inst, method_name)
+        # and get the result of 'method_name' when using it with kwargs
+        res         = method(**kwargs)
+        # Finally return the result
+        return res
 
-        if dim not in _du.keys():
-            raise NameError("'dim' name "+dim+" not found. Available dimensions are "+str(_du.keys()))
-
-        # Get the method from the model
-        Method = getattr(self.model,method_name)
-        # Use it with kwargs and convert it
-        return Method(**kwargs).to(_du[dim]) # TODO: check if OK with args
 
 

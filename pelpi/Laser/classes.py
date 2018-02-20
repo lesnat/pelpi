@@ -36,7 +36,7 @@ class Laser(_PelpiObject):
     >>> print("Laser normalized intensity : {}".format(laser.intensityNormalized()))
     >>> print("Critical number density : {}".format(laser.numberDensityCritical()))
     """
-    def __init__(self,wavelength,energy,time_profile,space_profile,**kwargs):
+    def __init__(self,wavelength,energy,time_profile,space_profile):
         self.default               = {}
         self.default['wavelength'] = wavelength
         self.default['energy']     = energy

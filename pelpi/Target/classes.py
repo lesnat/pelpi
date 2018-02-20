@@ -1,6 +1,6 @@
 #coding:utf8
 from .._global import *
-from .._tools import _PelpiObject,_Electron
+from .._tools import _PelpiObject
 # from ..Target.database import _MaterialDatabase
 
 

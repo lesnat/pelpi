@@ -82,7 +82,7 @@ pic=pp.ParticleInCell(lpi)
 
 # Get estimates
 dx=pic.length_cell(temperature=Teh)
-Lr=pic.smilei.length_reference()
+Lr=pic.code.smilei.length_reference()
 
 print("dx           = {}        = {}".format(dx,dx/Lr))
 resx=pic.space_resolution(temperature=Teh)

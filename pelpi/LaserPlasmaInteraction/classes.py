@@ -195,7 +195,7 @@ class LaserPlasmaInteraction(_PelpiObject):
                 --------
                 model, string
                     Model name
-                *args,
+                **kwargs,
                     Model input parameters
 
                 Models

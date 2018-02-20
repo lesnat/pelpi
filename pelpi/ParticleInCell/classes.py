@@ -9,7 +9,7 @@ class ParticleInCell(_PelpiObject):
     """
     def __init__(self,LaserPlasmaInteraction):
         self._lpi             = LaserPlasmaInteraction
-        self.smilei           = self._Smilei(self._lpi,self._lpi.laser.pulsation())
+        self.code             = self._Code(self._lpi)
 
     def length_cell(self,temperature):
         """
@@ -48,47 +48,55 @@ class ParticleInCell(_PelpiObject):
     # def number_patch(self,temperature):
     #     npatches = [Lsim/float(2**n) for n in range(10)]
     #     return npatches
-
-    class _Smilei(_PelpiObject):
+    class _Code(_PelpiObject):
         """
-        Sub-class for
-
-        """ # TODO: add pint unit for CU conversion ?
-        def __init__(self,LaserPlasmaInteraction,pulsation_reference):
-            self._lpi   = LaserPlasmaInteraction
-            self._pulsation_reference = pulsation_reference
-
-        def pulsation_reference(self):
-            return self._pulsation_reference
-
-        def length_reference(self):
-            Lr = _u.c/self.pulsation_reference()
-            return Lr.to(_du['length'])
-
-        def time_reference(self):
-            Tr = 1/self.pulsation_reference()
-            return Tr.to(_du['time'])
-
-        def electric_field_reference(self):
-            Er = _u.m_e * _u.c * self.pulsation_reference()/_u.e
-            return Er.to(_du['electric_field'])
-
-        def magnetic_field_reference(self):
-            Br = _u.m_e * self.pulsation_reference()/_u.e
-            return Br.to(_du['magnetic_field'])
-
-        def number_density_reference(self):
-            Nr = self._lpi.laser.electron.number_density_critical() # TODO: change by the real calculus (if no laser)
-            return Nr.to(_du['number_density'])
-
-        def current_reference(self):
-            Jr = _u.c * _u.e * self.number_density()
-            return Jr.to(_du['current'])
-
-        def energy_reference(self):
-            Kr = 1 * _u.m_e * _u.c**2
-            return Kr.to(_du['energy'])
-
-        def momentum_reference(self):
-            Pr = 1 * _u.m_e * _u.c
-            return Pr.to(_du['momentum'])
+        Code tools.
+        """
+        def __init__(self,LaserPlasmaInteraction):
+            lpi             = LaserPlasmaInteraction
+            wr              = lpi.laser.pulsation()
+            self.smilei     = self._Smilei(lpi,wr)
+    
+        class _Smilei(_PelpiObject):
+            """
+            Smilei tools.
+    
+            """ # TODO: add pint unit for CU conversion ?
+            def __init__(self,LaserPlasmaInteraction,pulsation_reference):
+                self._lpi   = LaserPlasmaInteraction
+                self._pulsation_reference = pulsation_reference
+    
+            def pulsation_reference(self):
+                return self._pulsation_reference
+    
+            def length_reference(self):
+                Lr = _u.c/self.pulsation_reference()
+                return Lr.to(_du['length'])
+    
+            def time_reference(self):
+                Tr = 1/self.pulsation_reference()
+                return Tr.to(_du['time'])
+    
+            def electric_field_reference(self):
+                Er = _u.m_e * _u.c * self.pulsation_reference()/_u.e
+                return Er.to(_du['electric_field'])
+    
+            def magnetic_field_reference(self):
+                Br = _u.m_e * self.pulsation_reference()/_u.e
+                return Br.to(_du['magnetic_field'])
+    
+            def number_density_reference(self):
+                Nr = self._lpi.laser.electron.number_density_critical() # TODO: change by the real calculus (if no laser)
+                return Nr.to(_du['number_density'])
+    
+            def current_reference(self):
+                Jr = _u.c * _u.e * self.number_density()
+                return Jr.to(_du['current'])
+    
+            def energy_reference(self):
+                Kr = 1 * _u.m_e * _u.c**2
+                return Kr.to(_du['energy'])
+    
+            def momentum_reference(self):
+                Pr = 1 * _u.m_e * _u.c
+                return Pr.to(_du['momentum'])

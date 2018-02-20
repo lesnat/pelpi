@@ -249,6 +249,7 @@ class Common(_PelpiObject):
             $T_e^{hot}$ the thermal energy of hot electrons.
         """
         Te = temperature
+        eta_l = absorption_efficiency
 
-        ne = self._lpi.laser.energy()/(3/2. * Te)
+        ne = eta_l * self._lpi.laser.energy()/(3/2. * Te)
         return ne.to(_du['number'])

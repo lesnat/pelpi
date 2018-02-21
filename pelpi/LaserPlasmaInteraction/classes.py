@@ -62,7 +62,7 @@ class LaserPlasmaInteraction(_PelpiObject):
     >>> eta_l = 0.1 * pp.unit('')
     >>> # Use a simple model to get a temperature estimate
     >>> Teh = eh.temperature(model='Haines2009')
-    >>> # Here is a more complex model who needs a temperature & absorption efficiency to return a result
+    >>> # Here a more complex model needs a temperature & absorption efficiency to return a result
     >>> neh = eh.number_total(model="Common",temperature = Teh, absorption_efficiency = eta_l) # Works
     >>> neh = eh.number_total(model="Common", Teh, eta_l) # Do not works
     
@@ -89,29 +89,34 @@ class LaserPlasmaInteraction(_PelpiObject):
         self.electron   = self._Electron(self)
         # self.ion        = Ion(self)
 
-
-    class _Laser(_PelpiObject):
+    class _Electron(_PelpiObject):
         """
+        Electrons properties.
+        
+        Attributes
+        ----------
+        hot : object
+            Containing properties of super-thermal electrons, in Ultra-High Intensity regime
         """
         def __init__(self,LaserPlasmaInteraction):
+            # No need to check input because this method is only called in Laser definition.
+            
+            # Initialise default dict
+            self._initialize_defaults()
+            
+            # Save reference to LaserPlasmaInteraction instance in a private variable
             self._lpi   = LaserPlasmaInteraction
+            
+            # Instanciate sub-classes
+            self.hot    = self._Hot(self._lpi)
+            # self.cold   = self._Cold(self._lpi)
+            
+            # Add methods previously defined
+            self.number_density = self._lpi.target.material.electron.number_density
+            self.number_density_critical = self._lpi.laser.electron.number_density_critical
 
-            # self._user_values=self._lpi.laser._user_values
-            #
-            # exclude=['set_default','get_default']
-            # for var in dict(self._lpi.laser):
-            #     if var[0]!='_' and var not in exclude:
-            #         self.__dict__[var]=getattr(self._lpi.laser,var)
-            #
-            # self._setMethodsToDict()
 
-            # Automatically add all new methods to laser object
-            # for model in self.__dict__.keys():
-            #     _addMethod(self._lpi.laser, self, model)
-
-            self._lpi.laser.efficiency_absorption = self.efficiency_absorption #TODO: on laser or e- ?
-
-        def efficiency_absorption(self,model,**kwargs): # TODO: what this model is about ? hot electrons ? ions ? ...
+        def efficiency_absorption(self,model,**kwargs):
             """
             Return an estimate of the laser absorption efficiency into hot electrons ??.
 
@@ -137,74 +142,6 @@ class LaserPlasmaInteraction(_PelpiObject):
 
             estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
             return estimate.result(method_name='laser_efficiency_absorption',dimension=dimension,**kwargs)
-
-
-    class _Target(_PelpiObject):
-        """
-        """
-        def __init__(self,LaserPlasmaInteraction):
-            self._lpi   = LaserPlasmaInteraction
-
-            # Automatically add all new methods to laser object
-            # for model in self.__dict__.keys():
-            #     _addMethod(self._lpi.laser, self, model)
-
-            self._lpi.target.conductivity = self.conductivity
-
-            # add targetdensitynormalized
-
-
-        def conductivity(self,model,**kwargs): # TODO: in target or e- ?
-            """
-            Return an estimate of the target electric conductivity.
-
-            Arguments
-            --------
-            model, string
-                Model name
-            **kwargs,
-                Model input parameters
-
-            Models
-            -----
-            Common, a theoretical model for a rough estimate.
-                Input parameters : ...
-
-            Notes
-            ----
-            See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
-            if you need more informations about the [Model] model.
-            """
-            available_models=["Common"]
-            dimension='conductivity'
-
-            estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-            return estimate.result(method_name='target_conductivity',dimension=dimension,**kwargs)
-
-    class _Electron(_PelpiObject):
-        """
-        Electrons properties.
-        
-        Attributes
-        ----------
-        hot : object
-            Containing properties of super-thermal electrons, in Ultra-High Intensity regime
-        """
-        def __init__(self,LaserPlasmaInteraction):
-            # No need to check input because this method is only called in Laser definition.
-            
-            # Initialise default dict
-            self._initialize_defaults()
-            
-            # Save reference to LaserPlasmaInteraction instance in a private variable
-            self._lpi   = LaserPlasmaInteraction
-            
-            # Instanciate sub-classes
-            self.hot    = self._Hot(self._lpi)
-            # self.cold   = self._Cold(self._lpi)
-
-        # TODO: here general stuff about all the electrons
-        # TODO: add number density ?
 
         class _Hot(_PelpiObject):
             """

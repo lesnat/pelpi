@@ -55,10 +55,12 @@ Comments ...
 LaserPlasmaInteraction
 ----------------------
 
-.. autoclass:: pelpi.LaserPlasmaInteraction
+.. automodule:: pelpi.LaserPlasmaInteraction
+   :imported-members:
    :members:
    :undoc-members:
    :show-inheritance:
+   
 
 
 
@@ -74,15 +76,22 @@ electron
 --------
 
 .. autoclass:: pelpi.LaserPlasmaInteraction._Electron
-   :members:
+   :members: efficiency_absorption
    :undoc-members:
    :show-inheritance:
+
+.. autoattribute:: pelpi.LaserPlasmaInteraction._Electron
+
 
 hot
 +++
 
+
+.. autoattribute:: pelpi.LaserPlasmaInteraction._Electron._Hot
+
+
 .. autoclass:: pelpi.LaserPlasmaInteraction._Electron._Hot
-   :members:
+   :members: number_total, temperature
    :undoc-members:
    :show-inheritance:
 

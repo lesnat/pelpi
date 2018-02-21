@@ -11,13 +11,20 @@ class Laser(_PelpiObject):
     Parameters
     ----------
     time_profile : object
-        Pulse time profile. Might be an instanciated ``Profile`` object.
+        Pulse time profile. Instanciated pelpi ``Profile`` object
     space_profile : object
-        Pulse space profile (waist). Might be an instanciated ``Profile`` object.
+        Pulse space profile (waist). Instanciated pelpi ``Profile`` object
     wavelength : length Quantity
-        Laser monochromatic wavelength.
+        Laser monochromatic wavelength
     energy : energy Quantity
-        Total energy of the laser pulse.
+        Total energy of the laser pulse
+        
+    Attributes
+    ----------
+    time_profile : object
+        Input time_profile object
+    space_profile : object
+        Input space_profile object
 
     Examples
     --------

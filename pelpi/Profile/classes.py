@@ -19,7 +19,7 @@ class Profile(_PelpiObject):
     fwhm : Quantity, optional
         Full Width Half Maximum of the profile.
     radius : Quantity, optional
-        Radius of the profile.
+        Radius of the profile
 
     Notes
     -----

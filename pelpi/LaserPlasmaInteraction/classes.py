@@ -40,7 +40,7 @@ class LaserPlasmaInteraction(_PelpiObject):
     Please refer to the method documentation for more informations.
     """
 
-    model      = _m # public attribute
+    model      = _m # public attribute pointing to lpi models
 
     def __init__(self,Laser,Target):
         self.laser      = Laser

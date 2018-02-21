@@ -117,7 +117,12 @@ class Target(_PelpiObject):
     Parameters
     ----------
     material : object
-        Instanciated Material pelpi object
+        Instanciated ``Material`` pelpi object
+        
+    Attributes
+    ----------
+    material : object
+        Input material object
     """
     def __init__(self,material):
         # Test user input

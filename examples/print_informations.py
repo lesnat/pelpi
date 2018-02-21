@@ -39,7 +39,6 @@ laser=pp.Laser(
 # Print & save results
 print("I0 = {}".format(laser.intensity()))
 print("a0 = {}".format(laser.intensity_peak_normalized()))
-print()
 nc = laser.electron.number_density_critical()
 
 # Define a material
@@ -55,8 +54,8 @@ target=pp.Target(Al)
 
 # Save & print results
 ne = target.material.electron.number_density()
-print("Electron density (in critical density)           : {}".format(ne/nc))
-print()
+print("\nElectron density (in critical density)           : {}".format(ne/nc))
+
 
 
 # Instanciate a LaserPlasmaInteraction object with Laser and Target objects
@@ -64,8 +63,8 @@ lpi=pp.LaserPlasmaInteraction(laser,target)
 
 # Save & print some estimates
 Teh = lpi.electron.hot.temperature(model="Haines2009")
-print("Hot electron temperature  (model = Haines2009)   : {}".format(Teh))
-print()
+print("\nHot electron temperature  (model = Haines2009)   : {}".format(Teh))
+
 # TODO: *args in _Estimate
 # n0 = lpi.electron.hot.number_total(model="Common",temperature=Teh,absorption_efficiency=0.4)
 # print("Hot electron total number (model = Common)       : {}".format(n0))
@@ -84,7 +83,7 @@ pic=pp.ParticleInCell(lpi)
 dx=pic.length_cell(temperature=Teh)
 Lr=pic.code.smilei.length_reference()
 
-print("dx           = {}        = {}".format(dx,dx/Lr))
+print("\ndx           = {}        = {}".format(dx,dx/Lr))
 resx=pic.space_resolution(temperature=Teh)
 print("resx         = {}        = {}".format(resx,resx*Lr))
 print("2 pi * resx  = {}".format(2 * np.pi * resx*Lr))

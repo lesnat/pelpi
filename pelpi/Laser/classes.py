@@ -11,9 +11,9 @@ class Laser(_PelpiObject):
     Parameters
     ----------
     time_profile : object
-        Pulse time profile. Instanciated pelpi ``Profile`` object
+        Pulse time profile. pelpi ``Profile`` instance
     space_profile : object
-        Pulse space profile (waist). Instanciated pelpi ``Profile`` object
+        Pulse space profile (waist). pelpi ``Profile`` instance
     wavelength : length Quantity
         Laser monochromatic wavelength
     energy : energy Quantity
@@ -40,9 +40,12 @@ class Laser(_PelpiObject):
 
     and then print some calculations
 
-    >>> print("Laser peak intensity : {}".format(laser.intensity(r=0*pp.unit('um'),t=0*pp.unit('fs'))))
-    >>> print("Laser normalized peak intensity : {}".format(laser.intensity_peak_normalized()))
-    >>> print("Critical number density : {}".format(laser.electron.number_density_critical()))
+    >>> I0 = laser.intensity(r=0*pp.unit('um'),t=0*pp.unit('fs'))
+    >>> print("Laser peak intensity : {}".format(I0))
+    >>> a0 = laser.intensity_peak_normalized()
+    >>> print("Laser normalized peak intensity : {}".format(a0))
+    >>> nc = laser.electron.number_density_critical()
+    >>> print("Critical number density : {}".format(nc))
     """
     def __init__(self,time_profile=None,space_profile=None,wavelength=None,energy=None):
         # Test user input

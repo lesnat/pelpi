@@ -24,12 +24,17 @@ class Profile(_PelpiObject):
     Notes
     -----
     Available profiles are
-        ``gaussian1D``  : one dimension gaussian profile. It equals 1 for x=0.
-        ``gaussian2D``  : two dimensions isotropic gaussian profile. It equals 1 for x=0.
-        ``top-hat``     : two dimensions top-hat isotropic profile. It equals 1 if |x|<radius, 0 otherwise.
     
+    ``gaussian1D``  : one dimension gaussian profile. It equals 1 for x=0.
+
+    ``gaussian2D``  : two dimensions isotropic gaussian profile. It equals 1 for x=0.
+
+    ``top-hat``     : two dimensions top-hat isotropic profile. It equals 1 if |x|<radius, 0 otherwise.
+
     If ``profile`` is ``gaussian1D``, you must define ``fwhm``.
+    
     If ``profile`` is ``gaussian2D``, you must define ``fwhm``.
+    
     If ``profile`` is ``top-hat``, you must define ``radius``.
 
 
@@ -87,6 +92,7 @@ class Profile(_PelpiObject):
         Parameters
         ----------
         x : Quantity
+            Axis
 
         Notes
         -----
@@ -117,9 +123,10 @@ class Profile(_PelpiObject):
         Yet only analytical integrals are implemented, as the available profiles permit it.
 
         Analytical solutions are
-            For ``gaussian1D``
+        
+        For ``gaussian1D``
 
-            .. math:: I_x = \sqrt{\pi} \\frac{t_{FWHM}}{2 \sqrt{\ln{2}}}
+        .. math:: I_x = \sqrt{\pi} \\frac{t_{FWHM}}{2 \sqrt{\ln{2}}}
         
         """
         if self.profile()=="gaussian1D":

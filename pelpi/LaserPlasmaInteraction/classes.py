@@ -38,12 +38,12 @@ class LaserPlasmaInteraction(_PelpiObject):
 
     Notes
     -----
-    New methods in input objects
-    ++++++++++++++++++++++++++++
+    ### New methods in input objects
+    
     TODO    
     
-    Keyword arguments (**kwargs) in estimation methods
-    ++++++++++++++++++++++++++++++++++++++++++++++++++
+    ### Keyword arguments (**kwargs) in estimation methods
+    
     Even if the code structure permit not to give a lot of parameters
     to perform an estimate, some complex models may need several of them to give the result.
     
@@ -60,9 +60,12 @@ class LaserPlasmaInteraction(_PelpiObject):
     >>> eta_l = 0.1 * pp.unit('')
     >>> # Use a simple model to get a temperature estimate
     >>> Teh = eh.temperature(model='Haines2009')
-    >>> # Here a more complex model needs a temperature & absorption efficiency to return a result
-    >>> neh = eh.number_total(model="Common",temperature = Teh, absorption_efficiency = eta_l) # Works
-    >>> neh = eh.number_total(model="Common", Teh, eta_l) # Do not works
+    >>> # The model needs a temperature & absorption efficiency to return a result
+    >>> neh = eh.number_total(model="Common",\
+    ...                       temperature = Teh,\
+    ...                       absorption_efficiency = eta_l) # This works
+    ...
+    >>> neh = eh.number_total(model="Common", Teh, eta_l) # This does not work
     
     Refer to the desired method documentation for more informations about parameters of each model.
     

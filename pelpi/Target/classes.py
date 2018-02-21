@@ -49,7 +49,9 @@ class Material(_PelpiObject):
 
     def Z(self):
         """
-        Return user input `Z`.
+        Returns
+        -------
+        User input `Z` : dimensionless Quantity
         """
         return self.default['Z']
 
@@ -129,12 +131,12 @@ class Target(_PelpiObject):
     Parameters
     ----------
     material : object
-        Instanciated ``Material`` pelpi object
+        pelpi ``Material`` instance
         
     Attributes
     ----------
     material : object
-        Input material object
+        Reference to the input `material` instance
     """
     def __init__(self,material):
         # Test user input

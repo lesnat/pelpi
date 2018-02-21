@@ -30,8 +30,6 @@ class LaserPlasmaInteraction(_PelpiObject):
         Contains usual plasma parameters
     electron : object
         Contains estimations about electrons
-    
-
 
     Examples
     --------
@@ -77,8 +75,7 @@ class LaserPlasmaInteraction(_PelpiObject):
         self._check_input('laser',laser,"<class 'pelpi.Laser.classes.Laser'>")
         self._check_input('target',target,"<class 'pelpi.Target.classes.Target'>")
         
-        # Initialize default dict
-        self._initialize_defaults()
+        # Do not initialize default dict because there is no direct access to a method from this point
         
         # Save references to target & laser instances into attributes
         self.laser      = laser
@@ -99,21 +96,22 @@ class LaserPlasmaInteraction(_PelpiObject):
             Containing properties of super-thermal electrons, in Ultra-High Intensity regime
         """
         def __init__(self,LaserPlasmaInteraction):
-            # No need to check input because this method is only called in Laser definition.
-            
-            # Initialise default dict
-            self._initialize_defaults()
+            # No need to check input because this method is only called in LaserPlasmaInteraction definition
             
             # Save reference to LaserPlasmaInteraction instance in a private variable
             self._lpi   = LaserPlasmaInteraction
             
+            # Add shortcuts to methods previously defined about electrons
+            # WARNING ! Change default here would not affect the program ? Or change ne/nc access to this point
+            self.number_density = self._lpi.target.material.electron.number_density
+            self.number_density_critical = self._lpi.laser.electron.number_density_critical
+            
+            # Initialize default dict after the shortcuts have been defined
+            self._initialize_defaults()
+            
             # Instanciate sub-classes
             self.hot    = self._Hot(self._lpi)
             # self.cold   = self._Cold(self._lpi)
-            
-            # Add methods previously defined
-            self.number_density = self._lpi.target.material.electron.number_density
-            self.number_density_critical = self._lpi.laser.electron.number_density_critical
 
 
         def efficiency_absorption(self,model,**kwargs):
@@ -137,20 +135,24 @@ class LaserPlasmaInteraction(_PelpiObject):
             See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
             if you need more informations about the [Model] model.
             """
-            available_models=["Common"]
-            dimension='number'
-
-            estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-            return estimate.result(method_name='laser_efficiency_absorption',dimension=dimension,**kwargs)
+            if self.default['efficiency_absorption'] is not None:
+                return self.default['efficiency_absorption']
+            else:
+                eta_l = self._estimate(self._lpi,model,'laser_efficiency_absorption',**kwargs)
+                return eta_l.to(_du['number'])
 
         class _Hot(_PelpiObject):
             """
             Super-thermal electrons, in Ultra-High Intensity regime.
             """
             def __init__(self,LaserPlasmaInteraction):
-                self._lpi = LaserPlasmaInteraction
-                self.default={'temperature':None}
+                # No need to check input because this method is only called in LaserPlasmaInteraction definition
+                
+                # Initialise default dict
                 self._initialize_defaults()
+                
+                # Save reference to LaserPlasmaInteraction instance in a private variable
+                self._lpi   = LaserPlasmaInteraction
 
             def number_total(self,model,**kwargs):
                 """
@@ -173,12 +175,12 @@ class LaserPlasmaInteraction(_PelpiObject):
                 See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
                 if you need more informations about the [Model] model.
                 """
-                available_models=["Common"]
-                dimension='number'
-
-                estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-                return estimate.result(method_name='electron_number_total',dimension=dimension,**kwargs)
-
+                if self.default['number_total'] is not None:
+                    return self.default['number_total']
+                else:
+                    temperature = self._estimate(self._lpi,model,'electron_number_total',**kwargs)
+                    return temperature.to(_du['number'])
+                
             def temperature(self,model,**kwargs):
                 """
                 Return an estimate of the hot electron temperature.
@@ -212,27 +214,36 @@ class LaserPlasmaInteraction(_PelpiObject):
                     temperature = self._estimate(self._lpi,model,'electron_hot_temperature',**kwargs)
                     return temperature.to(_du['temperature'])
                 
-                """
-                dimension='temperature'
-                available_models=["Beg1997","Haines2009","Wilks1992"]
-
-                estimate=_Estimate(self._lpi,model_name=model,available_models=available_models)
-                return estimate.result(method_name='electron_hot_temperature',dimension=dimension,**kwargs)
-                """
 
     class _PlasmaParameters(_PelpiObject):
         """
         Class containing usual plasma parameters.
         """
         def __init__(self,LaserPlasmaInteraction):
-            self._lpi             = LaserPlasmaInteraction
+            # No need to check input because this method is only called in LaserPlasmaInteraction definition
+            
+            # Do not initialize default dict because there is no direct access to a method from this point ???
+            
+            # Save reference to LaserPlasmaInteraction instance in a private variable
+            self._lpi   = LaserPlasmaInteraction
+            
+            # Instanciate sub-classes
             self.electron         = self._Electron(self._lpi)
             self.ion              = self._Ion(self._lpi)
 
 
         class _Electron(_PelpiObject):
+            """
+            Plasma parameters about electrons.
+            """
             def __init__(self,LaserPlasmaInteraction):
-                self._lpi = LaserPlasmaInteraction
+                # No need to check input because this method is only called in _PlasmaParameters definition
+                
+                # Initialise default dict
+                self._initialize_defaults()
+                
+                # Save reference to LaserPlasmaInteraction instance in a private variable
+                self._lpi   = LaserPlasmaInteraction
 
             def length_Debye(self,temperature):
                 """
@@ -246,11 +257,14 @@ class LaserPlasmaInteraction(_PelpiObject):
 
                 .. math:: \lambda_{De} = \sqrt{\\frac{\epsilon_0 T_e}{n_e e^2}}
                 """
-                ne  = self._lpi.target.material.electron.number_density()
-                Te  = temperature
+                if self.default['length_Debye'] is not None:
+                    return self.default['length_Debye']
+                else:
+                    ne  = self._lpi.target.material.electron.number_density()
+                    Te  = temperature
 
-                LDe = _np.sqrt((_u.epsilon_0 * Te)/(ne * _u.e**2))
-                return LDe.to(_du['length'])
+                    LDe = _np.sqrt((_u.epsilon_0 * Te)/(ne * _u.e**2))
+                    return LDe.to(_du['length'])
 
 
             def length_Landau(self,temperature):
@@ -265,10 +279,13 @@ class LaserPlasmaInteraction(_PelpiObject):
 
                 .. math:: r_0 = \\frac{e^2}{4 \pi \epsilon_0 T_e}
                 """
-                Te  = temperature
+                if self.default['length_Landau'] is not None:
+                    return self.default['length_Landau']
+                else:
+                    Te  = temperature
 
-                LLa = ((_u.e**2)/(4*_np.pi * _u.epsilon_0 * Te)) # TODO: OK ? check
-                return LLa.to(_du['length'])
+                    LLa = ((_u.e**2)/(4*_np.pi * _u.epsilon_0 * Te)) # TODO: OK ? check
+                    return LLa.to(_du['length'])
 
             def pulsation_plasma(self,temperature):
                 """
@@ -282,14 +299,26 @@ class LaserPlasmaInteraction(_PelpiObject):
 
                 .. math:: \omega_{pe} = \sqrt{\\frac{n_e e^2}{m_e \epsilon_0}}
                 """
-                ne  = self._lpi.target.material.electron.number_density()
+                if self.default['pulsation_plasma'] is not None:
+                    return self.default['pulsation_plasma']
+                else:
+                    ne  = self._lpi.target.material.electron.number_density()
 
-                wpe = _np.sqrt((ne * _u.e**2)/(_u.m_e * _u.epsilon_0))
-                return wpe.to(_du['pulsation'])
+                    wpe = _np.sqrt((ne * _u.e**2)/(_u.m_e * _u.epsilon_0))
+                    return wpe.to(_du['pulsation'])
 
         class _Ion(_PelpiObject):
+            """
+            Plasma parameters about ions.
+            """
             def __init__(self,LaserPlasmaInteraction):
-                self._lpi = LaserPlasmaInteraction
+                # No need to check input because this method is only called in _PlasmaParameters definition
+                
+                # Initialise default dict
+                self._initialize_defaults()
+                
+                # Save reference to LaserPlasmaInteraction instance in a private variable
+                self._lpi   = LaserPlasmaInteraction
 
             def pulsation_plasma(self):
                 """
@@ -303,9 +332,12 @@ class LaserPlasmaInteraction(_PelpiObject):
 
                 .. math:: \omega_{pi} = \sqrt{\\frac{Z^2 n_i e^2}{m_i \epsilon_0}}
                 """
-                ni  = self._lpi.target.material.ion.number_density()
-                Z   = self._lpi.target.material.Z()
-                mi  = self._lpi.target.material.atomic_mass()
+                if self.default['pulsation_plasma'] is not None:
+                    return self.default['pulsation_plasma']
+                else:
+                    ni  = self._lpi.target.material.ion.number_density()
+                    Z   = self._lpi.target.material.Z()
+                    mi  = self._lpi.target.material.atomic_mass()
 
-                wpi = _np.sqrt((ni * (Z * _u.e)**2)/(mi * _u.epsilon_0))
-                return wpi.to(_du['pulsation'])
+                    wpi = _np.sqrt((ni * (Z * _u.e)**2)/(mi * _u.epsilon_0))
+                    return wpi.to(_du['pulsation'])

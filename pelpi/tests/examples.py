@@ -28,7 +28,7 @@ class ExampleLPI(object):
         matAl  = pp.Material(
             density     = 2.69890e3 * u.kg/u.m**3,
             atomic_mass = 26.98154 * u.u,
-            Z           = 13,
+            Z           = 13 * u(''),
         )
         # geomBas = pp.Geometry(
         #     width=20 * u.um,

@@ -71,6 +71,12 @@ class Material(_PelpiObject):
             Returns
             -------
             Electron number density : 1/length**3 Quantity
+            
+            Notes
+            -----
+            Electron number density is defined as follows
+            
+            .. math: TODO
             """
             if self.default['number_density'] is not None:
                 return self.default['number_density']
@@ -100,6 +106,12 @@ class Material(_PelpiObject):
             Returns
             -------
             Ion number density : 1/length**3 Quantity
+            
+            Notes
+            -----
+            Ion number density is defined as follows
+            
+            .. math: TODO
             """
             if self.default['number_density'] is not None:
                 return self.default['number_density']

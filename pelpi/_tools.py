@@ -41,7 +41,7 @@ class _PelpiObject(object):
                 
         Notes
         -----
-        This method not raise an exception if var_value is None, because this way it is possible to the user
+        This method do not raise an exception if var_value is None, because this way it is possible to the user
         to not define some values that would be useless for him/her.
         
         """
@@ -106,16 +106,35 @@ class _PelpiObject(object):
         self._check_input('model_name'  , model_name    , str)
         self._check_input('method_name' , method_name   , str)
         
+        ### Get an instance of 'model_name'
         # Find the 'model_name' class in lpi.model
         model_class = getattr(lpi.model , model_name)
         # and instanciate is with the lpi instance
         model_inst  = model_class(lpi)
-        # When this is done, get the 'method_name' method from the 'model_name' instance
-        method      = getattr(model_inst, method_name)
-        # and get the result of 'method_name' when using it with kwargs
-        res         = method(**kwargs)
-        # Finally return the result
-        return res
+        
+        ### Get the 'method_name' method from 'model_inst' instance
+        # Initialize the iterator 'attr' ; it should point the model instance
+        attr=model_inst
+        # Loop over 'method_name' sub-objects (splited by the '.' character)
+        for sub_object in method_name.split('.'):
+            # The iterator go deeper and deeper in the 'model_name' attributes, untill it reaches the last 'method_name' sub-object
+            attr      = getattr(attr, sub_object)
+        # The iterator now point to the last 'method_name' sub-object, that is the desired method
+        method = attr
+        # Explanations :
+        # Because getattr can not get imbricated attributes in one time,
+        # it is necessary to loop over imbricated attributes.
+        # Example : 
+        # assuming method_name = 'electron.hot.temperature' and model_name='ExampleModel'
+        # Before the loop, the iterator 'attr' should point to ExampleModel instance
+        # then it would point to :
+        #   ExampleModel.electron
+        #   ExampleModel.electron.hot
+        #   ExampleModel.electron.hot.temperature
+        # so after looping over all attributes, 'attr' point to the desired method        
+
+        # Finally return the result of 'method' when using it with kwargs
+        return method(**kwargs)
 
 
 

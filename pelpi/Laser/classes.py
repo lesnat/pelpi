@@ -197,6 +197,12 @@ class Laser(_PelpiObject):
             Returns
             -------
             Electron critical number density : 1/length**3 Quantity
+            
+            Notes
+            -----
+            Electron critical number density is defined as follows
+            
+            .. math: TODO
             """
             nc = _u.m_e*_u.epsilon_0*(self._las.pulsation()/_u.e)**2
             return nc.to(_du['number_density'])

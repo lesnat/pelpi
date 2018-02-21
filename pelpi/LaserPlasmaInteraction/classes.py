@@ -120,15 +120,16 @@ class LaserPlasmaInteraction(_PelpiObject):
 
             Arguments
             --------
-            model, string
+            model : string
                 Model name
-            **kwargs,
+            **kwargs
                 Model input parameters
 
             Models
             -----
             Common, a theoretical model for a rough estimate.
                 Input parameters : ...
+            Price1995, TODO
 
             Notes
             ----
@@ -160,9 +161,9 @@ class LaserPlasmaInteraction(_PelpiObject):
 
                 Arguments
                 --------
-                model, string
+                model : string
                     Model name
-                *args,
+                **kwargs
                     Model input parameters
 
                 Models
@@ -187,9 +188,9 @@ class LaserPlasmaInteraction(_PelpiObject):
 
                 Arguments
                 --------
-                model, string
+                model : string
                     Model name
-                **kwargs,
+                **kwargs
                     Model input parameters
 
                 Models
@@ -211,7 +212,7 @@ class LaserPlasmaInteraction(_PelpiObject):
                 if self.default['temperature'] is not None:
                     return self.default['temperature']
                 else:
-                    temperature = self._estimate(self._lpi,model,'electron_hot_temperature',**kwargs)
+                    temperature = self._estimate(self._lpi,model,'electron.hot.temperature',**kwargs)
                     return temperature.to(_du['temperature'])
                 
 

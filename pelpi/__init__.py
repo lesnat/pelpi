@@ -4,6 +4,7 @@
 Module documentation ...
 
 """
+# import _compat
 __all__ = ["Profile","Material","Target","Laser","LaserPlasmaInteraction","ParticleInCell"]
 
 import pint
@@ -29,6 +30,7 @@ default_unit={\
     'electric_field': unit('kg * m / A / s**3'),\
     'magnetic_field': unit('kg / A / s'),\
 }
+
 
 from .Profile.classes import Profile
 from .Laser.classes import Laser

@@ -1,7 +1,6 @@
 #coding:utf8
 from .._global import *
 from .._tools import _PelpiObject
-# from ..Target.database import _MaterialDatabase
 
 
 __all__ = ["Material","Target"]
@@ -59,7 +58,12 @@ class Material(_PelpiObject):
         Electron properties.
         """
         def __init__(self,material):
+            # No need to check input because this method is only called in Material definition.
+            
+            # Initialize default dict
             self._initialize_defaults()
+            
+            # Save reference to Material instance in a private variable
             self._mat = material
 
         def number_density(self):
@@ -83,7 +87,12 @@ class Material(_PelpiObject):
         Ion properties.
         """
         def __init__(self,material):
+            # No need to check input because this method is only called in Material definition.
+
+            # Initialize default dict
             self._initialize_defaults()
+            
+            # Save reference to Material instance in a private variable
             self._mat = material
 
         def number_density(self):
@@ -113,8 +122,9 @@ class Target(_PelpiObject):
     def __init__(self,material):
         # Test user input
         self._check_input('material',material,"<class 'pelpi.Target.classes.Material'>")
+        
         # Initialize default dict
         self._initialize_defaults()
         
-        # Save material as a sub-object
+        # Save reference to Material instance
         self.material=material

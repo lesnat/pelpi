@@ -2,6 +2,7 @@
 from .._global import *
 from .._tools import _PelpiObject
 
+__all__=["Profile"]
 
 class Profile(_PelpiObject):
     """
@@ -48,6 +49,7 @@ class Profile(_PelpiObject):
         self._check_input('profile' , profile   , str)
         self._check_input('fwhm'    , fwhm      , "<class 'pint.unit.Quantity'>") # Can be time or length
         self._check_input('radius'  , radius    , "<class 'pint.unit.Quantity'>") # Can be time or length
+        
         # Initialize default dict
         self._initialize_defaults(input_dict={'profile':profile,'fwhm':fwhm,'radius':radius})
 

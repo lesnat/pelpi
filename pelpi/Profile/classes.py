@@ -5,101 +5,86 @@ from .._tools import _PelpiObject
 
 class Profile(_PelpiObject):
     """
-    Class for defining spatial and temporal pulse profiles.
+    Class for defining a geometrical profile.
+    
+    Used for defining Laser profiles (spatial and temporal)
+    and might be used in Target object in the future.
 
-    Yet only simple profiles are accepted (depends only on radius).
 
     Parameters
     ---------
-    time_profile : str
-        Temporal profile of the pulse. Available : ``gaussian``
-    space_profile : str
-        Spatial profile of the pulse (waist). Available : ``gaussian``, ``top-hat``
-
-    time_fwhm : time quantity, optional
-        Temporal Full Width Half Maximum of the laser pulse.
-    space_fwhm : length quantity, optional
-        Spatial Full Width Half Maximum of the laser pulse.
-    space_radius : length quantity, optional
-        Spatial radius of the laser pulse.
+    profile : str
+        Geometrical profile.
+    fwhm : Quantity, optional
+        Full Width Half Maximum of the profile.
+    radius : Quantity, optional
+        Radius of the profile.
 
     Notes
     -----
-    If ``time_profile`` is ``gaussian``, you must define ``time_fwhm``.
-
-    If ``space_profile`` is ``gaussian``, you must define ``space_fwhm``.
-
-    If ``space_profile`` is ``top-hat``, you must define ``space_radius``.
+    Available profiles are
+        ``gaussian1D``  : one dimension gaussian profile. It equals 1 for x=0.
+        ``gaussian2D``  : two dimensions isotropic gaussian profile. It equals 1 for x=0.
+        ``top-hat``     : two dimensions top-hat isotropic profile. It equals 1 if |x|<radius, 0 otherwise.
+    
+    If ``profile`` is ``gaussian1D``, you must define ``fwhm``.
+    If ``profile`` is ``gaussian2D``, you must define ``fwhm``.
+    If ``profile`` is ``top-hat``, you must define ``radius``.
 
 
     Examples
     --------
-    You can set a laser profile as follows :
+    You can set a laser time profile as follows
 
     >>> import pelpi as pp
-    >>> prof = pp.Profile(
-    ...    time_profile  = "gaussian",
-    ...    time_fwhm     = 30 * pp.unit('fs'),
-    ...    space_profile = "top-hat",
-    ...    space_radius  = 10 * pp.unit('um')
+    >>> tprof = pp.Profile(
+    ...    profile  = "gaussian1D",
+    ...    fwhm     = 30 * pp.unit('fs')
     ...    )
     ...
     """
-    def __init__(self,profile,fwhm=None,radius=None):
-        self.default            = {}
-        self.default['profile'] = profile
-        self.default['fwhm']    = fwhm
-        self.default['radius']  = radius
+    def __init__(self,profile=None,fwhm=None,radius=None):
+        # Test user input
+        self._check_input('profile' , profile   , str)
+        self._check_input('fwhm'    , fwhm      , "<class 'pint.unit.Quantity'>") # Can be time or length
+        self._check_input('radius'  , radius    , "<class 'pint.unit.Quantity'>") # Can be time or length
+        # Initialize default dict
+        self._initialize_defaults(input_dict={'profile':profile,'fwhm':fwhm,'radius':radius})
 
-        # self._checkInput(variable_dictionnary={\
-        #     'time_profile':str,'space_profile':str,\
-        #     'time_fwhm':type(_u('s')),
-        #     'space_fwhm':type(_u('m')),'space_radius':type(_u('m')),\
-        #     }) # TODO: How to do this with NoneType object ?
 
     def profile(self):
         """
+        Returns
+        -------
+        User input `profile` : str
         """
         return self.default['profile']
 
     def fwhm(self):
         """
+        Returns
+        -------
+        User input `fwhm` : Quantity
         """
         return self.default['fwhm']
 
     def radius(self):
         """
+        Returns
+        -------
+        User input `radius` : Quantity
         """
         return self.default['radius']
-
-    # def timeEnvelope(self,t):
-    #     """
-    #     Returns
-    #     -------
-    #     Time pulse envelope at given time : dimensionless quantity
-    #
-    #     Parameters
-    #     ----------
-    #     t : time quantity
-    #         Time.
-    #
-    #     Notes
-    #     -----
-    #     timeEnvelope is centered at t=0, and has a maximum value of 1.
-    #     """
-    #     if self.time_profile()=="gaussian":
-    #         x0=self.time_fwhm()/(2 * _np.sqrt(_np.log(2)))
-    #         return _np.exp(-(t/x0)**2)
 
     def envelope(self,x):
         """
         Returns
         -------
-        Profile envelope at x : dimensionless quantity
+        Profile envelope at x : dimensionless Quantity
 
         Parameters
         ----------
-        x : quantity (length or time)
+        x : Quantity
 
         Notes
         -----
@@ -119,31 +104,21 @@ class Profile(_PelpiObject):
                 return 0.0 * _u('')
 
 
-    def integral1D(self,lower_edge=None,upper_edge=None,number_points=None):
+    def integral1D(self):
         """
         Returns
         -------
-        Integration of timeEnvelope under time : time quantity
-
-        Parameters
-        ----------
-        lower_edge : float, optional
-            Lower edge of integration
-        upper_edge : float, optional
-            Upper edge of integration
-        number_points : int, optional
-            Number of points to use
+        Integration of envelope under x : Quantity
 
         Notes
         -----
-        Some analytical solutions exists for time profiles :
+        Yet only analytical integrals are implemented, as the available profiles permit it.
 
-        ``gaussian`` :
+        Analytical solutions are
+            For ``gaussian1D``
 
-        .. math:: I_x = \sqrt{\pi} \\frac{t_{FWHM}}{2 \sqrt{\ln{2}}}
-
-        For other profiles, numerical integration is performed with numpy.trapz,
-        so ``lower_edge``, ``upper_edge`` and ``number_points`` must be defined.
+            .. math:: I_x = \sqrt{\pi} \\frac{t_{FWHM}}{2 \sqrt{\ln{2}}}
+        
         """
         if self.profile()=="gaussian1D":
             x0=self.fwhm()/(2 * _np.sqrt(_np.log(2)))
@@ -152,36 +127,26 @@ class Profile(_PelpiObject):
         else:
             raise NameError("Unknown laser time profile name.")
 
-    def integral2D(self,lower_edge=None,upper_edge=None,number_points=None):
+    def integral2D(self):
         """
         Returns
         -------
-        Double integration of the envelope under x: quantity
-
-        Parameters
-        ----------
-        lower_edge : float, optional
-            Lower edge of integration
-        upper_edge : float, optional
-            Upper edge of integration
-        number_points : int, optional
-            Number of points to use
+        Double integration of the envelope under x : Quantity
 
         Notes
         -----
-        Some analytical solutions exists for space profiles :
+        Yet only analytical integrals are implemented, as the available profiles permit it.
 
-        ``gaussian`` :
+        Analytical solutions are
+
+        For ``gaussian2D``
 
         .. math:: I_x = \pi (\\frac{x_{FWHM}}{2 \sqrt{\ln{2}}})^2
 
-        ``top-hat`` :
+        For ``top-hat``
 
-        .. math:: I_x = \pi x^2
+        .. math:: I_x = \pi r^2
 
-
-        For other profiles, numerical integration is performed with numpy.trapz,
-        so ``lower_edge``, ``upper_edge`` and ``number_points`` must be defined.
         """
         if self.profile()=="gaussian2D":
             x0=self.fwhm()/(2 * _np.sqrt(_np.log(2)))

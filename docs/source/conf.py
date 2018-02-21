@@ -35,7 +35,6 @@ extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages',
     'sphinx.ext.napoleon']
 
 # Napoleon extension
@@ -112,11 +111,11 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-html_theme_options = {
-        'fixed_sidebar':True,
-        'page_width':'1500px',
-        'sidebar_width':'300px'
-}
+#html_theme_options = {
+#        'fixed_sidebar':True,
+#        'page_width':'1500px',
+#        'sidebar_width':'300px'
+#}
 
 html_sidebars = {
     '**': [

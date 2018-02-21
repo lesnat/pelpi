@@ -22,7 +22,7 @@ class test_Profile(unittest.TestCase):
     def test_timeEnvelope(self):
         func = self.tprofG.envelope
         self.assertAlmostEqual(
-            func(r=0*u.fs),
+            func(x=0*u.fs),
             1)
         self.assertAlmostEqual(
             func(self.tprofG.fwhm()/2),

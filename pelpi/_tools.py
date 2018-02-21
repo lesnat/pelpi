@@ -2,303 +2,161 @@
 from . import default_unit as _du
 
 
-__all__ = ["_Estimate"]
+__all__ = ["_PelpiObject"]
 
 
 class _PelpiObject(object):
     """
     Private base class for pelpi objects.
-
-    It contains methods such as _ckeckInput and set,
-    and automatically create methods for acessing to input param ?
     """
-
-    def __init__(self):
-        pass
-
-    def _initialize_defaults(self,var_dict):
-        self._user_values={}
-        self._setInputToDict(var_dict)
-        self._setMethodsToDict()
-        self._setInputToMethod(var_dict)
-
-
-    def _setInputToDict(self,var_dict):
+    def _check_input(self,var_name,var_value,exp_type):
         """
-        Set the object __init__ parameters to _user_values dictionary.
-        """
-        for key,val in var_dict.items():
-            self.set_default(key,val)
-
-    def _setMethodsToDict(self):
-        """
-        Initialize all the object method names to None in _user_defined dict.
-        """
-        exclude=['set_default','get_default'] # + model, plasma, database etc ?
-        for method in dir(self):
-            if method[0]!='_' and method not in exclude: # If public method
-                self.set_default(method,None)
-                # getattr(self,method).__doc__=\
-                # "Return\n------\nThe input parameter "+method# not working
-
-    def _setInputToMethod(self,var_dict):
-        """
-        Define methods for accessing the input values (now in dict)
-        """
-        for key in var_dict.keys():
-            self.__dict__[key] = \
-                lambda : self.get_default(key=key)
-
-    # def _initialize_defaults(self,var_dict):
-    #     self._setInputToDict(var_dict)
-    #     self._setMethodsToDict()
-    #     self._setInputToMethod(var_dict)
-
-
-    def _dor(self,result,**kwargs):
-        """
-        Return default or result (udom).
-
-        Check if a default value for result is defined,
-        if yes return it
-        else return method result with the same name.
-
-        Default values are prior to non-default.
-        """
-        # func_name=
-        return result
-        if self.get_default(result)!=None:
-            return self.get_default(result)
-        else:
-            return result
-
-    # def _udom(self,variable_name,**kwargs):
-    #     """
-    #     Use default or method (udom).
-    #
-    #     Check if a default value for variable_name is defined,
-    #     if yes return it
-    #     else return method result with the same name.
-    #
-    #     Default values are prior to non-default.
-    #     """
-    #     if self.get_default(variable_name)!=None:
-    #         return self.get_default(variable_name)
-    #     else:
-    #         return getattr(self.__dict__,variable_name)(**kwargs)
-
-    def _checkInput(self,variable_dictionnary):
-        """
-        Dictionary of variables with expected type.
-
-        Examples
-        --------
-        >>> class Laser(_PelpiObject):
-        ...     def __init__(self,*args):
-        ...     # Some instructions here
-        ...     variable_dictionnary={'wavelength':'Quantity<>','energy':'Quantity<>','Profile':"<class 'pelpi.Profile'"}
-        ...     self._checkInput(variable_dictionnary)
-
+        Check if the user input have the correct type.
+        
+        Compare the str conversion of exp_type with str conversion of var_value type, so exp_type can be a str.
+        var_name is necessary for giving an accurate information in the Traceback.
+        
+        Parameters
+        ----------
+        var_name    : str
+            Name of the variable
+        var_value   : Quantity or str or ...
+            User input value
+        exp_type    : type or str
+            Value expected type 
+        
         Raises
         ------
         TypeError
-
-        NameError (if input not in variable_dictionnary.keys())
-
+            If input type is not the same as expected type.
+        
+        Examples
+        --------
+        >>> class Laser(_PelpiObject)
+        >>>     def __init__(self,wavelength,energy,time_profile,space_profile,**kwargs):
+        >>>         self._check_input('wavelength'   , wavelength    , type(_du['length']))
+        >>>         self._check_input('energy'       , energy        , type(_du['energy']))
+        >>>         self._check_input('time_profile' , time_profile  , "<class 'pelpi.Profile.classes.Profile'>")
+        >>>         self._check_input('space_profile', space_profile , "<class 'pelpi.Profile.classes.Profile'>")
+                
         Notes
         -----
-        If the variable type is NoneType, no exception is raised.
+        This method do not raise an exception if var_value is None, because this way it is possible to the user
+        to not define some values that would be useless for him/her.
+        
         """
-        pass
+        if str(type(var_value))!=str(exp_type) and (var_value is not None) :
+            raise TypeError(var_name+" type is expected to be "+str(exp_type)+", but got "+str(type(var_value))+" instead.")
 
-    def set_default(self,key,value):
+    def _initialize_defaults(self,input_dict=None):
         """
-        Set a parameter to a default value.
-        This can be an input parameter or not.
+        Initialize `default` dictionary.
+        
+        This dict is used for saving user input values, and to give the user the
+        choice of a default value returned by the desired method.
+        This way, the user can choose a value for, let say temperature for all the following
+        instructions.
+        It also allows to change some object input properties easily, with no need
+        to instanciate a new object each time.
+        
+        This method first create an empty dict, then get all the class methods
+        and initialize their default value to None. Finally it creates entries for input values.
+        This last might be done after initializing class method default 
+        because this way the new value erase the None value defined previously
+        (there might always be a method that return input parameters).
 
         Parameters
         ----------
-        key : str
-            Name of the variable to set.
-        value : object, quantity, str, ...
-            New value of the variable.
-
+        input_dict : dict
+            {var_name, var_value}
+            var_name : str
+                Name of the input variable
+            var_value : Quantity or object or ...
+                Value of the input variable
+        """
+        #self._check_input()
+        
+        # Create the dictionnary
+        self.default={}
+        
+        
+        # Loop over all class attributes
+        for attr_name in dir(self):
+            # Get the 'attr_name' type
+            attr_type = type(getattr(self,attr_name))
+            # if 'attr_name' is a method, and is not private (i.e. not starts with '_')
+            if str(attr_type)=="<type 'instancemethod'>" and attr_name[0]!="_":
+                # then a new dict entry is initialize to None
+                self.default[attr_name]=None
+        
+        # Put input_dict into default if input_dict is defined.
+        # This might be done after creating all the `attr_name`s entries. This way it replaces None value.
+        if input_dict is not None:
+            for key,val in input_dict.items():
+                self.default[key]=val
+        
+        
+    def _estimate(self,root_inst,model_name,method_name,**kwargs):
+        """
+        Returns
+        -------
+        Result of root_inst.model.model_name.method_name(**kwargs)
+        
+        Parameters
+        ----------
+        root_inst : object
+            Instance of pelpi root object where the estimate need to be performed. Typically a LaserPlasmaInteraction instance
+        model_name : str
+            Name of the model to use
+        method_name : str
+            Name of the method of the model to use. It should contains all the 'path' from model_name to the method
+        **kwargs
+            Keywords arguments to use in the method
+            
         Examples
         --------
-        Assuming a ``pelpi.LaserPlasmaInteraction`` is instanciated as ``lpi``
-
-        You can use the set method for setting a new value to
-        an input parameter
-
-        >>> lpi.laser.wavelength()
-        <Quantity(0.8,'um')>
-
-        >>> lpi.laser.set('wavelength',1.054 * pelpi.unit('um'))
-        >>> lpi.laser.wavelength()
-        <Quantity(1.054,'um')>
-
-        Then all the further calculations are done with this new value.
-
-
-        You can also use it for setting a calculated parameter to a new value
-
-        >>> lpi.electron.hot.set('temperature',1*pelpi.unit('MeV'))
-
-        You can still access to estimates
-
-        >>> lpi.electron.hot.temperature(model="Haines2009")
-        <Quantity(0.72,'MeV')>
-
-        But hot electron temperature have now a default behaviour
-
-        >>> lpi.electron.hot.temperature()
-        <Quantity(1.0,'MeV')>
-
-        And further estimates can be acomplished with both of them
-
-        >>> pic=pp.ParticleInCell(lpi)
-
-        Without default temperature
-
-        >>> Teh = lpi.electron.hot.temperature(model="Haines2009")
-        >>> pic.length_cell(temperature=Teh)
-        <Quantity(0.1456847,'um')>
-
-        Or with
-
-        >>> pic.length_cell()
-        <Quantity(0.125468,'um')>
-
-        This can be usefull when a lot of estimates
-        are done with the same parameters, or when a rough estimate or exp. values
-        can be set.
-
-        Notes
-        -----
-        >>> lpi.electron.set_default('temperature',value) would not work.
-        -> needs to define to more close of the method.
+        Assuming you are defining the 'temperature' method in electron.hot LaserPlasmaInteraction sub-class
+        
+        >>> def temperature(self,model,**kwargs):
+        >>>     if self.default['temperature'] is not None: # If a default value exists
+        >>>         return self.default['temperature']      # Return default value
+        >>>     else:
+        >>>         temperature = self._estimate(self._lpi,model,'electron.hot.temperature',**kwargs) # Else get the estimate
+        >>>         return temperature.to(_du['temperature'])   # And return the result, converted to default units.
         """
-        self._user_values[key]=value
+        # Check developer input type. kwargs types are tested in model methods.
+        self._check_input('model_name'  , model_name    , str)
+        self._check_input('method_name' , method_name   , str)
+        
+        ### Get an instance of 'model_name'
+        # Find the 'model_name' class in root_inst.model
+        model_class = getattr(root_inst.model , model_name)
+        # and instanciate is with the 'root_inst' instance
+        model_inst  = model_class(root_inst)
+        
+        ### Get the 'method_name' method from 'model_inst' instance
+        # Initialize the iterator 'attr' ; it should point the model instance
+        attr=model_inst
+        # Loop over 'method_name' sub-objects (splited by the '.' character)
+        for sub_object in method_name.split('.'):
+            # The iterator go deeper and deeper in the 'model_name' attributes, untill it reaches the last 'method_name' sub-object
+            attr      = getattr(attr, sub_object)
+        # The iterator now point to the last 'method_name' sub-object, that is the desired method
+        method = attr
+        # Explanations :
+        # Because getattr can not get imbricated attributes in one time,
+        # it is necessary to loop over imbricated attributes.
+        # Example : 
+        # assuming method_name = 'electron.hot.temperature' and model_name='ExampleModel'
+        # Before the loop, the iterator 'attr' should point to ExampleModel instance
+        # then it would point to :
+        #   ExampleModel.electron
+        #   ExampleModel.electron.hot
+        #   ExampleModel.electron.hot.temperature
+        # so after looping over all attributes, 'attr' point to the desired method        
 
-    def get_default(self,key='all'):
-        """
-        Return the default values.
-
-        For all values variable_name='all'
-
-        """
-        if key=='all':
-            return self._user_values
-        else:
-            return self._user_values[key]
-
-
-class _Laser(_PelpiObject):
-    pass
-
-class _Target(_PelpiObject):
-    pass
-
-class _Electron(_PelpiObject):
-    def __init__(self):
-        self.hot=self._Hot()
-
-    class _Hot(_PelpiObject):
-        pass
-
-    class _Cold(_PelpiObject):
-        pass
-
-class _Ion(_PelpiObject):
-    pass
-
-class _Photon(_PelpiObject):
-    pass
-
-class _Positron(_PelpiObject):
-    pass
+        # Finally return the result of 'method' when using it with kwargs
+        return method(**kwargs)
 
 
-class _Estimate(_PelpiObject):
-    """
-    Class for using estimations models.
 
-    It takes strings as arguments (model_name, method_name) and return the result
-    of the given method.
-    It is recommended to use this class in all estimations methods of
-    LaserPlasmaInteraction.
-
-    Parameters
-    ---------
-    LaserPlasmaInteraction, object
-        Instanciated class of LaserPlasmaInteraction
-    model_name, string
-        Needed model name
-    available_models, list of strings
-        List of all models that can be used with the lpi method
-
-    Methods
-    ------
-    use
-        Return the result of the model choosen method
-    """
-    def __init__(self,LaserPlasmaInteraction,model_name,available_models):
-        if str(type(LaserPlasmaInteraction))!="<class 'pelpi.LaserPlasmaInteraction.classes.LaserPlasmaInteraction'>":
-            raise TypeError("'LaserPlasmaInteraction' type must be a pelpi module, but it is "+str(type(LaserPlasmaInteraction)))
-        if type(model_name)!=str:
-            raise TypeError("'model_name' type must be 'string', but it is "+str(type(model_name)))
-        if type(available_models)!=list:
-            raise TypeError("'available_models' type must be 'list', but it is "+str(type(available_models)))
-
-        # TODO: Replace by _checkInput method
-
-        self._lpi       = LaserPlasmaInteraction
-        if model_name in available_models:
-            # Get the 'model_name' class from the 'model' attribute of _lpi
-            Model=getattr(self._lpi.model,model_name)
-            # and instanciate it with _lpi
-            self.model=Model(self._lpi)
-        else:
-            raise NameError("Model name "+model_name+" not found. Available models are "+str(available_models))
-
-    def use(self,method_name,dim,*args):
-        """
-        Return the result of the model choosen method.
-
-        Result is automatically converted into the pelpi.prefered_unit unit.
-
-        Parameters
-        ---------
-        method_name, string
-            Needed method name of the model
-        dim, string
-            Dimension of the result (i.e. 'temperature', 'conductivity', ...)
-        args
-            Arguments to use in the method
-        """
-        if type(method_name)!=str:
-            raise TypeError("'method_name' type must be 'string', but it is "+str(type(method_name)))
-        if type(dim)!=str:
-            raise TypeError("'dim' type must be 'string', but it is "+str(type(dim)))
-
-        if dim not in _du.keys():
-            raise NameError("'dim' name "+dim+" not found. Available dimensions are "+str(_du.keys()))
-
-        # Get the method from the model
-        Method = getattr(self.model,method_name)
-        # Use it with kwargs and convert it
-        return Method(*args).to(_du[dim]) # TODO: check if OK with args
-
-class _Model(_PelpiObject):
-    """
-    Base class for models.
-    """
-    def __init__(self):
-        # self.electron = electron
-        pass
-
-    def _addMethod(self):
-        pass
-
-# def _addMethod(InObject,OutObject,method):
-#     OutObject.__dict__.get(method) = InObject.__dict__.get(method)

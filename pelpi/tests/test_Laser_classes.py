@@ -71,14 +71,14 @@ class test_Laser(unittest.TestCase):
             func(),
             u.Quantity(5.055509932021204, 'dimensionless'))
 
-    def test_timeChirp(self):
-        func = self.lasGG.time_chirp
-        self.assertAlmostEqual(
-            func(t=0*u.fs),
-            func(t=0*u.fs,phase=u.Quantity(2*np.pi)))
-        self.assertAlmostEqual(
-            func(t=0*u.fs),
-            0)
+    # def test_timeChirp(self):
+    #     func = self.lasGG.time_chirp
+    #     self.assertAlmostEqual(
+    #         func(t=0*u.fs),
+    #         func(t=0*u.fs,phase=u.Quantity(2*np.pi)))
+    #     self.assertAlmostEqual(
+    #         func(t=0*u.fs),
+    #         0)
 
 
 if __name__== '__main__':

@@ -32,12 +32,12 @@ class _PelpiObject(object):
         
         Examples
         --------
-        class Laser(_PelpiObject)
-            def __init__(self,wavelength,energy,time_profile,space_profile,**kwargs):
-                self._check_input('wavelength'   , wavelength    , type(_du['length']))
-                self._check_input('energy'       , energy        , type(_du['energy']))
-                self._check_input('time_profile' , time_profile  , "<class 'pelpi.Profile.classes.Profile'>")
-                self._check_input('space_profile', space_profile , "<class 'pelpi.Profile.classes.Profile'>")
+        >>> class Laser(_PelpiObject)
+        >>>     def __init__(self,wavelength,energy,time_profile,space_profile,**kwargs):
+        >>>         self._check_input('wavelength'   , wavelength    , type(_du['length']))
+        >>>         self._check_input('energy'       , energy        , type(_du['energy']))
+        >>>         self._check_input('time_profile' , time_profile  , "<class 'pelpi.Profile.classes.Profile'>")
+        >>>         self._check_input('space_profile', space_profile , "<class 'pelpi.Profile.classes.Profile'>")
                 
         Notes
         -----
@@ -96,21 +96,43 @@ class _PelpiObject(object):
                 self.default[key]=val
         
         
-    def _estimate(self,lpi,model_name,method_name,**kwargs):
+    def _estimate(self,root_inst,model_name,method_name,**kwargs):
         """
-        Return the result of lpi.model.model_name.method_name(**kwargs)
+        Returns
+        -------
+        Result of root_inst.model.model_name.method_name(**kwargs)
         
+        Parameters
+        ----------
+        root_inst : object
+            Instance of pelpi root object where the estimate need to be performed. Typically a LaserPlasmaInteraction instance
+        model_name : str
+            Name of the model to use
+        method_name : str
+            Name of the method of the model to use. It should contains all the 'path' from model_name to the method
+        **kwargs
+            Keywords arguments to use in the method
+            
+        Examples
+        --------
+        Assuming you are defining the 'temperature' method in electron.hot LaserPlasmaInteraction sub-class
+        
+        >>> def temperature(self,model,**kwargs):
+        >>>     if self.default['temperature'] is not None: # If a default value exists
+        >>>         return self.default['temperature']      # Return default value
+        >>>     else:
+        >>>         temperature = self._estimate(self._lpi,model,'electron.hot.temperature',**kwargs) # Else get the estimate
+        >>>         return temperature.to(_du['temperature'])   # And return the result, converted to default units.
         """
         # Check developer input type. kwargs types are tested in model methods.
-        self._check_input('lpi'         , lpi           , "<class 'pelpi.LaserPlasmaInteraction.classes.LaserPlasmaInteraction'>")
         self._check_input('model_name'  , model_name    , str)
         self._check_input('method_name' , method_name   , str)
         
         ### Get an instance of 'model_name'
-        # Find the 'model_name' class in lpi.model
-        model_class = getattr(lpi.model , model_name)
-        # and instanciate is with the lpi instance
-        model_inst  = model_class(lpi)
+        # Find the 'model_name' class in root_inst.model
+        model_class = getattr(root_inst.model , model_name)
+        # and instanciate is with the 'root_inst' instance
+        model_inst  = model_class(root_inst)
         
         ### Get the 'method_name' method from 'model_inst' instance
         # Initialize the iterator 'attr' ; it should point the model instance

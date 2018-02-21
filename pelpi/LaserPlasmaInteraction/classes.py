@@ -157,7 +157,7 @@ class LaserPlasmaInteraction(_PelpiObject):
 
             def number_total(self,model,**kwargs):
                 """
-                Return an estimate of the total hot electron number.
+                Return an estimate of the total electron number.
 
                 Arguments
                 --------
@@ -179,7 +179,7 @@ class LaserPlasmaInteraction(_PelpiObject):
                 if self.default['number_total'] is not None:
                     return self.default['number_total']
                 else:
-                    temperature = self._estimate(self._lpi,model,'electron_number_total',**kwargs)
+                    temperature = self._estimate(self._lpi,model,'electron.number_total',**kwargs)
                     return temperature.to(_du['number'])
                 
             def temperature(self,model,**kwargs):

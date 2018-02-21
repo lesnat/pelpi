@@ -32,8 +32,8 @@ default_unit={\
 }
 
 
-from .Profile import Profile
-from .Laser import Laser
-from .Target import Material,Target
-from .LaserPlasmaInteraction import LaserPlasmaInteraction
-from .ParticleInCell import ParticleInCell
+from .profile import Profile
+from .laser import Laser
+from .target import Material,Target
+from .lpi import LaserPlasmaInteraction
+from .pic import ParticleInCell

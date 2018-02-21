@@ -13,38 +13,78 @@ class LaserPlasmaInteraction(_PelpiObject):
 
     Parameters
     ----------
-    Laser : object
-        Instanciated ``pelpi.Laser`` object
-    Target : object
-        Instanciated ``pelpi.Target`` object
+    laser : object
+        Instanciated pelpi ``Laser`` object
+    target : object
+        Instanciated pelpi ``Target`` object
 
     Attributes
     ----------
-    laser : sub-module
-        The ``pelpi.Laser`` object given as argument when the class was declared.
-    target : sub-module
-        The ``pelpi.Target`` object given as argument when the class was declared.
-    plasma : sub-module
-        Contains usual plasma parameters.
-    model : sub-module
-        Contains the all the available models.
+    laser : object
+        Input laser object
+    target : object
+        Input target object
+    model : object
+        Contains the all available models. Class attribute.
+    plasma : object
+        Contains usual plasma parameters
+    electron : object
+        Contains estimations about electrons
+    
+
+
+    Examples
+    --------
+    TODO
+
 
     Notes
     -----
-    result of arguments (*args) in methods
-    +++++++++++++++++++++++++++++++++++
-    Some models may need optional parameters, such as electron hot temperature
-    or laser absorption efficiency for complete the calculus.
+    New methods in input objects
+    ++++++++++++++++++++++++++++
+    TODO    
+    
+    Keyword arguments (**kwargs) in estimation methods
+    ++++++++++++++++++++++++++++++++++++++++++++++++++
+    Even if the code structure permit not to give a lot of parameters
+    to perform an estimate, some complex models may need several of them to give the result.
+    
     These parameters can be choosen by the user (for order of magnitude) or
     calculated by other models and passed as argument.
-    Please refer to the method documentation for more informations.
+    
+    To do this, pelpi needs the parameters to be defined explicitly, i.e. with the parameter
+    name in the method call.
+    
+    Here is a quick example, assuming ``lpi`` is an instance of ``LaserPlasmaInteraction``
+    
+    >>> eh = lpi.electron.hot
+    >>> # Define the laser absorption efficiency
+    >>> eta_l = 0.1 * pp.unit('')
+    >>> # Use a simple model to get a temperature estimate
+    >>> Teh = eh.temperature(model='Haines2009')
+    >>> # Here is a more complex model who needs a temperature & absorption efficiency to return a result
+    >>> neh = eh.number_total(model="Common",temperature = Teh, absorption_efficiency = eta_l) # Works
+    >>> neh = eh.number_total(model="Common", Teh, eta_l) # Do not works
+    
+    Refer to the desired method documentation for more informations about parameters of each model.
+    
     """
 
     model      = _m # public attribute pointing to lpi models
 
-    def __init__(self,Laser,Target):
-        self.laser      = Laser
-        self.target     = Target
+    def __init__(self,laser,target):
+        # Test user input
+        self._check_input('laser',laser,"<class 'pelpi.Laser.classes.Laser'>")
+        self._check_input('target',target,"<class 'pelpi.Target.classes.Target'>")
+        
+        # Initialize default dict
+        self._initialize_defaults()
+        
+        # Save references to target & laser instances into attributes
+        self.laser      = laser
+        self.target     = target
+        
+        # Instanciate sub-classes
         self.plasma     = self._PlasmaParameters(self)
         self.electron   = self._Electron(self)
         # self.ion        = Ion(self)
@@ -143,19 +183,32 @@ class LaserPlasmaInteraction(_PelpiObject):
 
     class _Electron(_PelpiObject):
         """
-
+        Electrons properties.
+        
+        Attributes
+        ----------
+        hot : object
+            Containing properties of super-thermal electrons, in Ultra-High Intensity regime
         """
         def __init__(self,LaserPlasmaInteraction):
+            # No need to check input because this method is only called in Laser definition.
+            
+            # Initialise default dict
+            self._initialize_defaults()
+            
+            # Save reference to LaserPlasmaInteraction instance in a private variable
             self._lpi   = LaserPlasmaInteraction
+            
+            # Instanciate sub-classes
             self.hot    = self._Hot(self._lpi)
-            # self.cold   = self.Cold(self._lpi)
+            # self.cold   = self._Cold(self._lpi)
 
         # TODO: here general stuff about all the electrons
         # TODO: add number density ?
 
         class _Hot(_PelpiObject):
             """
-            In UHI, super thermal electrons
+            Super-thermal electrons, in Ultra-High Intensity regime.
             """
             def __init__(self,LaserPlasmaInteraction):
                 self._lpi = LaserPlasmaInteraction
@@ -232,25 +285,13 @@ class LaserPlasmaInteraction(_PelpiObject):
 
     class _PlasmaParameters(_PelpiObject):
         """
-        Comment faire pour utiliser une température autre que Te_pond ?
-        via meilleure estimation de la température si abso != JxB ou donner le choix ?
-        Passer tout ca en méthodes ?
+        Class containing usual plasma parameters.
         """
         def __init__(self,LaserPlasmaInteraction):
             self._lpi             = LaserPlasmaInteraction
             self.electron         = self._Electron(self._lpi)
             self.ion              = self._Ion(self._lpi)
 
-        # def updateParameters(self): # TODO; convert to methods
-        #     self.wpe        = 0.0 # Electron plasma frequency
-        #     self.wpi        = 0.0 # Ion plasma frequency
-        #     self.lambda_De  = 0.0 # Debye length
-        #     self.vTe        = 0.0 # Electron thermal velocity
-        #     self.vTi        = 0.0 # Ion thermal velocity
-        #     self.vA         = 0.0 # Alfven velocity
-        #     self.EFermi     = 0.0
-        #
-        #
 
         class _Electron(_PelpiObject):
             def __init__(self,LaserPlasmaInteraction):
@@ -296,11 +337,11 @@ class LaserPlasmaInteraction(_PelpiObject):
                 """
                 Returns
                 -------
-                Plasma pulsation of electrons : 1/time quantity
+                Plasma pulsation of electrons : 1/time Quantity
 
                 Notes
                 -----
-                The Landau length is defined as
+                The plasma pulsation of electrons is defined as follows
 
                 .. math:: \omega_{pe} = \sqrt{\\frac{n_e e^2}{m_e \epsilon_0}}
                 """
@@ -317,13 +358,13 @@ class LaserPlasmaInteraction(_PelpiObject):
                 """
                 Returns
                 -------
-                Plasma pulsation of ions : 1/time quantity
+                Plasma pulsation of ions : 1/time Quantity
 
                 Notes
                 -----
-                The Landau length is defined as
+                The plasma pulsation of ions is defined as follows
 
-                .. math:: \omega_{pe} = \sqrt{\\frac{Z^2 n_i e^2}{m_i \epsilon_0}}
+                .. math:: \omega_{pi} = \sqrt{\\frac{Z^2 n_i e^2}{m_i \epsilon_0}}
                 """
                 ni  = self._lpi.target.material.ion.number_density()
                 Z   = self._lpi.target.material.Z()

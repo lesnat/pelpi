@@ -49,8 +49,8 @@ class Laser(_PelpiObject):
     """
     def __init__(self,time_profile=None,space_profile=None,wavelength=None,energy=None):
         # Test user input
-        self._check_input('time_profile'    ,time_profile   ,"<class 'pelpi.Profile.Profile'>")
-        self._check_input('space_profile'   ,space_profile  ,"<class 'pelpi.Profile.Profile'>")
+        self._check_input('time_profile'    ,time_profile   ,"<class 'pelpi.profile.Profile'>")
+        self._check_input('space_profile'   ,space_profile  ,"<class 'pelpi.profile.Profile'>")
         self._check_input('wavelength'      ,wavelength     , type(_du['length']))
         self._check_input('energy'          ,energy         , type(_du['energy']))
 

@@ -22,7 +22,7 @@ class _ExampleModel(_PelpiObject):
     """
     def __init__(self,lpi):
         # Test user input
-        self._check_input('lpi',lpi,"<class 'pelpi.LaserPlasmaInteraction.LaserPlasmaInteraction'>")
+        self._check_input('lpi',lpi,"<class 'pelpi.lpi.LaserPlasmaInteraction'>")
 
         # Do not initialize default dict because models should always return an estimate and not a default behaviour
 
@@ -104,7 +104,7 @@ class Beg1997(_PelpiObject):
     Experimental laser intensity etc ...
     """
     def __init__(self,lpi):
-        self._check_input('lpi',lpi,"<class 'pelpi.LaserPlasmaInteraction.LaserPlasmaInteraction'>")
+        self._check_input('lpi',lpi,"<class 'pelpi.lpi.LaserPlasmaInteraction'>")
         self.electron=self._Electron(lpi)
         self.ion=self._Ion(lpi)
 
@@ -147,7 +147,7 @@ class Haines2009(_PelpiObject):
     """
     """
     def __init__(self,lpi):
-        self._check_input('lpi',lpi,"<class 'pelpi.LaserPlasmaInteraction.LaserPlasmaInteraction'>")
+        self._check_input('lpi',lpi,"<class 'pelpi.lpi.LaserPlasmaInteraction'>")
         self.electron=self._Electron(lpi)
 
     class _Electron(_PelpiObject):
@@ -198,7 +198,7 @@ class Wilks1992(_PelpiObject):
     """
 
     def __init__(self,lpi):
-        self._check_input('lpi',lpi,"<class 'pelpi.LaserPlasmaInteraction.LaserPlasmaInteraction'>")
+        self._check_input('lpi',lpi,"<class 'pelpi.lpi.LaserPlasmaInteraction'>")
         self.electron=self._Electron(lpi)
 
     class _Electron(_PelpiObject):

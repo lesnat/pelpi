@@ -2,7 +2,7 @@
 
 from ._global import *
 from ._tools import _PelpiObject
-import model as _m
+import models as _m
 
 __all__ = ["LaserPlasmaInteraction"]
 
@@ -75,8 +75,8 @@ class LaserPlasmaInteraction(_PelpiObject):
 
     def __init__(self,laser,target):
         # Test user input
-        self._check_input('laser',laser,"<class 'pelpi.Laser.Laser'>")
-        self._check_input('target',target,"<class 'pelpi.Target.Target'>")
+        self._check_input('laser',laser,"<class 'pelpi.laser.Laser'>")
+        self._check_input('target',target,"<class 'pelpi.target.Target'>")
 
         # Do not initialize default dict because there is no direct access to a method from this point
 

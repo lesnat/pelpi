@@ -140,7 +140,7 @@ class Target(_PelpiObject):
     """
     def __init__(self,material):
         # Test user input
-        self._check_input('material',material,"<class 'pelpi.Target.Material'>")
+        self._check_input('material',material,"<class 'pelpi.target.Material'>")
 
         # Initialize default dict
         self._initialize_defaults()

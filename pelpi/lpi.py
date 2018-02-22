@@ -14,16 +14,16 @@ class LaserPlasmaInteraction(_PelpiObject):
     Parameters
     ----------
     laser : object
-        Instanciated pelpi ``Laser`` object
+        pelpi ``Laser`` instance
     target : object
-        Instanciated pelpi ``Target`` object
+        pelpi ``Target`` instance
 
     Attributes
     ----------
     laser : object
-        Input laser object
+        Input laser instance
     target : object
-        Input target object
+        Input target instance
     model : object
         Contains the all available models. Class attribute.
     plasma : object
@@ -75,8 +75,8 @@ class LaserPlasmaInteraction(_PelpiObject):
 
     def __init__(self,laser,target):
         # Test user input
-        self._check_input('laser',laser,"<class 'pelpi.Laser.Laser'>")
-        self._check_input('target',target,"<class 'pelpi.Target.Target'>")
+        self._check_input('laser',laser,"<class 'pelpi.laser.Laser'>")
+        self._check_input('target',target,"<class 'pelpi.target.Target'>")
 
         # Do not initialize default dict because there is no direct access to a method from this point
 
@@ -291,25 +291,25 @@ class LaserPlasmaInteraction(_PelpiObject):
                     LLa = ((_u.e**2)/(4*_np.pi * _u.epsilon_0 * Te)) # TODO: OK ? check
                     return LLa.to(_du['length'])
 
-            def pulsation_plasma(self,temperature):
+            def angular_frequency_plasma(self,temperature):
                 """
                 Returns
                 -------
-                Plasma pulsation of electrons : 1/time Quantity
+                Plasma angular frequency of electrons : 1/time Quantity
 
                 Notes
                 -----
-                The plasma pulsation of electrons is defined as follows
+                The plasma angular frequency of electrons is defined as follows
 
                 .. math:: \omega_{pe} = \sqrt{\\frac{n_e e^2}{m_e \epsilon_0}}
                 """
-                if self.default['pulsation_plasma'] is not None:
-                    return self.default['pulsation_plasma']
+                if self.default['angular_frequency_plasma'] is not None:
+                    return self.default['angular_frequency_plasma']
                 else:
                     ne  = self._lpi.target.material.electron.number_density()
 
                     wpe = _np.sqrt((ne * _u.e**2)/(_u.m_e * _u.epsilon_0))
-                    return wpe.to(_du['pulsation'])
+                    return wpe.to(_du['angular_frequency'])
 
         class _Ion(_PelpiObject):
             """
@@ -324,24 +324,24 @@ class LaserPlasmaInteraction(_PelpiObject):
                 # Save reference to LaserPlasmaInteraction instance in a private variable
                 self._lpi   = LaserPlasmaInteraction
 
-            def pulsation_plasma(self):
+            def angular_frequency_plasma(self):
                 """
                 Returns
                 -------
-                Plasma pulsation of ions : 1/time Quantity
+                Plasma angular frequency of ions : 1/time Quantity
 
                 Notes
                 -----
-                The plasma pulsation of ions is defined as follows
+                The plasma angular frequency of ions is defined as follows
 
                 .. math:: \omega_{pi} = \sqrt{\\frac{Z^2 n_i e^2}{m_i \epsilon_0}}
                 """
-                if self.default['pulsation_plasma'] is not None:
-                    return self.default['pulsation_plasma']
+                if self.default['angular_frequency_plasma'] is not None:
+                    return self.default['angular_frequency_plasma']
                 else:
                     ni  = self._lpi.target.material.ion.number_density()
                     Z   = self._lpi.target.material.Z()
                     mi  = self._lpi.target.material.atomic_mass()
 
                     wpi = _np.sqrt((ni * (Z * _u.e)**2)/(mi * _u.epsilon_0))
-                    return wpi.to(_du['pulsation'])
+                    return wpi.to(_du['angular_frequency'])

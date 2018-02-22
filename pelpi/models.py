@@ -278,7 +278,7 @@ class Common(_PelpiObject):
 
     class _Electron(_PelpiObject):
         def __init__(self,lpi):
-            self.hot = self._Hot(lpi)
+            self._lpi = lpi
 
         def number_total(self,temperature,absorption_efficiency):
             """

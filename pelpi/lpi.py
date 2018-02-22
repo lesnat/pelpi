@@ -68,7 +68,7 @@ class LaserPlasmaInteraction(_PelpiObject):
     >>> neh = eh.number_total(model="Common", Teh, eta_l) # This does not work
 
     Refer to the desired method documentation for more informations about parameters of each model.
-
+    You can access it via pelpi.LaserPlasmaInteraction.model.[Model], or lpi.model.[Model].
     """
 
     model      = _m # public attribute pointing to lpi models
@@ -135,8 +135,8 @@ class LaserPlasmaInteraction(_PelpiObject):
             Price1995, TODO
 
             Notes
-            ----
-            See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
+            -----
+            See pelpi.LaserPlasmaInteraction.model.[Model] documentation
             if you need more informations about the [Model] model.
             """
             if self.default['efficiency_absorption'] is not None:
@@ -175,8 +175,8 @@ class LaserPlasmaInteraction(_PelpiObject):
                     Input parameters : ...
 
                 Notes
-                ----
-                See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
+                -----
+                See pelpi.LaserPlasmaInteraction.model.[Model] documentation
                 if you need more informations about the [Model] model.
                 """
                 if self.default['number_total'] is not None:
@@ -187,7 +187,9 @@ class LaserPlasmaInteraction(_PelpiObject):
 
             def temperature(self,model,**kwargs):
                 """
-                Return an estimate of the hot electron temperature.
+                Returns
+                -------
+                Estimate of the hot electron temperature.
 
                 Arguments
                 --------
@@ -208,8 +210,8 @@ class LaserPlasmaInteraction(_PelpiObject):
                     Input parameters : None
 
                 Notes
-                ----
-                See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
+                -----
+                See pelpi.LaserPlasmaInteraction.model.[Model] documentation
                 if you need more informations about the [Model] model.
                 """
                 if self.default['temperature'] is not None:

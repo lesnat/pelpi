@@ -1,8 +1,11 @@
+#coding:utf8
 import sys
 Modules_path="../../"
 if sys.path[0]!=Modules_path:sys.path.insert(0, Modules_path)
 import pelpi as pp
 u=pp.unit
+
+__all__=['ExampleLPI']
 
 class ExampleLPI(object):
     """
@@ -27,14 +30,10 @@ class ExampleLPI(object):
         )
         matAl  = pp.Material(
             density     = 2.69890e3 * u.kg/u.m**3,
-            atomic_mass = 26.98154 * u.u,
+            atomic_mass = 26.98154 * u('amu'),
             Z           = 13 * u(''),
         )
-        # geomBas = pp.Geometry(
-        #     width=20 * u.um,
-        #     Lpp=8 * u.um
-        # )
-        # targAlBas = pp.Target(matAl,geomBas)
-        targAlBas = pp.Target(matAl)
 
-        self.lpiGGAl = pp.LaserPlasmaInteraction(lasGG,targAlBas)
+        targAl = pp.Target(matAl)
+
+        self.lpiGGAl = pp.LaserPlasmaInteraction(lasGG,targAl)

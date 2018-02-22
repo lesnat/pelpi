@@ -144,6 +144,35 @@ class LaserPlasmaInteraction(_PelpiObject):
             else:
                 eta_l = self._estimate(self._lpi,model,'electron.efficiency_absorption',**kwargs)
                 return eta_l.to(_du['number'])
+                
+                
+                
+        def number_total(self,model,**kwargs):
+            """
+            Return an estimate of the total electron number.
+
+            Arguments
+            --------
+            model : string
+                Model name
+            **kwargs
+                Model input parameters
+
+            Models
+            -----
+            Common, a theoretical model for a rough estimate.
+                Input parameters : ...
+
+            Notes
+            -----
+            See pelpi.LaserPlasmaInteraction.model.[Model] documentation
+            if you need more informations about the [Model] model.
+            """
+            if self.default['number_total'] is not None:
+                return self.default['number_total']
+            else:
+                temperature = self._estimate(self._lpi,model,'electron.number_total',**kwargs)
+                return temperature.to(_du['number'])
 
         class _Hot(_PelpiObject):
             """
@@ -157,33 +186,6 @@ class LaserPlasmaInteraction(_PelpiObject):
 
                 # Save reference to LaserPlasmaInteraction instance in a private variable
                 self._lpi   = LaserPlasmaInteraction
-
-            def number_total(self,model,**kwargs):
-                """
-                Return an estimate of the total electron number.
-
-                Arguments
-                --------
-                model : string
-                    Model name
-                **kwargs
-                    Model input parameters
-
-                Models
-                -----
-                Common, a theoretical model for a rough estimate.
-                    Input parameters : ...
-
-                Notes
-                -----
-                See pelpi.LaserPlasmaInteraction.model.[Model] documentation
-                if you need more informations about the [Model] model.
-                """
-                if self.default['number_total'] is not None:
-                    return self.default['number_total']
-                else:
-                    temperature = self._estimate(self._lpi,model,'electron.number_total',**kwargs)
-                    return temperature.to(_du['number'])
 
             def temperature(self,model,**kwargs):
                 """

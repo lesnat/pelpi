@@ -80,10 +80,10 @@ pic=pp.ParticleInCell(lpi)
 # lpi.electron.hot.set('temperature',Teh)
 
 # Get estimates
-dx=pic.length_cell(temperature=Teh)
-Lr=pic.code.smilei.length_reference()
+dx=pic.length_cell('both',temperature=Teh)
+Lr=pic.code.smilei.length()
 
 print("\ndx           = {}        = {}".format(dx,dx/Lr))
-resx=pic.space_resolution(temperature=Teh)
+resx=pic.space_resolution('both',temperature=Teh)
 print("resx         = {}        = {}".format(resx,resx*Lr))
 print("2 pi * resx  = {}".format(2 * np.pi * resx*Lr))

@@ -8,8 +8,17 @@ class ParticleInCell(_PelpiObject):
 
     """
     def __init__(self,LaserPlasmaInteraction):
-        self._lpi             = LaserPlasmaInteraction
-        self.code             = self._Code(self._lpi)
+        # Test user input
+        self._check_input('laser',laser,"<class 'pelpi.lpi.LaserPlasmaInteraction'>")
+
+        # Initialize default dict
+        self._initialize_defaults()
+
+        # Save references to target & laser instances into attributes
+        self.lpi        = lpi
+
+        # Instanciate sub-classes
+        self.code       = self._Code(self)
 
     def length_cell(self,temperature):
         """
@@ -54,7 +63,7 @@ class ParticleInCell(_PelpiObject):
         """
         def __init__(self,LaserPlasmaInteraction):
             lpi             = LaserPlasmaInteraction
-            wr              = lpi.laser.pulsation()
+            wr              = lpi.laser.angular_frequency()
             self.smilei     = self._Smilei(lpi,wr)
 
         class _Smilei(_PelpiObject):
@@ -62,27 +71,27 @@ class ParticleInCell(_PelpiObject):
             Smilei tools.
 
             """ # TODO: add pint unit for CU conversion ?
-            def __init__(self,LaserPlasmaInteraction,pulsation_reference):
+            def __init__(self,LaserPlasmaInteraction,angular_frequency_reference):
                 self._lpi   = LaserPlasmaInteraction
-                self._pulsation_reference = pulsation_reference
+                self._angular_frequency_reference = angular_frequency_reference
 
-            def pulsation_reference(self):
-                return self._pulsation_reference
+            def angular_frequency_reference(self):
+                return self._angular_frequency_reference
 
             def length_reference(self):
-                Lr = _u.c/self.pulsation_reference()
+                Lr = _u.c/self.angular_frequency_reference()
                 return Lr.to(_du['length'])
 
             def time_reference(self):
-                Tr = 1/self.pulsation_reference()
+                Tr = 1/self.angular_frequency_reference()
                 return Tr.to(_du['time'])
 
             def electric_field_reference(self):
-                Er = _u.m_e * _u.c * self.pulsation_reference()/_u.e
+                Er = _u.m_e * _u.c * self.angular_frequency_reference()/_u.e
                 return Er.to(_du['electric_field'])
 
             def magnetic_field_reference(self):
-                Br = _u.m_e * self.pulsation_reference()/_u.e
+                Br = _u.m_e * self.angular_frequency_reference()/_u.e
                 return Br.to(_du['magnetic_field'])
 
             def number_density_reference(self):

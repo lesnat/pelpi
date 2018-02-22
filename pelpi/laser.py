@@ -22,9 +22,9 @@ class Laser(_PelpiObject):
     Attributes
     ----------
     time_profile : object
-        Input time_profile object
+        Input time_profile instance
     space_profile : object
-        Input space_profile object
+        Input space_profile instance
 
     Examples
     --------
@@ -80,20 +80,20 @@ class Laser(_PelpiObject):
         """
         return self.default['energy']
 
-    def pulsation(self):
+    def angular_frequency(self):
         """
         Returns
         -------
-        Laser pulsation : 1/time Quantity
+        Laser angular frequency : 1/time Quantity
 
         Notes
         -----
-        pulsation is defined as follows
+        angular_frequency is defined as follows
 
         .. math: \omega_l = \\frac{2 \pi c}{\lambda}
         """
         wl = (2*_np.pi*_u.c/self.wavelength())
-        return wl.to(_du['pulsation'])
+        return wl.to(_du['angular_frequency'])
 
     def envelope(self,r,t):
         """
@@ -207,5 +207,5 @@ class Laser(_PelpiObject):
 
             .. math: TODO
             """
-            nc = _u.m_e*_u.epsilon_0*(self._las.pulsation()/_u.e)**2
+            nc = _u.m_e*_u.epsilon_0*(self._las.angular_frequency()/_u.e)**2
             return nc.to(_du['number_density'])

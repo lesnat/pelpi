@@ -21,7 +21,7 @@ class test_Material(PelpiTest):
         func = self.matAl.electron.number_density
         self.assertAlmostEqualQuantity(
             func(),
-            7.830948876504127e+29 * u.m**-3)
+            7.830948876504127E+29 * u.m**-3)
             
         self.assertAlmostEqualQuantity(
             func(),
@@ -31,7 +31,7 @@ class test_Material(PelpiTest):
         func = self.matAl.ion.number_density
         self.assertAlmostEqual(
             func().to('m**-3'),
-            6.023806828080096e+28 * u.m**-3)
+            6.023806828080096E+28 * u.m**-3)
 
 
 

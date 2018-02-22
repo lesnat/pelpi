@@ -31,13 +31,13 @@ class test_Laser(PelpiTest):
         func = self.lasGG.angular_frequency
         self.assertAlmostEqualQuantity(
             func(),
-            2354564459136066.5 * u('1/s'))
+            2.354564459136066E+15 * u('1/s'))
 
     def test_number_density_critical(self):
         func = self.lasGG.electron.number_density_critical
         self.assertAlmostEqualQuantity(
             func(),
-            1.7419598820107494e+27 * u.m**-3)
+            1.741959882010749E+27 * u.m**-3)
 
     def test_power(self):
         func = self.lasGG.power
@@ -49,7 +49,7 @@ class test_Laser(PelpiTest):
             func()/4)
         self.assertAlmostEqualQuantity(
             func(),
-            62.629151913310096 * u.TW)
+            6.262915191331009E+13 * u.W)
 
     def test_intensity(self,r=0*u('m'),t=0*u('s')):
         func = self.lasGG.intensity
@@ -61,13 +61,13 @@ class test_Laser(PelpiTest):
             func()/4)
         self.assertAlmostEqualQuantity(
             func(),
-            5.527288207777904e+19 * u('W/cm**2'))
+            5.527288207777905E+23 * u('W/m**2'))
 
     def test_intensity_peak_normalized(self):
         func = self.lasGG.intensity_peak_normalized
         self.assertAlmostEqualQuantity(
             func(),
-            5.055509932021204 * u(''))
+            5.055509932021203E+00 * u(''))
 
 
 if __name__== '__main__':

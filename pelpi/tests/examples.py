@@ -38,6 +38,7 @@ class ExampleLPI(object):
 
         self.lpiGGAl = pp.LaserPlasmaInteraction(self.lasGG,self.targAl)
         
+        self.picGGAl = pp.ParticleInCell(self.lpiGGAl)
         
 import unittest
 

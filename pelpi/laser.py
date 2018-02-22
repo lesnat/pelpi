@@ -93,8 +93,11 @@ class Laser(_PelpiObject):
 
         .. math: \omega_l = \\frac{2 \pi c}{\lambda}
         """
-        wl = (2*_np.pi*_u.c/self.wavelength())
-        return wl.to(_du['angular_frequency'])
+        if self.default['angular_frequency'] is not None:
+            return self.default['angular_frequency']
+        else:
+            wl = (2*_np.pi*_u.c/self.wavelength())
+            return wl.to(_du['angular_frequency'])
 
     def envelope(self,r,t):
         """
@@ -113,8 +116,11 @@ class Laser(_PelpiObject):
         -----
         envelope is centered at t=0 and r=0, and has a maximum value of 1.
         """
-        env = self.space_profile.envelope(r) * self.time_profile.envelope(t)
-        return env.to('')
+        if self.default['envelope'] is not None:
+            return self.default['envelope']
+        else:
+            env = self.space_profile.envelope(r) * self.time_profile.envelope(t)
+            return env.to('')
 
     def power(self,r=0*_u('m'),t=0*_u('s')):
         """
@@ -137,8 +143,11 @@ class Laser(_PelpiObject):
 
         .. math: P(r,t) = \\frac{E_l}{S_0^t} profile(r,t)
         """
-        P = self.energy()/self.time_profile.integral1D() * self.envelope(r,t)
-        return P.to(_du['power'])
+        if self.default['power'] is not None:
+            return self.default['power']
+        else:
+            P = self.energy()/self.time_profile.integral1D() * self.envelope(r,t)
+            return P.to(_du['power'])
 
     def intensity(self,r=0*_u('m'),t=0*_u('s')):
         """
@@ -161,8 +170,11 @@ class Laser(_PelpiObject):
 
         .. math: I(r,t) = \\frac{P(r,t)}{S_0^r}
         """
-        I = self.power(r,t)/self.space_profile.integral2D()
-        return I.to(_du['intensity'])
+        if self.default['intensity'] is not None:
+            return self.default['intensity']
+        else:
+            I = self.power(r,t)/self.space_profile.integral2D()
+            return I.to(_du['intensity'])
 
     def intensity_peak_normalized(self): # TODO: calculate with the original definition
         """
@@ -179,23 +191,27 @@ class Laser(_PelpiObject):
         with :math:`I_{18}` the laser peak intensity in :math:`10^{18} W.cm^{-2}`
         and :math:`\lambda_{\mu}` the laser wavelength in :math:`10^{-6} m`.
         """
-        I0 = self.intensity(r=0*_u('m'),t=0*_u('s'))
-        a0 = 0.85*_np.sqrt((I0*(self.wavelength())**2)/(1.e18*_u('W*um**2/cm**2')))
-        return a0.to(_du['number'])
+        if self.default['intensity_peak_normalized'] is not None:
+            return self.default['intensity_peak_normalized']
+        else:
+            I0 = self.intensity(r=0*_u('m'),t=0*_u('s'))
+            #a0 = 0.85*_np.sqrt((I0*(self.wavelength())**2)/(1.e18*_u('W*um**2/cm**2')))
+            a0 = (_u.e * self.wavelength() * _np.sqrt(2 * I0 * _u.mu_0 * _u.c))/(2 * _np.pi * _u.m_e * _u.c**2)
+            return a0.to(_du['number'])
         
 
     class _Photon(_PelpiObject):
         """
         Photon properties.
         """
-        def __init__(self,Laser):
+        def __init__(self,laser):
             # No need to check input because this method is only called in Laser definition.
 
             # Initialise default dict
             self._initialize_defaults()
 
             # Save reference to Laser instance in a private variable
-            self._las = Laser
+            self._las = laser
             
         def energy(self):
             """
@@ -209,8 +225,11 @@ class Laser(_PelpiObject):
             
             .. math: E_l = \\frac{h c}{\lambda_l}
             """
-            E=_u.h *_u.c/self._las.wavelength()
-            return E.to(_du['energy'])
+            if self.default['energy'] is not None:
+                return self.default['energy']
+            else:
+                E=_u.h *_u.c/self._las.wavelength()
+                return E.to(_du['energy'])
 
     class _Electron(_PelpiObject):
         """
@@ -235,7 +254,10 @@ class Laser(_PelpiObject):
             -----
             Electron critical number density is defined as follows
 
-            .. math: TODO
+            .. math: m_e \epsilon_0 (\\frac{\omega_l}{e})^2
             """
-            nc = _u.m_e*_u.epsilon_0*(self._las.angular_frequency()/_u.e)**2
-            return nc.to(_du['number_density'])
+            if self.default['number_density_critical'] is not None:
+                return self.default['number_density_critical']
+            else:
+                nc = _u.m_e*_u.epsilon_0*(self._las.angular_frequency()/_u.e)**2
+                return nc.to(_du['number_density'])

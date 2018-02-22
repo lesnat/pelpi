@@ -67,7 +67,7 @@ class test_Laser(PelpiTest):
         func = self.lasGG.intensity_peak_normalized
         self.assertAlmostEqualQuantity(
             func(),
-            5.055509932021203E+00 * u(''))
+            5.084830087651825E+00 * u(''))
             
     def test_photon_energy(self):
         func = self.lasGG.photon.energy

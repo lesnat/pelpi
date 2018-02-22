@@ -68,6 +68,12 @@ class test_Laser(PelpiTest):
         self.assertAlmostEqualQuantity(
             func(),
             5.055509932021203E+00 * u(''))
+            
+    def test_photon_energy(self):
+        func = self.lasGG.photon.energy
+        self.assertAlmostEqualQuantity(
+        func(),\
+        2.483057104086628E-19 * u.J)
 
 
 if __name__== '__main__':

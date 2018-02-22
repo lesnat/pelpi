@@ -62,6 +62,7 @@ class Laser(_PelpiObject):
         self.space_profile  = space_profile
 
         # Instanciate sub-class
+        self.photon     = self._Photon(self)
         self.electron   = self._Electron(self)
 
     def wavelength(self):
@@ -181,6 +182,35 @@ class Laser(_PelpiObject):
         I0 = self.intensity(r=0*_u('m'),t=0*_u('s'))
         a0 = 0.85*_np.sqrt((I0*(self.wavelength())**2)/(1.e18*_u('W*um**2/cm**2')))
         return a0.to(_du['number'])
+        
+
+    class _Photon(_PelpiObject):
+        """
+        Photon properties.
+        """
+        def __init__(self,Laser):
+            # No need to check input because this method is only called in Laser definition.
+
+            # Initialise default dict
+            self._initialize_defaults()
+
+            # Save reference to Laser instance in a private variable
+            self._las = Laser
+            
+        def energy(self):
+            """
+            Returns
+            -------
+            Energy of the laser photons.
+            
+            Notes
+            -----
+            energy is defined as follows
+            
+            .. math: E_l = \\frac{h c}{\lambda_l}
+            """
+            E=_u.h *_u.c/self._las.wavelength()
+            return E.to(_du['energy'])
 
     class _Electron(_PelpiObject):
         """

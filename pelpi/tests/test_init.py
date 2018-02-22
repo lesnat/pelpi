@@ -13,6 +13,9 @@ class test_Import(unittest.TestCase):
 
     def test_import_pelpi(self):
         import pelpi as pp
+        
+    def test_examples(self):
+        from examples import ExampleLPI,PelpiTest
 
 
 if __name__== '__main__':

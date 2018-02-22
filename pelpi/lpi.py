@@ -14,16 +14,16 @@ class LaserPlasmaInteraction(_PelpiObject):
     Parameters
     ----------
     laser : object
-        Instanciated pelpi ``Laser`` object
+        pelpi ``Laser`` instance
     target : object
-        Instanciated pelpi ``Target`` object
+        pelpi ``Target`` instance
 
     Attributes
     ----------
     laser : object
-        Input laser object
+        Input laser instance
     target : object
-        Input target object
+        Input target instance
     model : object
         Contains the all available models. Class attribute.
     plasma : object
@@ -68,7 +68,7 @@ class LaserPlasmaInteraction(_PelpiObject):
     >>> neh = eh.number_total(model="Common", Teh, eta_l) # This does not work
 
     Refer to the desired method documentation for more informations about parameters of each model.
-
+    You can access it via pelpi.LaserPlasmaInteraction.model.[Model], or lpi.model.[Model].
     """
 
     model      = _m # public attribute pointing to lpi models
@@ -135,15 +135,44 @@ class LaserPlasmaInteraction(_PelpiObject):
             Price1995, TODO
 
             Notes
-            ----
-            See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
+            -----
+            See pelpi.LaserPlasmaInteraction.model.[Model] documentation
             if you need more informations about the [Model] model.
             """
             if self.default['efficiency_absorption'] is not None:
                 return self.default['efficiency_absorption']
             else:
-                eta_l = self._estimate(self._lpi,model,'laser_efficiency_absorption',**kwargs)
+                eta_l = self._estimate(self._lpi,model,'electron.efficiency_absorption',**kwargs)
                 return eta_l.to(_du['number'])
+                
+                
+                
+        def number_total(self,model,**kwargs):
+            """
+            Return an estimate of the total electron number.
+
+            Arguments
+            --------
+            model : string
+                Model name
+            **kwargs
+                Model input parameters
+
+            Models
+            -----
+            Common, a theoretical model for a rough estimate.
+                Input parameters : ...
+
+            Notes
+            -----
+            See pelpi.LaserPlasmaInteraction.model.[Model] documentation
+            if you need more informations about the [Model] model.
+            """
+            if self.default['number_total'] is not None:
+                return self.default['number_total']
+            else:
+                temperature = self._estimate(self._lpi,model,'electron.number_total',**kwargs)
+                return temperature.to(_du['number'])
 
         class _Hot(_PelpiObject):
             """
@@ -158,36 +187,11 @@ class LaserPlasmaInteraction(_PelpiObject):
                 # Save reference to LaserPlasmaInteraction instance in a private variable
                 self._lpi   = LaserPlasmaInteraction
 
-            def number_total(self,model,**kwargs):
-                """
-                Return an estimate of the total electron number.
-
-                Arguments
-                --------
-                model : string
-                    Model name
-                **kwargs
-                    Model input parameters
-
-                Models
-                -----
-                Common, a theoretical model for a rough estimate.
-                    Input parameters : ...
-
-                Notes
-                ----
-                See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
-                if you need more informations about the [Model] model.
-                """
-                if self.default['number_total'] is not None:
-                    return self.default['number_total']
-                else:
-                    temperature = self._estimate(self._lpi,model,'electron.number_total',**kwargs)
-                    return temperature.to(_du['number'])
-
             def temperature(self,model,**kwargs):
                 """
-                Return an estimate of the hot electron temperature.
+                Returns
+                -------
+                Estimate of the hot electron temperature.
 
                 Arguments
                 --------
@@ -208,8 +212,8 @@ class LaserPlasmaInteraction(_PelpiObject):
                     Input parameters : None
 
                 Notes
-                ----
-                See pelpi.Model.LaserPlasmaInteraction.[Model] documentation
+                -----
+                See pelpi.LaserPlasmaInteraction.model.[Model] documentation
                 if you need more informations about the [Model] model.
                 """
                 if self.default['temperature'] is not None:
@@ -291,25 +295,25 @@ class LaserPlasmaInteraction(_PelpiObject):
                     LLa = ((_u.e**2)/(4*_np.pi * _u.epsilon_0 * Te)) # TODO: OK ? check
                     return LLa.to(_du['length'])
 
-            def pulsation_plasma(self,temperature):
+            def angular_frequency_plasma(self,temperature):
                 """
                 Returns
                 -------
-                Plasma pulsation of electrons : 1/time Quantity
+                Plasma angular frequency of electrons : 1/time Quantity
 
                 Notes
                 -----
-                The plasma pulsation of electrons is defined as follows
+                The plasma angular frequency of electrons is defined as follows
 
                 .. math:: \omega_{pe} = \sqrt{\\frac{n_e e^2}{m_e \epsilon_0}}
                 """
-                if self.default['pulsation_plasma'] is not None:
-                    return self.default['pulsation_plasma']
+                if self.default['angular_frequency_plasma'] is not None:
+                    return self.default['angular_frequency_plasma']
                 else:
                     ne  = self._lpi.target.material.electron.number_density()
 
                     wpe = _np.sqrt((ne * _u.e**2)/(_u.m_e * _u.epsilon_0))
-                    return wpe.to(_du['pulsation'])
+                    return wpe.to(_du['angular_frequency'])
 
         class _Ion(_PelpiObject):
             """
@@ -324,24 +328,24 @@ class LaserPlasmaInteraction(_PelpiObject):
                 # Save reference to LaserPlasmaInteraction instance in a private variable
                 self._lpi   = LaserPlasmaInteraction
 
-            def pulsation_plasma(self):
+            def angular_frequency_plasma(self):
                 """
                 Returns
                 -------
-                Plasma pulsation of ions : 1/time Quantity
+                Plasma angular frequency of ions : 1/time Quantity
 
                 Notes
                 -----
-                The plasma pulsation of ions is defined as follows
+                The plasma angular frequency of ions is defined as follows
 
                 .. math:: \omega_{pi} = \sqrt{\\frac{Z^2 n_i e^2}{m_i \epsilon_0}}
                 """
-                if self.default['pulsation_plasma'] is not None:
-                    return self.default['pulsation_plasma']
+                if self.default['angular_frequency_plasma'] is not None:
+                    return self.default['angular_frequency_plasma']
                 else:
                     ni  = self._lpi.target.material.ion.number_density()
                     Z   = self._lpi.target.material.Z()
                     mi  = self._lpi.target.material.atomic_mass()
 
                     wpi = _np.sqrt((ni * (Z * _u.e)**2)/(mi * _u.epsilon_0))
-                    return wpi.to(_du['pulsation'])
+                    return wpi.to(_du['angular_frequency'])

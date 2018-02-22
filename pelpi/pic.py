@@ -64,15 +64,18 @@ class ParticleInCell(_PelpiObject):
         --------
         TODO
         """
-        if lim =='target':
-            dx = 3.4 * self.lpi.plasma.electron.length_Debye(temperature)
-        elif lim =='laser':
-            dx = self.lpi.laser.wavelength()/10.0
-        elif lim =='both':
-            dx = min(self.length_cell('target',temperature),self.length_cell('laser'))
+        if self.default['length_cell'] is not None:
+            return self.default['length_cell']
         else:
-            raise NameError("Unknown value of parameter 'lim'.")
-        return dx.to(_du['length'])
+            if lim =='target':
+                dx = 3.4 * self.lpi.plasma.electron.length_Debye(temperature)
+            elif lim =='laser':
+                dx = self.lpi.laser.wavelength()/10.0
+            elif lim =='both':
+                dx = min(self.length_cell('target',temperature),self.length_cell('laser'))
+            else:
+                raise NameError("Unknown value of parameter 'lim'.")
+            return dx.to(_du['length'])
 
     def time_step(self,lim,CFL,temperature=None):
         """
@@ -95,11 +98,14 @@ class ParticleInCell(_PelpiObject):
         time_step is calculated via the length_cell method, so see length_cell documentation
         for more information about `lim` and `temperature` parameters.
         """
-        if CFL:
-            dt = 1/_np.sqrt(2) *self.length_cell(lim,temperature)/_u.c
+        if self.default['time_step'] is not None:
+            return self.default['time_step']
         else:
-            dt = self.length_cell(lim,temperature)/_u.c
-        return dt.to(_du['time'])
+            if CFL:
+                dt = 1/_np.sqrt(2) *self.length_cell(lim,temperature)/_u.c
+            else:
+                dt = self.length_cell(lim,temperature)/_u.c
+            return dt.to(_du['time'])
 
     def space_resolution(self,lim,temperature=None):
         """
@@ -119,8 +125,11 @@ class ParticleInCell(_PelpiObject):
         space_resolution is calculated via the length_cell method, so see length_cell documentation
         for more information about `lim` and `temperature` parameters.
         """
-        resx = 1/self.length_cell(lim,temperature)
-        return resx # no unit conversion because already converted in length_cell
+        if self.default['space_resolution'] is not None:
+            return self.default['space_resolution']
+        else:
+            resx = 1/self.length_cell(lim,temperature)
+            return resx # no unit conversion because already converted in length_cell
 
     def time_resolution(self,lim,CFL,temperature=None):
         """
@@ -143,8 +152,11 @@ class ParticleInCell(_PelpiObject):
         time_resolution is calculated via the length_cell method, so see length_cell documentation
         for more information about `lim` and `temperature` parameters.
         """
-        rest = 1/self.time_step(lim,CFL,temperature)
-        return rest # no unit conversion because already converted in time_step
+        if self.default['time_resolution'] is not None:
+            return self.default['time_resolution']
+        else:
+            rest = 1/self.time_step(lim,CFL,temperature)
+            return rest # no unit conversion because already converted in time_step
 
     class _Code(_PelpiObject):
         """
@@ -186,7 +198,13 @@ class ParticleInCell(_PelpiObject):
             
             For more informations about Smilei PIC code and normalisation units, see 
             https://smileipic.github.io/Smilei/
-            """ # TODO: add pint unit for CU conversion ?
+            
+            Default return of methods can be set in this object, 
+            but as the aim of this object is to provide calculation of reference parameters,
+            do not use it unless you know what you are doing.
+            """
+            # TODO: add pint unit for CU conversion ?
+            # TODO: add patches & OMP/MPI optimization calculations
             def __init__(self,angular_frequency_reference):
                 # Test user input
                 self._check_input('angular_frequency_reference',angular_frequency_reference,type(_du['angular_frequency']))
@@ -198,33 +216,97 @@ class ParticleInCell(_PelpiObject):
                 return self.default['angular_frequency_reference']
 
             def length(self):
-                Lr = _u.c/self.angular_frequency()
-                return Lr.to(_du['length'])
+                """
+                Returns
+                -------
+                Smilei reference length : length Quantity
+                """
+                if self.default['length'] is not None:
+                    return self.default['length']
+                else:
+                    Lr = _u.c/self.angular_frequency()
+                    return Lr.to(_du['length'])
 
             def time(self):
-                Tr = 1/self.angular_frequency()
-                return Tr.to(_du['time'])
+                """
+                Returns
+                -------
+                Smilei reference time : time Quantity
+                """
+                if self.default['time'] is not None:
+                    return self.default['time']
+                else:
+                    Tr = 1/self.angular_frequency()
+                    return Tr.to(_du['time'])
 
             def electric_field(self):
-                Er = _u.m_e * _u.c * self.angular_frequency()/_u.e
-                return Er.to(_du['electric_field'])
+                """
+                Returns
+                -------
+                Smilei reference electric field : Quantity
+                """
+                if self.default['electric_field'] is not None:
+                    return self.default['electric_field']
+                else:
+                    Er = _u.m_e * _u.c * self.angular_frequency()/_u.e
+                    return Er.to(_du['electric_field'])
 
             def magnetic_field(self):
-                Br = _u.m_e * self.angular_frequency()/_u.e
-                return Br.to(_du['magnetic_field'])
+                """
+                Returns
+                -------
+                Smilei reference magnetic field : Quantity
+                """
+                if self.default['magnetic_field'] is not None:
+                    return self.default['magnetic_field']
+                else:
+                    Br = _u.m_e * self.angular_frequency()/_u.e
+                    return Br.to(_du['magnetic_field'])
 
             def number_density(self):
-                Nr = _u.m_e * _u.epsilon_0 *(self.angular_frequency()/_u.e)**2
-                return Nr.to(_du['number_density'])
+                """
+                Returns
+                -------
+                Smilei reference number density : 1/length**3 Quantity
+                """
+                if self.default['number_density'] is not None:
+                    return self.default['number_density']
+                else:
+                    Nr = _u.m_e * _u.epsilon_0 *(self.angular_frequency()/_u.e)**2
+                    return Nr.to(_du['number_density'])
 
             def current(self):
-                Jr = _u.c * _u.e * self.number_density()
-                return Jr.to(_du['current'])
+                """
+                Returns
+                -------
+                Smilei reference current : Quantity
+                """
+                if self.default['current'] is not None:
+                    return self.default['current']
+                else:
+                    Jr = _u.c * _u.e * self.number_density()
+                    return Jr.to(_du['current'])
 
             def energy(self):
-                Kr = 1 * _u.m_e * _u.c**2
-                return Kr.to(_du['energy'])
+                """
+                Returns
+                -------
+                Smilei reference energy : energy Quantity
+                """
+                if self.default['energy'] is not None:
+                    return self.default['energy']
+                else:
+                    Kr = 1 * _u.m_e * _u.c**2
+                    return Kr.to(_du['energy'])
 
             def momentum(self):
-                Pr = 1 * _u.m_e * _u.c
-                return Pr.to(_du['momentum'])
+                """
+                Returns
+                -------
+                Smilei reference momentum : Quantity
+                """
+                if self.default['momentum'] is not None:
+                    return self.default['momentum']
+                else:
+                    Pr = 1 * _u.m_e * _u.c
+                    return Pr.to(_du['momentum'])

@@ -142,7 +142,7 @@ class LaserPlasmaInteraction(_PelpiObject):
             if self.default['efficiency_absorption'] is not None:
                 return self.default['efficiency_absorption']
             else:
-                eta_l = self._estimate(self._lpi,model,'laser_efficiency_absorption',**kwargs)
+                eta_l = self._estimate(self._lpi,model,'electron.efficiency_absorption',**kwargs)
                 return eta_l.to(_du['number'])
 
         class _Hot(_PelpiObject):

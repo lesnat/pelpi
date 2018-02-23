@@ -129,6 +129,8 @@ In a python terminal, type
 >>> pelpi.test()
 ```
 
+Not working yet.
+
 ## Licence
 
 TODO

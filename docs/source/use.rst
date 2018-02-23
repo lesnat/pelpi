@@ -55,8 +55,7 @@ Comments ...
 LaserPlasmaInteraction
 ----------------------
 
-.. automodule:: pelpi.LaserPlasmaInteraction
-   :imported-members:
+.. autoclass:: pelpi.LaserPlasmaInteraction
    :members:
    :undoc-members:
    :show-inheritance:

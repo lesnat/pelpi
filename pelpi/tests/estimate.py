@@ -36,7 +36,9 @@ print(' lpiGGAl : angular_frequency = {:.15E}'.format(lpiGGAl.laser.angular_freq
 print(' lpiGGAl : intensity = {:.15E}'.format(lpiGGAl.laser.intensity()))
 print(' lpiGGAl : intensity_peak_normalized = {:.15E}'.format(lpiGGAl.laser.intensity_peak_normalized()))
 print(' lpiGGAl : power = {:.15E}'.format(lpiGGAl.laser.power()))
-print(' lpiGGAl : number_density_critical = {:.15E}'.format(lpiGGAl.laser.electron.number_density_critical()))
+print(' lpiGGAl : electron number_density_critical = {:.15E}'.format(lpiGGAl.laser.electron.number_density_critical()))
+print(' lpiGGAl : photon energy = {:.15E}'.format(lpiGGAl.laser.photon.energy()))
+
 
 print(SEPARATOR)
 print(' Estimates for Material test class')

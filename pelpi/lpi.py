@@ -257,7 +257,7 @@ class LaserPlasmaInteraction(_PelpiObject):
                 """
                 Returns
                 -------
-                Debye length of electrons : length quantity
+                Debye length of electrons : length Quantity
 
                 Notes
                 -----
@@ -279,7 +279,7 @@ class LaserPlasmaInteraction(_PelpiObject):
                 """
                 Returns
                 -------
-                Landau length of electrons : length quantity
+                Landau length of electrons : length Quantity
 
                 Notes
                 -----

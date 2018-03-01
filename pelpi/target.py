@@ -79,15 +79,16 @@ class Material(_PelpiObject):
             Electron number density is defined as follows
 
             .. math: TODO
+            
+            Electron number density is defined as Z x Ion number density
             """
             if self.default['number_density'] is not None:
                 return self.default['number_density']
             else:
                 Z           = self._mat.Z()
-                rho         = self._mat.density()
-                am          = self._mat.atomic_mass()
+                ni          = self._mat.ion.number_density()
 
-                ne          = (Z*rho/am)
+                ne          = Z*ni
                 return ne.to(_du['number_density'])
 
     class _Ion(_PelpiObject):

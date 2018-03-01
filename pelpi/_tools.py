@@ -77,7 +77,7 @@ class _PelpiObject(object):
         #self._check_input()
         
         # Create the dictionnary
-        self.default={}
+        self._default={}
         
         
         # Loop over all class attributes
@@ -87,15 +87,83 @@ class _PelpiObject(object):
             # if 'attr_name' is a method, and is not private (i.e. not starts with '_')
             if str(attr_type)=="<type 'instancemethod'>" and attr_name[0]!="_":
                 # then a new dict entry is initialize to None
-                self.default[attr_name]=None
+                self.set(attr_name,None,verbose=False)
         
         # Put input_dict into default if input_dict is defined.
         # This might be done after creating all the `attr_name`s entries. This way it replaces None value.
         if input_dict is not None:
             for key,val in input_dict.items():
-                self.default[key]=val
+                self.set(key,val,verbose=False)
+        
+    def set(self,key,value,verbose=True):
+      """
+      Set default values.
+      
+      Parameters
+      ----------
+      key : str
+        Name of the default entry. It could be input object parameter or object instance method
+      value : Quantity or str or ...
+        New value of the default entry
+      verbose : bool, optional
+        If True, the ``set`` method will print warning and sucess messages. Otherwise it does not print anything
+      """
+      if verbose and (key not in self._default.keys()):
+        # self._warns(..) ?
+        print("WARNING : key `%s` not present in default dictionnary. Creating a new entry ..."%key)
+      
+      self._default[key]=value
+      
+      if verbose:
+        print("Default entry for variable `%s` was succesfully set to value `%s`"%(key,value))
         
         
+    def get(self,key="all"):
+      """
+      Returns
+      -------
+      Default value of the entry `name`
+      
+      Parameters
+      ----------
+      name : str, optional
+        Entry name to get
+        
+      Notes
+      -----
+      If `name` is set to "all", the ``get`` method will return the whole default dictionnary
+      """
+      if key=="all":
+        return self._default
+      elif key in self._default.keys():
+        return self._default[key]
+      else:
+        raise KeyError("Default entry `%s` does not exist."%key)
+        
+        
+    def _default_or_result(self,key,result,dimension=None):
+      """
+      Returns
+      -------
+      Default value if it is not None, result otherwise.
+      
+      Parameters
+      ----------
+      key : str
+        Name of the current method, for accessing default value.
+      result : Quantity or ...
+        Value of the result
+      dimension : str
+        Dimension of the result. Might be a key of the default_unit dictionary or None (for str for example)
+      """
+      d = self.get(key)
+      if d is not None:
+        return d
+      elif dimension is not None:
+        return result.to(_du[dimension])
+      else:
+        return result
+      
     def _estimate(self,root_inst,model_name,method_name,**kwargs):
         """
         Returns

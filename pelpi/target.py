@@ -37,7 +37,7 @@ class Material(_PelpiObject):
         -------
         User input `density` : mass/length**3 Quantity
         """
-        return self.default['density']
+        return self.get('density')
 
     def atomic_mass(self):
         """
@@ -45,7 +45,7 @@ class Material(_PelpiObject):
         -------
         User input `atomic_mass` : mass Quantity
         """
-        return self.default['atomic_mass']
+        return self.get('atomic_mass')
 
     def Z(self):
         """
@@ -53,7 +53,7 @@ class Material(_PelpiObject):
         -------
         User input `Z` : dimensionless Quantity
         """
-        return self.default['Z']
+        return self.get('Z')
 
     class _Electron(_PelpiObject):
         """
@@ -82,14 +82,12 @@ class Material(_PelpiObject):
             
             Electron number density is defined as Z x Ion number density
             """
-            if self.default['number_density'] is not None:
-                return self.default['number_density']
-            else:
-                Z           = self._mat.Z()
-                ni          = self._mat.ion.number_density()
-
-                ne          = Z*ni
-                return ne.to(_du['number_density'])
+            dim = 'number_density'
+            Z           = self._mat.Z()
+            ni          = self._mat.ion.number_density()
+            ne          = Z*ni
+            
+            return self._default_or_result('number_density',ne,dim)
 
     class _Ion(_PelpiObject):
         """
@@ -115,15 +113,15 @@ class Material(_PelpiObject):
             Ion number density is defined as follows
 
             .. math: TODO
+            
+            Electron number density is defined from ion number density (for defaults)
             """
-            if self.default['number_density'] is not None:
-                return self.default['number_density']
-            else:
-                rho         = self._mat.density()
-                am          = self._mat.atomic_mass()
-
-                ni          = rho/am
-                return ni.to(_du['number_density'])
+            dim = 'number_density'
+            rho         = self._mat.density()
+            am          = self._mat.atomic_mass()
+            ni          = rho/am
+            
+            return self._default_or_result('number_density',ni,dim)
 
 class Target(_PelpiObject):
     """

@@ -64,18 +64,17 @@ class ParticleInCell(_PelpiObject):
         --------
         TODO
         """
-        if self.default['length_cell'] is not None:
-            return self.default['length_cell']
+        dim = 'length'
+        if lim =='target':
+          dx = 3.4 * self.lpi.plasma.electron.length_Debye(temperature)
+        elif lim =='laser':
+          dx = self.lpi.laser.wavelength()/10.0
+        elif lim =='both':
+          dx = min(self.length_cell('target',temperature),self.length_cell('laser'))
         else:
-            if lim =='target':
-                dx = 3.4 * self.lpi.plasma.electron.length_Debye(temperature)
-            elif lim =='laser':
-                dx = self.lpi.laser.wavelength()/10.0
-            elif lim =='both':
-                dx = min(self.length_cell('target',temperature),self.length_cell('laser'))
-            else:
-                raise NameError("Unknown value of parameter 'lim'.")
-            return dx.to(_du['length'])
+          raise NameError("Unknown value of parameter 'lim'.")
+  
+        return self._default_or_result('length_cell',dx,dim)
 
     def time_step(self,lim,CFL,temperature=None):
         """
@@ -98,14 +97,13 @@ class ParticleInCell(_PelpiObject):
         time_step is calculated via the length_cell method, so see length_cell documentation
         for more information about `lim` and `temperature` parameters.
         """
-        if self.default['time_step'] is not None:
-            return self.default['time_step']
+        dim = 'time'
+        if CFL:
+          dt = 1/_np.sqrt(2) *self.length_cell(lim,temperature)/_u.c
         else:
-            if CFL:
-                dt = 1/_np.sqrt(2) *self.length_cell(lim,temperature)/_u.c
-            else:
-                dt = self.length_cell(lim,temperature)/_u.c
-            return dt.to(_du['time'])
+          dt = self.length_cell(lim,temperature)/_u.c
+          
+        return self._default_or_result('time_step',dt,dim)
 
     def space_resolution(self,lim,temperature=None):
         """
@@ -125,11 +123,10 @@ class ParticleInCell(_PelpiObject):
         space_resolution is calculated via the length_cell method, so see length_cell documentation
         for more information about `lim` and `temperature` parameters.
         """
-        if self.default['space_resolution'] is not None:
-            return self.default['space_resolution']
-        else:
-            resx = 1/self.length_cell(lim,temperature)
-            return resx # no unit conversion because already converted in length_cell
+        # no unit conversion because already converted in length_cell, so dim not defined
+        resx = 1/self.length_cell(lim,temperature)
+        
+        return self._default_or_result('space_resolution',resx) 
 
     def time_resolution(self,lim,CFL,temperature=None):
         """
@@ -152,11 +149,10 @@ class ParticleInCell(_PelpiObject):
         time_resolution is calculated via the length_cell method, so see length_cell documentation
         for more information about `lim` and `temperature` parameters.
         """
-        if self.default['time_resolution'] is not None:
-            return self.default['time_resolution']
-        else:
-            rest = 1/self.time_step(lim,CFL,temperature)
-            return rest # no unit conversion because already converted in time_step
+        # no unit conversion because already converted in time_step, so dim not defined
+        rest = 1/self.time_step(lim,CFL,temperature)
+        
+        return self._default_or_result('time_resolution',rest)
 
     class _Code(_PelpiObject):
         """
@@ -210,10 +206,15 @@ class ParticleInCell(_PelpiObject):
                 self._check_input('angular_frequency_reference',angular_frequency_reference,type(_du['angular_frequency']))
 
                 # Initialize default dict
-                self._initialize_defaults(input_dict={'angular_frequency_reference':angular_frequency_reference})
+                self._initialize_defaults(input_dict={'angular_frequency':angular_frequency_reference})
 
             def angular_frequency(self):
-                return self.default['angular_frequency_reference']
+                """
+                Returns
+                -------
+                Smilei reference angular frequency. In this case laser angular frequency
+                """
+                return self.get('angular_frequency')
 
             def length(self):
                 """
@@ -221,11 +222,10 @@ class ParticleInCell(_PelpiObject):
                 -------
                 Smilei reference length : length Quantity
                 """
-                if self.default['length'] is not None:
-                    return self.default['length']
-                else:
-                    Lr = _u.c/self.angular_frequency()
-                    return Lr.to(_du['length'])
+                dim = 'length'
+                Lr = _u.c/self.angular_frequency()
+                
+                return self._default_or_result('length',Lr,dim)
 
             def time(self):
                 """
@@ -233,11 +233,10 @@ class ParticleInCell(_PelpiObject):
                 -------
                 Smilei reference time : time Quantity
                 """
-                if self.default['time'] is not None:
-                    return self.default['time']
-                else:
-                    Tr = 1/self.angular_frequency()
-                    return Tr.to(_du['time'])
+                dim = 'time'
+                Tr = 1/self.angular_frequency()
+                
+                return self._default_or_result('time',Tr,dim)
 
             def electric_field(self):
                 """
@@ -245,11 +244,10 @@ class ParticleInCell(_PelpiObject):
                 -------
                 Smilei reference electric field : Quantity
                 """
-                if self.default['electric_field'] is not None:
-                    return self.default['electric_field']
-                else:
-                    Er = _u.m_e * _u.c * self.angular_frequency()/_u.e
-                    return Er.to(_du['electric_field'])
+                dim = 'electric_field'
+                Er = _u.m_e * _u.c * self.angular_frequency()/_u.e
+
+                return self._default_or_result('electric_field',Er,dim)
 
             def magnetic_field(self):
                 """
@@ -257,11 +255,10 @@ class ParticleInCell(_PelpiObject):
                 -------
                 Smilei reference magnetic field : Quantity
                 """
-                if self.default['magnetic_field'] is not None:
-                    return self.default['magnetic_field']
-                else:
-                    Br = _u.m_e * self.angular_frequency()/_u.e
-                    return Br.to(_du['magnetic_field'])
+                dim = 'magnetic_field'
+                Br = _u.m_e * self.angular_frequency()/_u.e
+
+                return self._default_or_result('magnetic_field',Br,dim)
 
             def number_density(self):
                 """
@@ -269,11 +266,10 @@ class ParticleInCell(_PelpiObject):
                 -------
                 Smilei reference number density : 1/length**3 Quantity
                 """
-                if self.default['number_density'] is not None:
-                    return self.default['number_density']
-                else:
-                    Nr = _u.m_e * _u.epsilon_0 *(self.angular_frequency()/_u.e)**2
-                    return Nr.to(_du['number_density'])
+                dim = 'number_density'
+                Nr = _u.m_e * _u.epsilon_0 *(self.angular_frequency()/_u.e)**2
+                
+                return self._default_or_result('number_density',Nr,dim)
 
             def current(self):
                 """
@@ -281,11 +277,10 @@ class ParticleInCell(_PelpiObject):
                 -------
                 Smilei reference current : Quantity
                 """
-                if self.default['current'] is not None:
-                    return self.default['current']
-                else:
-                    Jr = _u.c * _u.e * self.number_density()
-                    return Jr.to(_du['current'])
+                dim = 'current'
+                Jr = _u.c * _u.e * self.number_density()
+                
+                return self._default_or_result('current',Jr,dim)
 
             def energy(self):
                 """
@@ -293,11 +288,10 @@ class ParticleInCell(_PelpiObject):
                 -------
                 Smilei reference energy : energy Quantity
                 """
-                if self.default['energy'] is not None:
-                    return self.default['energy']
-                else:
-                    Kr = 1 * _u.m_e * _u.c**2
-                    return Kr.to(_du['energy'])
+                dim = 'energy'
+                Kr = 1 * _u.m_e * _u.c**2
+                
+                return self._default_or_result('energy',Kr,dim)
 
             def momentum(self):
                 """
@@ -305,8 +299,7 @@ class ParticleInCell(_PelpiObject):
                 -------
                 Smilei reference momentum : Quantity
                 """
-                if self.default['momentum'] is not None:
-                    return self.default['momentum']
-                else:
-                    Pr = 1 * _u.m_e * _u.c
-                    return Pr.to(_du['momentum'])
+                dim = 'momentum'
+                Pr = 1 * _u.m_e * _u.c
+                
+                return self._default_or_result('momentum',Pr,dim)

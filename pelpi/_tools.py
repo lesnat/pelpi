@@ -87,7 +87,8 @@ class _PelpiObject(object):
             # if 'attr_name' is a method, and is not private (i.e. not starts with '_')
             if str(attr_type)=="<type 'instancemethod'>" and attr_name[0]!="_":
                 # then a new dict entry is initialize to None
-                self.set(attr_name,None,verbose=False)
+                if attr_name!='set' and attr_name!='get':
+                    self.set(attr_name,None,verbose=False)
         
         # Put input_dict into default if input_dict is defined.
         # This might be done after creating all the `attr_name`s entries. This way it replaces None value.

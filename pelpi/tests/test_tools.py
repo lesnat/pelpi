@@ -25,15 +25,15 @@ class test_PelpiObject(unittest.TestCase):
 
     def test_initialize_defaults(self):
         self.po._initialize_defaults()
-        self.assertEqual(self.po.default,{})
+        self.assertEqual(self.po.get(key='all'),{})
         
         self.po._initialize_defaults(input_dict={"test_input":1.0})
-        self.assertEqual(self.po.default,{'test_input':1.0})
+        self.assertEqual(self.po.get(key='all'),{'test_input':1.0})
         
         self.po.test_attribute = 0.0
         self.po.test_method = self.test_check_input # instance method
         self.po._initialize_defaults(input_dict={"test_input":1.0})
-        self.assertEqual(self.po.default,{'test_input':1.0,'test_method':None})
+        self.assertEqual(self.po.get(key='all'),{'test_input':1.0,'test_method':None})
         
     def test_estimate(self):
         self.po._estimate(ExampleLPI().lpiGGAl,"Common","electron.number_total",temperature=1.0 * u.MeV, absorption_efficiency=0.1 * u(''))

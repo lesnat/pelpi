@@ -1,9 +1,3 @@
-#Package for Estimate Laser-Plasma Interaction (pelpi)
-
-pelpi core functionality -> lpi ; + calculus for pic or laser
-
-tatata, designed for ...
-
 ```python
 # TODO : 
 import numpy as np
@@ -85,15 +79,13 @@ in init & general structure
 
 #### Properties
 
-import, prefered_unit
+import, default_unit
 
 #### TODO
 
-warnings?
-
-structure OK ?
-
 start estimate methods by e like electron.hot.e_density for ex. for differenciate estimates from exact calculations ? analytical calc. also comes from models.
+
+function for displaying quantities
 
 ### _PelpiObject
 
@@ -175,6 +167,8 @@ target.method : basic target properties + estimations (via _addMethod) : KO
 
 More models
 
+a0 or a0/2 in Wilks1992 model ?
+
 
 
 ### ParticleInCell
@@ -190,63 +184,3 @@ dx, CU calculations, Tsim, Lsim, Npatches (KO)
 change struct for $\neq$ codes ?
 
 autoconvert to CU
-
-
-
-## TODO
-
-Defining class attributes model_HotElectronTotalNumber or subclass model.HotElectronTotalNumber ? or this + kwargs in methods for giving the choice to the user ?
-
-examples on how to use pelpi in different ways (using models, using lpi methods with/wo kwargs)
-
-remove all class attributes ?
-
-split getInfo into different precise functions or print when call a method if verbosities=0.
-
-Model accesibility via pelpi.Model wo having a Model mother class
-
-split models into different files ?
-
-function for displaying quantities
-
-replace .to_base_units() by .to('dimensionless') for dimensionless units (more explicit)
-
-hotElectronTotalNumber or totalNumberHotElectron or numberTotalHotElectron ? hotElectronTemperature or temperatureHotElectron ? hotElectronPenetrationDepth or hotElectronStoppingLength or lengthStoppingHotElectron ? (dimension + dimension adjective + particle adjective + particle **OR** particle adjective + particle (or Laser/Target ...) + dimension + dimension adjective)
-
-a0 or a0/2 in Wilks1992 model ?
-
-argument loop=True -> loop over all the models with a checkHypotheses and try, except for getting the max value for ex. (func=max in arguments and return func(list))
-
-make a difference between warnings with and wo a test  in checkHypotheses?
-
-hide attributes + add corresponding method + add a set(variable) method for reset an input variable value
-
-Profile class for both laser & target ? Base profiles (1d/2d) + user func.
-
-Create 1 private variable for each method for using the set method **OR** argument=None and if None use method -> need to define intermediate variables in methods. Easy to implement but can be heavy if want to do many calculus with a user-defined Lsim for ex. Or options + dictionnary with defaults
-
-```python
-self._userValues={\
-                'resx':False,\
- 				'resy':False,\
-            	'Lsim':False,\
-				'Tsim':False\
-                }
-
-self._defaultValues={}
-
-# class.set('resx',20) 
-# -> 	class._userValues['resx']=True
-# 		if not class._defaultValues['resx'] : class._defaultValues.append('resx':20)
-
-def Tsim(self):
-    if self._userValues['Lsim']:
-        Lsim=self._default['Lsim']
-    else:
-        Lsim=self.length_simulation()
-        
-    return (Lsim/_u.c).to(_pu['length'])
-```
-
-
-

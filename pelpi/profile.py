@@ -1,6 +1,6 @@
 #coding:utf8
 from ._global import *
-from ._tools import _PelpiObject
+from ._tools import _PelpiObject,_Default
 
 __all__=["Profile"]
 
@@ -56,7 +56,7 @@ class Profile(_PelpiObject):
         self._check_input('radius'  , radius    , "<class 'pint.unit.Quantity'>") # Can be time or length
 
         # Initialize default dict
-        self._initialize_defaults(input_dict={'profile':profile,'fwhm':fwhm,'radius':radius})
+        self.default = _Default(self,input_dict={'profile':profile,'fwhm':fwhm,'radius':radius})
 
 
     def profile(self):
@@ -65,7 +65,7 @@ class Profile(_PelpiObject):
         -------
         User input `profile` : str
         """
-        return self.default['profile']
+        return self.default.get('profile')
 
     def fwhm(self):
         """
@@ -73,7 +73,7 @@ class Profile(_PelpiObject):
         -------
         User input `fwhm` : Quantity
         """
-        return self.default['fwhm']
+        return self.default.get('fwhm')
 
     def radius(self):
         """
@@ -81,7 +81,7 @@ class Profile(_PelpiObject):
         -------
         User input `radius` : Quantity
         """
-        return self.default['radius']
+        return self.default.get('radius')
 
     def envelope(self,x):
         """

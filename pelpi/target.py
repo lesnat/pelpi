@@ -1,6 +1,6 @@
 #coding:utf8
 from ._global import *
-from ._tools import _PelpiObject
+from ._tools import _PelpiObject,_Default
 
 
 __all__ = ["Material","Target"]
@@ -25,7 +25,7 @@ class Material(_PelpiObject):
         self._check_input('Z'           ,Z          ,type(_du['number']))
 
         # Initialize default dict
-        self._initialize_defaults(input_dict={'density':density,'atomic_mass':atomic_mass,'Z':Z})
+        self.default = _Default(self,input_dict={'density':density,'atomic_mass':atomic_mass,'Z':Z})
 
         # Instanciate sub-classes
         self.electron      = self._Electron(self)
@@ -37,7 +37,7 @@ class Material(_PelpiObject):
         -------
         User input `density` : mass/length**3 Quantity
         """
-        return self.default['density']
+        return self.default.get('density')
 
     def atomic_mass(self):
         """
@@ -45,7 +45,7 @@ class Material(_PelpiObject):
         -------
         User input `atomic_mass` : mass Quantity
         """
-        return self.default['atomic_mass']
+        return self.default.get('atomic_mass')
 
     def Z(self):
         """
@@ -53,7 +53,7 @@ class Material(_PelpiObject):
         -------
         User input `Z` : dimensionless Quantity
         """
-        return self.default['Z']
+        return self.default.get('Z')
 
     class _Electron(_PelpiObject):
         """
@@ -63,7 +63,7 @@ class Material(_PelpiObject):
             # No need to check input because this method is only called in Material definition.
 
             # Initialize default dict
-            self._initialize_defaults()
+            self.default = _Default(self)
 
             # Save reference to Material instance in a private variable
             self._mat = material
@@ -79,16 +79,15 @@ class Material(_PelpiObject):
             Electron number density is defined as follows
 
             .. math: TODO
+            
+            Electron number density is defined as Z x Ion number density
             """
-            if self.default['number_density'] is not None:
-                return self.default['number_density']
-            else:
-                Z           = self._mat.Z()
-                rho         = self._mat.density()
-                am          = self._mat.atomic_mass()
-
-                ne          = (Z*rho/am)
-                return ne.to(_du['number_density'])
+            dim = 'number_density'
+            Z           = self._mat.Z()
+            ni          = self._mat.ion.number_density()
+            ne          = Z*ni
+            
+            return self.default.result('number_density',ne,dim)
 
     class _Ion(_PelpiObject):
         """
@@ -98,7 +97,7 @@ class Material(_PelpiObject):
             # No need to check input because this method is only called in Material definition.
 
             # Initialize default dict
-            self._initialize_defaults()
+            self.default = _Default(self)
 
             # Save reference to Material instance in a private variable
             self._mat = material
@@ -114,15 +113,15 @@ class Material(_PelpiObject):
             Ion number density is defined as follows
 
             .. math: TODO
+            
+            Electron number density is defined from ion number density (for defaults)
             """
-            if self.default['number_density'] is not None:
-                return self.default['number_density']
-            else:
-                rho         = self._mat.density()
-                am          = self._mat.atomic_mass()
-
-                ni          = rho/am
-                return ni.to(_du['number_density'])
+            dim = 'number_density'
+            rho         = self._mat.density()
+            am          = self._mat.atomic_mass()
+            ni          = rho/am
+            
+            return self.default.result('number_density',ni,dim)
 
 class Target(_PelpiObject):
     """
@@ -143,7 +142,7 @@ class Target(_PelpiObject):
         self._check_input('material',material,"<class 'pelpi.target.Material'>")
 
         # Initialize default dict
-        self._initialize_defaults()
+        self.default = _Default(self)
 
         # Save reference to Material instance
         self.material=material

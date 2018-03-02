@@ -186,6 +186,8 @@ class Laser(_PelpiObject):
 
         with :math:`I_{18}` the laser peak intensity in :math:`10^{18} W.cm^{-2}`
         and :math:`\lambda_{\mu}` the laser wavelength in :math:`10^{-6} m`.
+        
+        ``intensity_peak_normalized`` is calculated from ``intensity`` method.
         """
         dim = 'number'
         I0 = self.intensity(r=0*_u('m'),t=0*_u('s'))

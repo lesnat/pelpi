@@ -1,6 +1,6 @@
 #coding:utf8
 from ._global import *
-from ._tools import _PelpiObject
+from ._tools import _PelpiObject,_Default
 
 __all__ = ["Laser"]
 
@@ -55,7 +55,7 @@ class Laser(_PelpiObject):
         self._check_input('energy'          ,energy         , type(_du['energy']))
 
         # Initialize default dict
-        self._initialize_defaults(input_dict={'wavelength':wavelength,'energy':energy})
+        self.default = _Default(self,input_dict={'wavelength':wavelength,'energy':energy})
 
         # Save references to Profile instances
         self.time_profile  = time_profile # TODO: save as attr or in default or both ?
@@ -96,7 +96,7 @@ class Laser(_PelpiObject):
         dim = 'angular_frequency'
         wl = (2*_np.pi*_u.c/self.wavelength())
 
-        return self._default_or_result('angular_frequency',wl,dim)
+        return self.default.result('angular_frequency',wl,dim)
 
     def envelope(self,r,t):
         """
@@ -118,7 +118,7 @@ class Laser(_PelpiObject):
         dim = 'number'
         env = self.space_profile.envelope(r) * self.time_profile.envelope(t)
         
-        return self._default_or_result('envelope',env,dim)
+        return self.default.result('envelope',env,dim)
 
     def power(self,r=0*_u('m'),t=0*_u('s')):
         """
@@ -144,7 +144,7 @@ class Laser(_PelpiObject):
         dim = 'power'
         P = self.energy()/self.time_profile.integral1D() * self.envelope(r,t)
         
-        return self._default_or_result('power',P,dim)
+        return self.default.result('power',P,dim)
 
     def intensity(self,r=0*_u('m'),t=0*_u('s')):
         """
@@ -170,7 +170,7 @@ class Laser(_PelpiObject):
         dim = 'intensity'
         I = self.power(r,t)/self.space_profile.integral2D()
         
-        return self._default_or_result('intensity',I,dim)
+        return self.default.result('intensity',I,dim)
 
     def intensity_peak_normalized(self): # TODO: calculate with the original definition
         """
@@ -192,7 +192,7 @@ class Laser(_PelpiObject):
         #a0 = 0.85*_np.sqrt((I0*(self.wavelength())**2)/(1.e18*_u('W*um**2/cm**2')))
         a0 = (_u.e * self.wavelength() * _np.sqrt(2 * I0 * _u.mu_0 * _u.c))/(2 * _np.pi * _u.m_e * _u.c**2)
         
-        return self._default_or_result('intensity_peak_normalized',a0,dim)
+        return self.default.result('intensity_peak_normalized',a0,dim)
         
 
     class _Photon(_PelpiObject):
@@ -203,7 +203,7 @@ class Laser(_PelpiObject):
             # No need to check input because this method is only called in Laser definition.
 
             # Initialise default dict
-            self._initialize_defaults()
+            self.default = _Default(self)
 
             # Save reference to Laser instance in a private variable
             self._las = laser
@@ -223,7 +223,7 @@ class Laser(_PelpiObject):
             dim = 'energy'
             E=_u.h *_u.c/self._las.wavelength()
             
-            return self._default_or_result('energy',E,dim)
+            return self.default.result('energy',E,dim)
 
     class _Electron(_PelpiObject):
         """
@@ -233,7 +233,7 @@ class Laser(_PelpiObject):
             # No need to check input because this method is only called in Laser definition.
 
             # Initialise default dict
-            self._initialize_defaults()
+            self.default = _Default(self)
 
             # Save reference to Laser instance in a private variable
             self._las = Laser
@@ -253,4 +253,4 @@ class Laser(_PelpiObject):
             dim = 'number_density'
             nc = _u.m_e*_u.epsilon_0*(self._las.angular_frequency()/_u.e)**2
             
-            return self._default_or_result('number_density_critical',nc,dim)
+            return self.default.result('number_density_critical',nc,dim)

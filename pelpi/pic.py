@@ -1,7 +1,7 @@
 #coding:utf8
 
 from ._global import *
-from ._tools import _PelpiObject
+from ._tools import _PelpiObject,_Default
 
 class ParticleInCell(_PelpiObject):
     """
@@ -24,7 +24,7 @@ class ParticleInCell(_PelpiObject):
         self._check_input('lpi',lpi,"<class 'pelpi.lpi.LaserPlasmaInteraction'>")
 
         # Initialize default dict
-        self._initialize_defaults()
+        self.default = _Default(self)
 
         # Save reference to lpi instance into attributes
         self.lpi       = lpi
@@ -74,7 +74,7 @@ class ParticleInCell(_PelpiObject):
         else:
           raise NameError("Unknown value of parameter 'lim'.")
   
-        return self._default_or_result('length_cell',dx,dim)
+        return self.default.result('length_cell',dx,dim)
 
     def time_step(self,lim,CFL,temperature=None):
         """
@@ -103,7 +103,7 @@ class ParticleInCell(_PelpiObject):
         else:
           dt = self.length_cell(lim,temperature)/_u.c
           
-        return self._default_or_result('time_step',dt,dim)
+        return self.default.result('time_step',dt,dim)
 
     def space_resolution(self,lim,temperature=None):
         """
@@ -126,7 +126,7 @@ class ParticleInCell(_PelpiObject):
         # no unit conversion because already converted in length_cell, so dim not defined
         resx = 1/self.length_cell(lim,temperature)
         
-        return self._default_or_result('space_resolution',resx) 
+        return self.default.result('space_resolution',resx) 
 
     def time_resolution(self,lim,CFL,temperature=None):
         """
@@ -152,7 +152,7 @@ class ParticleInCell(_PelpiObject):
         # no unit conversion because already converted in time_step, so dim not defined
         rest = 1/self.time_step(lim,CFL,temperature)
         
-        return self._default_or_result('time_resolution',rest)
+        return self.default.result('time_resolution',rest)
 
     class _Code(_PelpiObject):
         """
@@ -206,7 +206,7 @@ class ParticleInCell(_PelpiObject):
                 self._check_input('angular_frequency_reference',angular_frequency_reference,type(_du['angular_frequency']))
 
                 # Initialize default dict
-                self._initialize_defaults(input_dict={'angular_frequency':angular_frequency_reference})
+                self.default = _Default(self,input_dict={'angular_frequency':angular_frequency_reference})
 
             def angular_frequency(self):
                 """
@@ -225,7 +225,7 @@ class ParticleInCell(_PelpiObject):
                 dim = 'length'
                 Lr = _u.c/self.angular_frequency()
                 
-                return self._default_or_result('length',Lr,dim)
+                return self.default.result('length',Lr,dim)
 
             def time(self):
                 """
@@ -236,7 +236,7 @@ class ParticleInCell(_PelpiObject):
                 dim = 'time'
                 Tr = 1/self.angular_frequency()
                 
-                return self._default_or_result('time',Tr,dim)
+                return self.default.result('time',Tr,dim)
 
             def electric_field(self):
                 """
@@ -247,7 +247,7 @@ class ParticleInCell(_PelpiObject):
                 dim = 'electric_field'
                 Er = _u.m_e * _u.c * self.angular_frequency()/_u.e
 
-                return self._default_or_result('electric_field',Er,dim)
+                return self.default.result('electric_field',Er,dim)
 
             def magnetic_field(self):
                 """
@@ -258,7 +258,7 @@ class ParticleInCell(_PelpiObject):
                 dim = 'magnetic_field'
                 Br = _u.m_e * self.angular_frequency()/_u.e
 
-                return self._default_or_result('magnetic_field',Br,dim)
+                return self.default.result('magnetic_field',Br,dim)
 
             def number_density(self):
                 """
@@ -269,7 +269,7 @@ class ParticleInCell(_PelpiObject):
                 dim = 'number_density'
                 Nr = _u.m_e * _u.epsilon_0 *(self.angular_frequency()/_u.e)**2
                 
-                return self._default_or_result('number_density',Nr,dim)
+                return self.default.result('number_density',Nr,dim)
 
             def current(self):
                 """
@@ -280,7 +280,7 @@ class ParticleInCell(_PelpiObject):
                 dim = 'current'
                 Jr = _u.c * _u.e * self.number_density()
                 
-                return self._default_or_result('current',Jr,dim)
+                return self.default.result('current',Jr,dim)
 
             def energy(self):
                 """
@@ -291,7 +291,7 @@ class ParticleInCell(_PelpiObject):
                 dim = 'energy'
                 Kr = 1 * _u.m_e * _u.c**2
                 
-                return self._default_or_result('energy',Kr,dim)
+                return self.default.result('energy',Kr,dim)
 
             def momentum(self):
                 """
@@ -302,4 +302,4 @@ class ParticleInCell(_PelpiObject):
                 dim = 'momentum'
                 Pr = 1 * _u.m_e * _u.c
                 
-                return self._default_or_result('momentum',Pr,dim)
+                return self.default.result('momentum',Pr,dim)

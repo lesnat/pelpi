@@ -1,6 +1,6 @@
 #coding:utf8
 from ._global import *
-from ._tools import _PelpiObject
+from ._tools import _PelpiObject,_Default
 
 
 __all__ = ["Material","Target"]
@@ -25,7 +25,7 @@ class Material(_PelpiObject):
         self._check_input('Z'           ,Z          ,type(_du['number']))
 
         # Initialize default dict
-        self._initialize_defaults(input_dict={'density':density,'atomic_mass':atomic_mass,'Z':Z})
+        self.default = _Default(self,input_dict={'density':density,'atomic_mass':atomic_mass,'Z':Z})
 
         # Instanciate sub-classes
         self.electron      = self._Electron(self)
@@ -63,7 +63,7 @@ class Material(_PelpiObject):
             # No need to check input because this method is only called in Material definition.
 
             # Initialize default dict
-            self._initialize_defaults()
+            self.default = _Default(self)
 
             # Save reference to Material instance in a private variable
             self._mat = material
@@ -87,7 +87,7 @@ class Material(_PelpiObject):
             ni          = self._mat.ion.number_density()
             ne          = Z*ni
             
-            return self._default_or_result('number_density',ne,dim)
+            return self.default.result('number_density',ne,dim)
 
     class _Ion(_PelpiObject):
         """
@@ -97,7 +97,7 @@ class Material(_PelpiObject):
             # No need to check input because this method is only called in Material definition.
 
             # Initialize default dict
-            self._initialize_defaults()
+            self.default = _Default(self)
 
             # Save reference to Material instance in a private variable
             self._mat = material
@@ -121,7 +121,7 @@ class Material(_PelpiObject):
             am          = self._mat.atomic_mass()
             ni          = rho/am
             
-            return self._default_or_result('number_density',ni,dim)
+            return self.default.result('number_density',ni,dim)
 
 class Target(_PelpiObject):
     """
@@ -142,7 +142,7 @@ class Target(_PelpiObject):
         self._check_input('material',material,"<class 'pelpi.target.Material'>")
 
         # Initialize default dict
-        self._initialize_defaults()
+        self.default = _Default(self)
 
         # Save reference to Material instance
         self.material=material

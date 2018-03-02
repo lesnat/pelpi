@@ -71,7 +71,7 @@ class Laser(_PelpiObject):
         -------
         User input `wavelength` : length Quantity
         """
-        return self.get('wavelength')
+        return self.default.get('wavelength')
 
     def energy(self):
         """
@@ -79,7 +79,7 @@ class Laser(_PelpiObject):
         -------
         User input `energy` : energy Quantity
         """
-        return self.get('energy')
+        return self.default.get('energy')
 
     def angular_frequency(self):
         """

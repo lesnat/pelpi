@@ -37,7 +37,7 @@ class Material(_PelpiObject):
         -------
         User input `density` : mass/length**3 Quantity
         """
-        return self.get('density')
+        return self.default.get('density')
 
     def atomic_mass(self):
         """
@@ -45,7 +45,7 @@ class Material(_PelpiObject):
         -------
         User input `atomic_mass` : mass Quantity
         """
-        return self.get('atomic_mass')
+        return self.default.get('atomic_mass')
 
     def Z(self):
         """
@@ -53,7 +53,7 @@ class Material(_PelpiObject):
         -------
         User input `Z` : dimensionless Quantity
         """
-        return self.get('Z')
+        return self.default.get('Z')
 
     class _Electron(_PelpiObject):
         """

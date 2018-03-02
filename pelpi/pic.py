@@ -214,7 +214,7 @@ class ParticleInCell(_PelpiObject):
                 -------
                 Smilei reference angular frequency. In this case laser angular frequency
                 """
-                return self.get('angular_frequency')
+                return self.default.get('angular_frequency')
 
             def length(self):
                 """

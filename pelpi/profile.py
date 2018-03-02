@@ -65,7 +65,7 @@ class Profile(_PelpiObject):
         -------
         User input `profile` : str
         """
-        return self.get('profile')
+        return self.default.get('profile')
 
     def fwhm(self):
         """
@@ -73,7 +73,7 @@ class Profile(_PelpiObject):
         -------
         User input `fwhm` : Quantity
         """
-        return self.get('fwhm')
+        return self.default.get('fwhm')
 
     def radius(self):
         """
@@ -81,7 +81,7 @@ class Profile(_PelpiObject):
         -------
         User input `radius` : Quantity
         """
-        return self.get('radius')
+        return self.default.get('radius')
 
     def envelope(self,x):
         """

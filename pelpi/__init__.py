@@ -7,7 +7,7 @@ Module documentation ...
 # import _compat
 __all__ = ["Profile","Material","Target","Laser","LaserPlasmaInteraction","ParticleInCell"]
 
-__version__=0.1
+__version__=0.2
 
 import pint
 unit=pint.UnitRegistry()

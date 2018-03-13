@@ -12,13 +12,36 @@ Malka 2001 -> Scaling Energie max electrons
 ################################################################################
 class _ExampleModel(_PelpiObject):
     """
-    This is an example model, for developers.
+    Short Description : This is an example model, for developers.
+    
+    Hypotheses
+    ----------
+    List of hypotheses or numerical/experimental parameters used in the paper
+    Code
+        2D PIC code
+        ...
+        
+    Target
+        Solid aluminium
+        ...
+        
+    Laser
+        Intensity :math:`I = 10^{18} W.cm^{-2}`
+        ...
 
-    Just copy-paste this example and adapt it.
+    Reference
+    ---------
+    Authors
+    Title
+    Journal, year
 
-    Then, please check in the LaserPlasmaInteraction object if a method name with the same 'path' as the model method exists
-    If yes, just update the doc of the correspondant lpi method,
-    otherwise, create a new method in lpi.
+    Notes
+    -----
+    Additional informations : Just copy-paste this example class and adapt it.
+
+    Please write a short doc like this and update the LaserPlasmaInteraction call method.
+    It would also be great to write a short test to ensure that the results of the method
+    will not be broken during further developments.
     """
     def __init__(self,lpi):
         # Test user input
@@ -56,7 +79,19 @@ class _ExampleModel(_PelpiObject):
 
             def example_method(self):
                 """
-                Documentation
+                Returns
+                -------
+                Here write what does return the method
+                
+                Notes
+                -----
+                This is an example note to explain how the calculation is done
+                
+                .. math: n = \\frac{n_e}{n_c}
+                
+                with :math:`n` the normalized electron density
+                :math:`n_e` the electron number density
+                :math:`n_c` the laser critical density
                 """
                 # Save some intermediate values
                 ne = self._lpi.target.material.electron.number_density()
@@ -70,7 +105,7 @@ class _ExampleModel(_PelpiObject):
 
             def example_method_with_param(self,param1=None,param2=None):
                 """
-                Always initialize param to None ; this way ...
+                param initialization ...
                 """
                 pass
 
@@ -80,28 +115,46 @@ class _ExampleModel(_PelpiObject):
 
     class _Ion(_PelpiObject):
         def __init__(self,lpi):
-            pass
+            self._lpi=lpi
 
     class _Positron(_PelpiObject):
         def __init__(self,lpi):
-            pass
+            self._lpi=lpi
 
     class _Photon(_PelpiObject):
         def __init__(self,lpi):
-            pass
+            self._lpi=lpi
 
 
 ################################################################################
 class Beg1997(_PelpiObject):
     """
-    Class for estimating ...
-    Experimental fit
+    Experimental study of ultra-intense laser solid interaction
+    
+    Hypotheses
+    ----------    
+    Target
+      Material from CH to Cu
+      Few 10 micrometers thick
 
-    hypotheses
-
-    reference
-    ...
-    Experimental laser intensity etc ...
+    Laser
+      Wavelength 1.053 micrometer
+      Pulse duration 0.7 to 1.3 ps
+      Intensity between :math:`10^{17}` and :math:`10^{19} W.cm^{-2}`
+      Contrast :math:`1:10^{-6}`
+      p polarized
+      Incidence 30 degrees 
+      Spot size about 12 micrometers
+    
+    Reference
+    ---------
+    F. N. Beg, A. R. Bell, A. E. Dangor, C. N. Danson, A. P. Fews, M. E. Glinsky,B. A. Hammel, P. Lee, P. A. Norreys, and M. Tatarakis
+    A study of picosecond laser–solid interactions up to :math:`10^{19} W.cm^{-2}`
+    Physics of Plasmas, 1997
+    
+    Notes
+    -----
+    Predominant absorption mechanism seems to be resonance absorption
     """
     def __init__(self,lpi):
         self._check_input('lpi',lpi,"<class 'pelpi.lpi.LaserPlasmaInteraction'>")
@@ -118,13 +171,18 @@ class Beg1997(_PelpiObject):
 
             def temperature(self):
                 """
-                Return an estimate of the hot electron temperature from the Beg1997 model.
-
-                .. math:
-                    T_e^h = 100 * (\\frac{I_{17} \lambda_{\mu}^2})^(1/3)
-                    with $T_e^h$ the hot electron temperature in keV
-                    $I_{17}$ the laser peak intensity in $10^{17} W.cm^{-2}$
-                    $\lambda_{\mu}$ the laser wavelength in $10^{-6}$ m
+                Returns
+                -------
+                Hot electron temperature
+                
+                Notes
+                -----
+                
+                .. math: T_e^h = 100 * (\\frac{I_{17} \lambda_{\mu}^2})^(1/3)
+                    
+                with :math:`T_e^h` the hot electron temperature in keV
+                :math:`I_{17}` the laser peak intensity in :math:`10^{17} W.cm^{-2}`
+                :math:`\lambda_{\mu}` the laser wavelength in micrometer
                 """
                 I0              = self._lpi.laser.intensity()
                 lambda_laser    = self._lpi.laser.wavelength()
@@ -139,15 +197,32 @@ class Beg1997(_PelpiObject):
 
         def energy_cutoff(self):
             """
-            Return the maximum ion energy
+            Returns
+            -------
+            Maximum ion energy
+            
+            Notes
+            -----
+            
+            .. math: E_{max} = 1.2 \pm (0.3) \\times 10^{-2} (I/W.cm^{-2})^{0.313 \pm 0.03} keV
             """
             return (1.2e-2*_u('keV')) * (self._lpi.laser.I0.to('W/cm**2'))**(0.313)
 
 class Haines2009(_PelpiObject):
     """
-    Theoretical model ....
-    Ref
+    Theoretical model on ...
+    
     Hypotheses
+    ----------
+    
+    
+    
+    
+    Reference
+    ---------
+    M. G. Haines,1,2 M. S. Wei, F. N. Beg, and R. B. Stephens
+    Hot-Electron Temperature and Laser-Light Absorption in Fast Ignition
+    Physical Review Letters, 2009
     """
     def __init__(self,lpi):
         self._check_input('lpi',lpi,"<class 'pelpi.lpi.LaserPlasmaInteraction'>")
@@ -165,16 +240,16 @@ class Haines2009(_PelpiObject):
                 """
                 Returns
                 -------
-                Estimate of the hot electron temperature.
+                Hot electron temperature
 
                 Notes
                 -----
                 
                 .. math: T_e^h = (\sqrt{1 + \sqrt{2} \ a_0} - 1 ) m_e c^2
 
-                with $T_e^h$ the hot electron temperature
-                $a_0$ the normalized laser intensity
-                $m_e c^2$ the electron mass energy
+                with :math:`T_e^h` the hot electron temperature
+                :math:`a_0` the normalized laser intensity
+                :math:`m_e c^2` the electron mass energy
                 """
                 a0 = self._lpi.laser.intensity_peak_normalized()
                 return ((1.0 + 2.0**(1/2.) * a0)**(1/2.) - 1.0) * 511 * _u('keV')
@@ -183,13 +258,24 @@ class Haines2009(_PelpiObject):
 
 class Price1995(_PelpiObject):
     """
-    Experimental, UHI -> 10 % abso.
+    Experimental results on solid target absorption of short pulse high-constrast laser from :math:`10^{13}` to :math:`10^{18} W.cm^{-2}`.
     
     Hypotheses
     ----------
-    Contrast
-    Intensity
-    ...
+    Target
+        Material Al, Cu, Ta, Quartz
+    
+    Laser
+        wavelength :math:`0.8 \mu m`
+        temporal FWHM 120 fs
+        1 ps contrast :math:`\\approx 10^{-7}`
+        intensity from :math:`10^{13}` to :math:`10^{18} W.cm^{-2}` (by moving the target from laser focal point)
+
+    Reference
+    ---------
+    D. F. Price, R. M. More, R. S. Walling, G. Guethlein, R. L. Shepherd, R. E. Stewart, and W. E. White
+    Absorption of Ultrashort Laser Pulses by Solid Targets Heated Rapidly to Temperatures 1—1000 ev
+    Physical Review Letters, 1995
     """
     def __init__(self,lpi): # Useless access to lpi, but general method
         self._check_input('lpi',lpi,"<class 'pelpi.lpi.LaserPlasmaInteraction'>")
@@ -200,28 +286,50 @@ class Price1995(_PelpiObject):
             self.hot = self._Hot(lpi)
             
         def absorption_efficiency(self):
+            """
+            Returns
+            -------
+            Total electron absorption efficiency of the laser pulse
+            
+            Notes
+            -----
+            ``absorption_efficiency`` is independant from the material and is equal to 10 \%.
+            """
             return 0.1 * _u('')
                 
 
 
 class Wilks1992(_PelpiObject):
     """
-    Class for estimating ...
-    Based of the paper of Wilks, ..., 1992.
+    2D relativistic PIC code simulation of an ultra-intense laser interacting with an overdense plasma.
+    
+    Hypotheses
+    ----------
+    Code
+        2D relativistic PIC simulations
+        Colisionless plasma
+    
+    Target
+        Hydrogen plasma
+        Density = 4 critical density
+        Initial electron temperature 4 keV
+        
+    Laser
+        Intensity times wavelength :math:`I \lambda_\mu^2 = 1.3 \\times 10^{18}` or :math:`1.9 \\times 10^{19} W. \mu m^2 . cm^{-2}`
+        Normal incidence
+        Gaussian intensity profile
+        p and s polarization
+        During all simulation time
 
-    Attributes
+    Reference
     ---------
-
-
-    Methods
-    ------
-
-
-
+    S. C. Wilks, W. L. Kruer, M. Tabak, and A. B. Langdon
+    Absorption of Ultra-Intense Laser Pulses
+    Physical Review Letters, 1992
+    
     Notes
-    ----
-
-
+    -----
+    This scaling is not appropriate for lower intensities because of other predominant absorption modes
     """
 
     def __init__(self,lpi):
@@ -238,13 +346,18 @@ class Wilks1992(_PelpiObject):
 
             def temperature(self):
                 """
-                Return an estimate of the hot electron temperature from the Wilks1992 model.
-
+                Returns
+                -------
+                Hot electron temperature
+                
+                Notes
+                -----
+                
                 .. math: T_e^h = (\sqrt{1 + a_0^2} - 1 ) m_e c^2
                 
-                with $T_e^h$ the hot electron temperature
-                $a_0$ the normalized laser intensity
-                $m_e c^2$ the electron mass energy
+                with :math:`T_e^h` the hot electron temperature
+                :math:`a_0` the normalized laser intensity
+                :math:`m_e c^2` the electron mass energy
                 """
                 a0 = self._lpi.laser.intensity_peak_normalized()
                 return ((1.0 + (a0)**2)**(1/2.) - 1.0 ) * 511 * _u('keV') # TODO: a0 or a0/2 ?
@@ -252,24 +365,7 @@ class Wilks1992(_PelpiObject):
 ################################################################################
 class Common(_PelpiObject):
     """
-    Class containing obvious theoretical estimations, for order of magnitudes.
-    It also contains commonly used functions, such as Maxwell-Boltzmann distribution,
-    Spitzer conductivity, etc ... that would not be relevant to include in a dedicated
-    object due to their old and massive use.
-
-    Attributes
-    ---------
-
-
-    Methods
-    ------
-
-
-
-    Notes
-    ----
-
-
+    Order of magnitudes estimates and commonly used functions.
     """
     def __init__(self,lpi):
         self._check_input('lpi',lpi,"<class 'pelpi.lpi.LaserPlasmaInteraction'>")
@@ -314,7 +410,7 @@ class Common(_PelpiObject):
             return ne.to(_du['number'])
 
         
-        def distribution(self,distribution,kinetic_energy,temperature):
+        def distribution(self,name,kinetic_energy,temperature):
             """
 
             """
@@ -322,10 +418,10 @@ class Common(_PelpiObject):
             Ek = kinetic_energy
             Te = temperature
 
-            if distribution=="MB":
+            if name=="MB":
                 dist = _np.sqrt(4/_np.pi) * _np.sqrt(Ek/Te**3) * _np.exp( -Ek/Te )
                 return dist.to(_du['number'])
-            elif distribution=="MJ":
+            elif name=="MJ":
                 """
                 From Wright 1975, in the rest frame. TO BE CONFIRMED
                 """

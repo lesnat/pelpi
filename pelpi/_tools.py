@@ -8,7 +8,7 @@ __all__ = ["_PelpiObject"]
 class _PelpiObject(object):
     """
     Private base class for pelpi objects.
-    """    
+    """
     def _check_input(self,var_name,var_value,exp_type):
         """
         Check if the user input have the correct type.
@@ -255,11 +255,9 @@ def _estimate(root_inst,model_name,method_name,**kwargs):
     Assuming you are defining the 'temperature' method in electron.hot LaserPlasmaInteraction sub-class
     
     >>> def temperature(self,model,**kwargs):
-    >>>     if self.default['temperature'] is not None: # If a default value exists
-    >>>         return self.default['temperature']      # Return default value
-    >>>     else:
-    >>>         temperature = self._estimate(self._lpi,model,'electron.hot.temperature',**kwargs) # Else get the estimate
-    >>>         return temperature.to(_du['temperature'])   # And return the result, converted to default units.
+    >>>     dim = 'temperature'
+    >>>     Teh = _estimate(self._lpi,model,'electron.hot.temperature',**kwargs) # Else get the estimate
+    >>>     return self.default('temperature',Teh,dim)                           # And return the result, converted to default units.
     """
     ### Get an instance of 'model_name'
     # Find the 'model_name' class in root_inst.model

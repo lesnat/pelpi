@@ -1,7 +1,7 @@
 #coding:utf8
 
 from ._global import *
-from ._tools import _PelpiObject,_Default
+from ._tools import _PelpiObject,_Default,_estimate
 import models as _m
 
 __all__ = ["LaserPlasmaInteraction"]
@@ -140,7 +140,7 @@ class LaserPlasmaInteraction(_PelpiObject):
             if you need more informations about the [Model] model.
             """
             dim = 'number'
-            eta_l = self._estimate(self._lpi,model,'electron.efficiency_absorption',**kwargs)
+            eta_l = _estimate(self._lpi,model,'electron.efficiency_absorption',**kwargs)
             
             return self.default.result('efficiency_absorption',eta_l,dim)
                 
@@ -168,7 +168,7 @@ class LaserPlasmaInteraction(_PelpiObject):
             if you need more informations about the [Model] model.
             """
             dim = 'number'
-            Te = self._estimate(self._lpi,model,'electron.number_total',**kwargs)
+            Te = _estimate(self._lpi,model,'electron.number_total',**kwargs)
             
             return self.default.result('number_total',Te,dim)
 
@@ -215,7 +215,7 @@ class LaserPlasmaInteraction(_PelpiObject):
                 if you need more informations about the [Model] model.
                 """
                 dim = 'temperature'
-                Teh = self._estimate(self._lpi,model,'electron.hot.temperature',**kwargs)
+                Teh = _estimate(self._lpi,model,'electron.hot.temperature',**kwargs)
                 
                 return self.default.result('temperature',Teh,dim)
 

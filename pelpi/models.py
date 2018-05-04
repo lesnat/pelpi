@@ -279,13 +279,10 @@ class Price1995(_PelpiObject):
     """
     def __init__(self,lpi): # Useless access to lpi, but general method
         self._check_input('lpi',lpi,"<class 'pelpi.lpi.LaserPlasmaInteraction'>")
-        self.electron=self._Electron(lpi)
+        self.electron=self._Electron()
 
     class _Electron(_PelpiObject):
-        def __init__(self,lpi):
-            self.hot = self._Hot(lpi)
-            
-        def absorption_efficiency(self):
+        def efficiency_absorption(self):
             """
             Returns
             -------
@@ -376,7 +373,7 @@ class Common(_PelpiObject):
         def __init__(self,lpi):
             self._lpi = lpi
 
-        def number_total(self,temperature,absorption_efficiency):
+        def number_total(self,temperature,efficiency_absorption):
             """
             Returns
             -------
@@ -386,7 +383,7 @@ class Common(_PelpiObject):
             ---------
             temperature : energy Quantity
                 Hot electron temperature
-            absorption_efficiency : dimensionless Quantity
+            efficiency_absorption : dimensionless Quantity
                 Laser absorption efficiency into electrons
 
             Notes
@@ -404,11 +401,32 @@ class Common(_PelpiObject):
             $T_e^{hot}$ the thermal energy of hot electrons.
             """
             Te = temperature
-            eta_l = absorption_efficiency
+            eta_l = efficiency_absorption
 
             ne = eta_l * self._lpi.laser.energy()/(3/2. * Te)
             return ne.to(_du['number'])
 
+        def number_density_critical_relativistic(self):
+            """
+            Returns
+            -------
+            Electron critical density, with relativistic transparency effects
+            
+            Parameters
+            ----------
+            
+            Notes
+            -----
+            justif ??? presentation J. Moreau. Model ? Otherwise move to Laser object ?
+            
+            """
+            nc=self._lpi.laser.electron.number_density_critical()
+            a0=self._lpi.laser.intensity_peak_normalized()
+            
+            nc_rt=nc*_np.sqrt(1+a0**2)
+            
+            return nc_rt
+            
         
         def distribution(self,name,kinetic_energy,temperature):
             """

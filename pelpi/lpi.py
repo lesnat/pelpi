@@ -288,7 +288,7 @@ class LaserPlasmaInteraction(_PelpiObject):
                 
                 return self.default.result('length_Landau',LLa,dim)
 
-            def angular_frequency_plasma(self,temperature):
+            def angular_frequency_plasma(self):
                 """
                 Returns
                 -------

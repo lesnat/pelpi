@@ -1,35 +1,31 @@
-***
-Use
-***
-
-
+=========================
 Setting target parameters
 =========================
 
 Comments ...
 
 Material
---------
+========
 
 .. autoclass:: pelpi.Material
    :members:
    :undoc-members:
 
 Target
-------
+======
 
 .. autoclass:: pelpi.Target
    :members:
    :undoc-members:
 
-
+========================
 Setting laser parameters
 ========================
 
 Comments ...
 
 Profile
--------
+=======
 
 .. autoclass:: pelpi.Profile
   :members:
@@ -38,7 +34,7 @@ Profile
 
 
 Laser
------
+=====
 
 .. autoclass:: pelpi.Laser
    :members:
@@ -46,14 +42,14 @@ Laser
    :show-inheritance:
 
 
-
+=================================
 Estimate laser plasma interaction
 =================================
 
 Comments ...
 
 LaserPlasmaInteraction
-----------------------
+======================
 
 .. autoclass:: pelpi.LaserPlasmaInteraction
    :members:
@@ -61,48 +57,53 @@ LaserPlasmaInteraction
    :show-inheritance:
    
 
+LaserPlasmaInteraction.electron
+-------------------------------
 
-
-plasma
-------
-
-.. autoclass:: pelpi.LaserPlasmaInteraction._PlasmaParameters
+.. autoclass:: pelpi.lpi._LPIElectron
    :members:
    :undoc-members:
    :show-inheritance:
 
-electron
---------
+LaserPlasmaInteraction.electron.hot
++++++++++++++++++++++++++++++++++++
 
-.. autoclass:: pelpi.LaserPlasmaInteraction._Electron
-   :members: efficiency_absorption
+.. autoclass:: pelpi.lpi._LPIElectronHot
+   :members:
    :undoc-members:
    :show-inheritance:
 
-.. autoattribute:: pelpi.LaserPlasmaInteraction._Electron
+LaserPlasmaInteraction.plasma
+-----------------------------
 
+.. autoclass:: pelpi.plasma._PlasmaParameters
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-hot
-+++
+LaserPlasmaInteraction.plasma.electron
+++++++++++++++++++++++++++++++++++++++
 
+.. autoclass:: pelpi.plasma._PlasmaElectron
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-.. autoattribute:: pelpi.LaserPlasmaInteraction._Electron._Hot
+LaserPlasmaInteraction.plasma.ion
++++++++++++++++++++++++++++++++++
 
-
-.. autoclass:: pelpi.LaserPlasmaInteraction._Electron._Hot
-   :members: number_total, temperature
+.. autoclass:: pelpi.plasma._PlasmaIon
+   :members:
    :undoc-members:
    :show-inheritance:
 
 
-
-
-
+=======================
 Estimate PIC parameters
 =======================
 
 ParticleInCell
---------------
+==============
 
 .. autoclass:: pelpi.ParticleInCell
    :members:
@@ -110,12 +111,3 @@ ParticleInCell
    :show-inheritance:
 
 
-Models Reference
-================
-
-LaserPlasmaInteraction
-----------------------
-
-.. automodule:: pelpi.LaserPlasmaInteraction.model
-  :members:
-  :undoc-members:

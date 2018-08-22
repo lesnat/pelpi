@@ -1,4 +1,8 @@
 
+========
+Examples
+========
+
 Use units
 =========
 
@@ -34,4 +38,3 @@ Use defaults
 
 .. literalinclude:: ../../examples/06-use_defaults.py
    :language: python
-

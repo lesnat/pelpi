@@ -1,3 +1,8 @@
+
+***
+Use
+***
+
 =========================
 Setting target parameters
 =========================
@@ -48,17 +53,14 @@ Estimate laser plasma interaction
 
 Comments ...
 
-LaserPlasmaInteraction
-======================
-
 .. autoclass:: pelpi.LaserPlasmaInteraction
    :members:
    :undoc-members:
    :show-inheritance:
-   
+
 
 LaserPlasmaInteraction.electron
--------------------------------
+===============================
 
 .. autoclass:: pelpi.lpi._LPIElectron
    :members:
@@ -66,15 +68,22 @@ LaserPlasmaInteraction.electron
    :show-inheritance:
 
 LaserPlasmaInteraction.electron.hot
-+++++++++++++++++++++++++++++++++++
+-----------------------------------
 
 .. autoclass:: pelpi.lpi._LPIElectronHot
    :members:
    :undoc-members:
    :show-inheritance:
 
+LaserPlasmaInteraction.ion
+===============================
+
+.. autoclass:: pelpi.lpi._LPIIon
+  :members:
+  :undoc-members:
+  :show-inheritance:
 LaserPlasmaInteraction.plasma
------------------------------
+=============================
 
 .. autoclass:: pelpi.plasma._PlasmaParameters
    :members:
@@ -82,7 +91,7 @@ LaserPlasmaInteraction.plasma
    :show-inheritance:
 
 LaserPlasmaInteraction.plasma.electron
-++++++++++++++++++++++++++++++++++++++
+--------------------------------------
 
 .. autoclass:: pelpi.plasma._PlasmaElectron
    :members:
@@ -90,7 +99,7 @@ LaserPlasmaInteraction.plasma.electron
    :show-inheritance:
 
 LaserPlasmaInteraction.plasma.ion
-+++++++++++++++++++++++++++++++++
+---------------------------------
 
 .. autoclass:: pelpi.plasma._PlasmaIon
    :members:
@@ -109,5 +118,3 @@ ParticleInCell
    :members:
    :undoc-members:
    :show-inheritance:
-
-

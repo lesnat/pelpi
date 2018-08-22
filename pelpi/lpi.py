@@ -3,7 +3,6 @@
 from ._global import *
 from ._tools import _PelpiObject,_Default,_estimate
 from .plasma import _PlasmaParameters
-import models as _m
 
 __all__ = ["LaserPlasmaInteraction"]
 
@@ -40,9 +39,9 @@ class LaserPlasmaInteraction(_PelpiObject):
 
     To do this, pelpi needs the parameters to be defined explicitly, i.e. with the parameter
     name in the method call.
-    
+
     See examples.
-    
+
     Examples
     --------
     Here is a quick example, assuming ``lpi`` is an instance of ``LaserPlasmaInteraction``
@@ -129,14 +128,14 @@ class _LPIElectron(_PelpiObject):
             Physical Review Letters, 1995
         """
         dim = 'number'
-        
+
         if model == "Price1995":
           eta_l = 0.1
         else:
           raise NameError('Unknown model name')
-        
+
         return self.default.result('efficiency_absorption',eta_l,dim)
-            
+
     def number_total(self,model,**kargs):
         """
         Return an estimate of the total electron number.
@@ -166,14 +165,14 @@ class _LPIElectron(_PelpiObject):
             Based on Maxwell-Boltzmann law
         """
         dim = 'number'
-        
+
         if model == "Common":
           Te = kargs['temperature']
           eta_l = kargs['efficiency_absorption']
           ne = eta_l * self._lpi.laser.energy()/(3/2. * Te)
         else:
           raise NameError("Unknown model name")
-        
+
         return self.default.result('number_total',ne,dim)
 
 
@@ -219,7 +218,7 @@ class _LPIElectronHot(_PelpiObject):
             F. N. Beg, A. R. Bell, A. E. Dangor, C. N. Danson, A. P. Fews, M. E. Glinsky,B. A. Hammel, P. Lee, P. A. Norreys, and M. Tatarakis
             A study of picosecond laser–solid interactions up to :math:`10^{19} W.cm^{-2}`
             Physics of Plasmas, 1997
-            
+
         Haines2009
           Type :
             theoretical
@@ -234,7 +233,7 @@ class _LPIElectronHot(_PelpiObject):
             M. G. Haines,1,2 M. S. Wei, F. N. Beg, and R. B. Stephens
             Hot-Electron Temperature and Laser-Light Absorption in Fast Ignition
             Physical Review Letters, 2009
-            
+
         Wilks1992
           Type :
             numerical
@@ -245,13 +244,13 @@ class _LPIElectronHot(_PelpiObject):
             with :math:`T_e^h` the hot electron temperature
             :math:`a_0` the normalized laser intensity
             :math:`m_e c^2` the electron mass energy
-          Reference : 
+          Reference :
             S. C. Wilks, W. L. Kruer, M. Tabak, and A. B. Langdon
             Absorption of Ultra-Intense Laser Pulses
             Physical Review Letters, 1992
         """
         dim = 'temperature'
-        
+
         if model == "Wilks1992":
           a0 = self._lpi.laser.intensity_peak_normalized()
           Teh = ((1.0 + (a0)**2)**(1/2.) - 1.0 ) * _u.m_e * _u.c**2 # TODO: a0 or a0/2 ?
@@ -264,7 +263,7 @@ class _LPIElectronHot(_PelpiObject):
           Teh = 100.*_u('keV') * ((I0 * lambda_laser**2) / (1e17*_u('W/cm**2')*_u('um**2')) )**(1/3.)
         else:
           raise NameError("Unknown model name")
-        
+
         return self.default.result('temperature',Teh,dim)
 
 
@@ -280,7 +279,7 @@ class _LPIIon(_PelpiObject):
 
       # Initialize default dict after the shortcuts have been defined
       self.default = _Default(self)
-      
+
     def energy_cutoff(self,model,**kargs):
         """
         Returns
@@ -309,11 +308,11 @@ class _LPIIon(_PelpiObject):
             Physics of Plasmas, 1997
         """
         dim = 'energy'
-        
+
         if model == "Beg1997":
           I0 = self._lpi.laser.intensity()
           Emax = 1.2e-2 * _u('keV') * (I0/_u('W/cm**2'))**(0.313)
         else:
           raise NameError("Unknown model name")
-        
+
         return self.default.result('energy_cutoff',Emax,dim)

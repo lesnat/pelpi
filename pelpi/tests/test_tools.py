@@ -24,10 +24,10 @@ class test_PelpiObject(unittest.TestCase):
         self.po._check_input('float',1.0,float)
         self.po._check_input('str','test',str)
         self.po._check_input('float',1.0,"<type 'float'>")
-
+    """
     def test_estimate(self):
-        self.po._estimate(ExampleLPI().lpiGGAl,"Common","electron.number_total",temperature=1.0 * u.MeV, absorption_efficiency=0.1 * u(''))
-        
+        self.po._estimate(ExampleLPI().lpiGGAl,"Common","electron.number_total",temperature=1.0 * u.MeV, efficiency_absorption=0.1 * u(''))
+    """ 
         
 class test_Default(unittest.TestCase):
     def setUp(self):

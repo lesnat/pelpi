@@ -6,16 +6,50 @@
 *****
 pelpi
 *****
+
 short description
 
-========
-Contents
-========
+============
+Introduction
+============
+
 .. toctree::
    :maxdepth: 3
 
    intro
+   
+============
+Installation
+============
+
+.. toctree::
+   :maxdepth: 3
+
    install
+
+==========
+Understand
+==========
+
+.. toctree::
+   :maxdepth: 3
+
    understand
+
+===
+Use
+===
+
+.. toctree::
+   :maxdepth: 3
+
    use
+
+========
+Examples
+========
+
+.. toctree::
+   :maxdepth: 3
+
    examples

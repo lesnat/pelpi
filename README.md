@@ -1,5 +1,7 @@
 # Package for Estimate Laser-Plasma Interaction
 
+**WARNING: THIS IS A DEAD PROJECT !**
+
 pelpi is an open source object-oriented python package designed to facilitate physical estimations in the context of laser plasma interaction.
 
 It can be helpfull for obtaining good estimates to design experimental setups, or to constraint numerical parameters. It can also be used to help interpreting results from different theoretical backgrounds, or to validate simulation results with experimental scalings. 
